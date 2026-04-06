@@ -318,6 +318,7 @@ export type CarFilters = {
   getriebe?: string
   typ?: string
   tueren?: string
+  umwelt?: string
   schadstoff?: string
   material?: string
   farbe?: string
