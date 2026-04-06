@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(ls:*)",
+      "Bash(npm run:*)",
+      "Bash(npx tsc:*)",
+      "Bash(curl -s http://localhost:3000/njoftim/shto -o /dev/null -w \"%{http_code}\")",
+      "Bash(curl -s \"http://localhost:3000/\" -o /dev/null -w \"%{http_code}\")",
+      "Bash(curl -s http://localhost:3000/profil -o /dev/null -w \"%{http_code}\")",
+      "Bash(curl -s \"http://localhost:3000/njoftim/2831eba7-a5cd-4838-9e5a-41a1801b8582/ndrysho\" -o /dev/null -w \"%{http_code}\")",
+      "Bash(curl -s http://localhost:3000/kategori/makina -o /dev/null -w \"%{http_code}\")",
+      "Bash(curl -s http://localhost:3000/ -o /dev/null -w \"%{http_code}\")",
+      "Bash(curl -s http://localhost:3000/kategori/elektronik -o /dev/null -w \" %{http_code}\")",
+      "Bash(curl -s http://localhost:3000/kategori/imobiliare -o /dev/null -w \" %{http_code}\")",
+      "Bash(curl -s http://localhost:3000/kategori/kafsha -o /dev/null -w \"%{http_code}\")",
+      "Bash(curl -s \"http://localhost:3000/kategori/makina?nenkategoria=Marka\" -o /dev/null -w \"%{http_code}\")",
+      "Bash(curl -s \"http://localhost:3000/kategori/makina?nenkategoria=Marka&marka=BMW\" -o /dev/null -w \" %{http_code}\")",
+      "Bash(grep -n \"Rreth nesh\\\\|Kontakti\\\\|Kushtet\\\\|Privatësia\\\\|footer\" /Users/danielkorcari/tregtoni/app/njoftim/[id]/page.tsx)",
+      "Bash(cp -r /Users/danielkorcari/tregtoni/app /Users/danielkorcari/tregtoni/backup_vor_redesign/app)",
+      "Bash(cp -r /Users/danielkorcari/tregtoni/lib /Users/danielkorcari/tregtoni/backup_vor_redesign/lib)",
+      "Bash(cp -r /Users/danielkorcari/tregtoni/supabase /Users/danielkorcari/tregtoni/backup_vor_redesign/supabase)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "Bash(grep -n \"FOTO_LLOJI_OPT\\\\]\\\\|^]$\\\\|^const FOTO\" /Users/danielkorcari/tregtoni/app/njoftim/shto/ShtoForm.tsx)",
+      "Bash(grep -n \"isSherbime\\\\|sherbime\\\\|lloji_sherbimi\" /Users/danielkorcari/tregtoni/app/njoftim/[id]/page.tsx)",
+      "Bash(grep -n \"isKafshe\\\\|kafsha\\\\|kafshe\" /Users/danielkorcari/tregtoni/app/kategori/[slug]/page.tsx)",
+      "Bash(grep -n \"isMesim\\\\|mesim_lloji\\\\|mesim_niveli\" /Users/danielkorcari/tregtoni/app/kategori/[slug]/page.tsx)",
+      "Bash(grep -n \"femije_lloji\\\\|kafshe_lloji\" /Users/danielkorcari/tregtoni/app/kategori/[slug]/page.tsx)",
+      "Bash(grep -n \"isMesim\\\\|hasMesimFilters\\\\|MesimFilter\\\\|mesim_sub_lloji\" /Users/danielkorcari/tregtoni/app/kategori/[slug]/page.tsx)",
+      "Bash(grep -n \"isFemije\\\\|isMesim\\\\|isKafshe\\\\|spec card\\\\|Femije\\\\|Detaje\" /Users/danielkorcari/tregtoni/app/njoftim/[id]/page.tsx)",
+      "Bash(grep:*)",
+      "Bash(gh auth:*)",
+      "Bash(git config:*)",
+      "Bash(gh --version)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}
