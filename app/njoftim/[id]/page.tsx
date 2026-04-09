@@ -404,16 +404,16 @@ export default async function NjoftimDetail({
               <h1 style={{ fontSize: '24px', fontWeight: '700', color: '#1D1D1F', margin: 0, letterSpacing: '-0.5px', lineHeight: '1.25' }}>
                 {ad.title}
               </h1>
-              <div style={{ flexShrink: 0, textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
+              <div style={{ flexShrink: 0, textAlign: 'right' }}>
                 <div style={{ fontSize: '28px', fontWeight: '800', color: '#DA291C', letterSpacing: '-0.5px', whiteSpace: 'nowrap' }}>
                   {ad.price.toLocaleString('de-DE')} €
                 </div>
-                <MeldeModal anzeige_id={ad.id} />
               </div>
             </div>
 
-            {/* Meta tags */}
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            {/* Meta tags + report */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               <span style={{ fontSize: '13px', color: '#1D1D1F', background: '#F5F5F7', padding: '5px 12px', borderRadius: '20px', fontWeight: '500' }}>
                 📍 {ad.city}
               </span>
@@ -430,6 +430,8 @@ export default async function NjoftimDetail({
                   {ad.marka}
                 </span>
               )}
+              </div>
+              <MeldeModal anzeige_id={ad.id} />
             </div>
           </div>
         </div>
