@@ -404,10 +404,11 @@ export default async function NjoftimDetail({
               <h1 style={{ fontSize: '24px', fontWeight: '700', color: '#1D1D1F', margin: 0, letterSpacing: '-0.5px', lineHeight: '1.25' }}>
                 {ad.title}
               </h1>
-              <div style={{ flexShrink: 0, textAlign: 'right' }}>
+              <div style={{ flexShrink: 0, textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
                 <div style={{ fontSize: '28px', fontWeight: '800', color: '#DA291C', letterSpacing: '-0.5px', whiteSpace: 'nowrap' }}>
                   {ad.price.toLocaleString('de-DE')} €
                 </div>
+                <MeldeModal anzeige_id={ad.id} />
               </div>
             </div>
 
@@ -735,10 +736,7 @@ export default async function NjoftimDetail({
               {sellerName.charAt(0).toUpperCase()}
             </div>
             <div>
-              <div style={{ fontSize: '12px', color: '#86868B', marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <span>Shitësi</span>
-                <MeldeModal anzeige_id={ad.id} nutzer_id={ad.user_id} />
-              </div>
+              <div style={{ fontSize: '12px', color: '#86868B', marginBottom: '2px' }}>Shitësi</div>
               <div style={{ fontSize: '16px', fontWeight: '600', color: '#1D1D1F' }}>{sellerName}</div>
             </div>
           </div>
