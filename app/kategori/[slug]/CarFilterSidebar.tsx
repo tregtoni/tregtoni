@@ -173,21 +173,23 @@ function ChipSelect({
   options: { v: string; l: string }[]
   value?: string
 }) {
+  const [selected, setSelected] = useState<string | undefined>(value)
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
       {options.map(opt => {
-        const active = value === opt.v
+        const active = selected === opt.v
         return (
           <label key={opt.v} style={{
             display: 'inline-flex',
             alignItems: 'center',
             cursor: 'pointer',
-          }}>
+          }} onClick={(e) => { e.preventDefault(); setSelected(active ? undefined : opt.v) }}>
             <input
               type="radio"
               name={name}
               value={opt.v}
-              defaultChecked={active}
+              checked={active}
+              onChange={() => {}}
               style={{ display: 'none' }}
             />
             <span style={{
