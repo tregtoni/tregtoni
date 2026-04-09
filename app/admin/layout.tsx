@@ -7,8 +7,6 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  console.log('ADMIN_USER_ID:', process.env.ADMIN_USER_ID, 'USER:', user?.id)
-
   if (!user || user.id !== process.env.ADMIN_USER_ID) {
     notFound()
   }
@@ -16,15 +14,13 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   let count = 0
   try {
     const admin = createAdminClient()
-    console.log('SERVICE_ROLE_KEY set:', !!process.env.SUPABASE_SERVICE_ROLE_KEY)
-    const result = await admin
+    const { count: c } = await admin
       .from('meldungen')
       .select('id', { count: 'exact', head: true })
       .eq('erledigt', false)
-    console.log('Admin query result — count:', result.count, 'error:', result.error)
-    count = result.count ?? 0
-  } catch (e) {
-    console.error('createAdminClient error:', e)
+    count = c ?? 0
+  } catch {
+    // Service role key not configured or DB error — dashboard still renders
   }
 
   return (
