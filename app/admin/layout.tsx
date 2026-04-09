@@ -13,15 +13,23 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     notFound()
   }
 
-  const admin = createAdminClient()
-  const { count } = await admin
-    .from('meldungen')
-    .select('id', { count: 'exact', head: true })
-    .eq('erledigt', false)
+  let count = 0
+  try {
+    const admin = createAdminClient()
+    console.log('SERVICE_ROLE_KEY set:', !!process.env.SUPABASE_SERVICE_ROLE_KEY)
+    const result = await admin
+      .from('meldungen')
+      .select('id', { count: 'exact', head: true })
+      .eq('erledigt', false)
+    console.log('Admin query result — count:', result.count, 'error:', result.error)
+    count = result.count ?? 0
+  } catch (e) {
+    console.error('createAdminClient error:', e)
+  }
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: '#F5F5F7' }}>
-      <AdminSidebar meldungenOffen={count ?? 0} />
+      <AdminSidebar meldungenOffen={count} />
       <main style={{ flex: 1, padding: '32px', overflowX: 'hidden' }}>
         {children}
       </main>
