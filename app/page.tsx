@@ -12,6 +12,7 @@ export default async function Home() {
   const { data: njoftimet } = await supabase
     .from('njoftimet')
     .select('*')
+    .neq('aktive', false)
     .order('created_at', { ascending: false })
     .limit(8)
 

@@ -279,7 +279,7 @@ export default async function KategoriPage({
   const markaCount = Object.values(countPerMarka).reduce((a, b) => a + b, 0)
   const motoMarkaCount = Object.values(countPerMotoMarka).reduce((a, b) => a + b, 0)
 
-  let query = supabase.from('njoftimet').select('*').eq('category', slug)
+  let query = supabase.from('njoftimet').select('*').eq('category', slug).neq('aktive', false)
 
   if (showingMarka) {
     query = query.eq('subcategory', 'Makina')
