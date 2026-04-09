@@ -459,7 +459,7 @@ export default async function Home() {
           letterSpacing: '-0.8px',
           marginBottom: '12px',
         }}>
-          Gati të <span style={{ color: '#E24B4A' }}>tregtoni</span>?
+          Gati të <span style={{ color: '#E24B4A' }}>tregtoni?</span>
         </h2>
         <p style={{
           fontSize: '17px',
