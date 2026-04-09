@@ -18,6 +18,7 @@ import BiletaFilterSidebar, { BiletaFilters } from './BiletaFilterSidebar'
 import HobiFilterSidebar, { HobiFilters } from './HobiFilterSidebar'
 import MuzikeFilterSidebar, { MuzikeFilters } from './MuzikeFilterSidebar'
 import DhurateFilterSidebar, { DhurateFilters } from './DhurateFilterSidebar'
+import MeldeModal from '@/app/components/MeldeModal'
 
 type SearchParams = {
   nenkategoria?: string
@@ -1129,15 +1130,22 @@ export default async function KategoriPage({
               {njoftimet.map(ad => {
                 const images: string[] = ad.images ?? []
                 return (
-                  <a key={ad.id} href={`/njoftim/${ad.id}`}
+                  <div key={ad.id}
                     style={{
                       display: 'flex',
                       background: '#fff',
                       borderRadius: '14px',
                       overflow: 'hidden',
-                      textDecoration: 'none',
                       boxShadow: '0 1px 8px rgba(0,0,0,0.06)',
                       border: '1px solid rgba(0,0,0,0.05)',
+                      position: 'relative',
+                    }}>
+                  <a href={`/njoftim/${ad.id}`}
+                    style={{
+                      display: 'flex',
+                      flex: 1,
+                      textDecoration: 'none',
+                      minWidth: 0,
                     }}>
                     <div style={{
                       width: '168px',
@@ -1217,10 +1225,14 @@ export default async function KategoriPage({
                             <span>{ad.city}</span>
                           </div>
                         </div>
-                        <div style={{ fontSize: '12px', color: '#86868B', flexShrink: 0, fontWeight: '400' }}>{timeAgo(ad.created_at)}</div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+                          <div style={{ fontSize: '12px', color: '#86868B', fontWeight: '400' }}>{timeAgo(ad.created_at)}</div>
+                          <MeldeModal anzeige_id={ad.id} />
+                        </div>
                       </div>
                     </div>
                   </a>
+                  </div>
                 )
               })}
             </div>

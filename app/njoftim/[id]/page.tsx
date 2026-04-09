@@ -4,6 +4,7 @@ import NavBar from '@/app/components/NavBar'
 import Footer from '@/app/components/Footer'
 import ImageGallery from './ImageGallery'
 import { KATEGORI_MAP, CATEGORY_ICON } from '@/lib/kategori-data'
+import MeldeModal from '@/app/components/MeldeModal'
 
 const KRAFTSTOFF_LABEL: Record<string, string> = {
   benzine: 'Benzinë', diesel: 'Diesel', cng: 'Gas natyror (CNG)',
@@ -734,7 +735,10 @@ export default async function NjoftimDetail({
               {sellerName.charAt(0).toUpperCase()}
             </div>
             <div>
-              <div style={{ fontSize: '12px', color: '#86868B', marginBottom: '2px' }}>Shitësi</div>
+              <div style={{ fontSize: '12px', color: '#86868B', marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span>Shitësi</span>
+                <MeldeModal anzeige_id={ad.id} nutzer_id={ad.user_id} />
+              </div>
               <div style={{ fontSize: '16px', fontWeight: '600', color: '#1D1D1F' }}>{sellerName}</div>
             </div>
           </div>

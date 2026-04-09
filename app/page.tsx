@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import NavBar from '@/app/components/NavBar'
 import Footer from '@/app/components/Footer'
 import { KATEGORITË, CATEGORY_ICON, QYTETET_SHQIPERI, QYTETET_KOSOVE } from '@/lib/kategori-data'
+import MeldeModal from '@/app/components/MeldeModal'
 
 export default async function Home() {
   const supabase = await createClient()
@@ -352,8 +353,9 @@ export default async function Home() {
                       }}>
                         {ad.price.toLocaleString('de-DE')} €
                       </div>
-                      <div style={{ fontSize: '11px', color: '#86868B' }}>
-                        {ad.city}
+                      <div style={{ fontSize: '11px', color: '#86868B', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span>{ad.city}</span>
+                        <MeldeModal anzeige_id={ad.id} />
                       </div>
                     </div>
                   </a>
