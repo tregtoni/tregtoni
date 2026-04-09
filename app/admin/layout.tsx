@@ -8,6 +8,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user || user.id !== process.env.ADMIN_USER_ID) {
+    console.error('Admin access denied - user:', user?.id, 'expected:', process.env.ADMIN_USER_ID)
     notFound()
   }
 
