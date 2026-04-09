@@ -7,6 +7,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
+  console.log('ADMIN_USER_ID:', process.env.ADMIN_USER_ID, 'USER:', user?.id)
+
   if (!user || user.id !== process.env.ADMIN_USER_ID) {
     notFound()
   }
