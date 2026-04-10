@@ -160,11 +160,11 @@ export default function FeedbackWidget() {
                         style={{
                           background: 'none', border: 'none', cursor: 'pointer', padding: '2px',
                           fontSize: '28px', lineHeight: 1,
-                          filter: star <= (hovered || rating) ? 'none' : 'grayscale(1) opacity(0.35)',
-                          transform: star <= (hovered || rating) ? 'scale(1.1)' : 'scale(1)',
-                          transition: 'transform 0.1s, filter 0.1s',
+                          color: star <= (hovered || rating) ? '#FFD700' : '#D1D1D6',
+                          transform: star <= (hovered || rating) ? 'scale(1.15)' : 'scale(1)',
+                          transition: 'transform 0.1s, color 0.1s',
                         }}
-                      >⭐</button>
+                      >★</button>
                     ))}
                   </div>
                   <input type="hidden" name="rating" value={rating || ''} />
