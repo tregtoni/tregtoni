@@ -41,7 +41,7 @@ export default async function PublicProfilPage({
   // If no profile AND no ads at all, this user doesn't exist
   if (!profile && (!njoftimet || njoftimet.length === 0)) notFound()
 
-  const fullName = (profile?.full_name as string | null) ?? 'Përdorues'
+  const fullName = (profile?.full_name as string | null) ?? ''
   const nameParts = fullName.trim().split(/\s+/)
   const initials = nameParts.length >= 2
     ? (nameParts[0][0] + nameParts[1][0]).toUpperCase()

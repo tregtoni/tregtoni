@@ -316,7 +316,7 @@ export default async function NjoftimDetail({
     .eq('id', ad.user_id)
     .single()
 
-  const sellerName   = seller?.full_name ?? 'Përdorues'
+  const sellerName   = seller?.full_name ?? ''
   const sellerAvatar = seller?.avatar_url ?? null
   const sellerParts  = sellerName.trim().split(/\s+/)
   const sellerInitials = sellerParts.length >= 2
