@@ -314,11 +314,11 @@ export default async function NjoftimDetail({
   const adminClient = createAdminClient()
   const { data: seller } = await adminClient
     .from('profiles')
-    .select('full_name, avatar_url, id')
+    .select('full_name, id')
     .eq('id', ad.user_id)
     .single()
 
-  const sellerAvatar   = seller?.avatar_url ?? null
+  const sellerAvatar   = null // avatar_url column not yet migrated
   const sellerInitials = seller?.full_name
     ? seller.full_name.split(' ').map((w: string) => w[0]).join('').toUpperCase().slice(0, 2)
     : '?'

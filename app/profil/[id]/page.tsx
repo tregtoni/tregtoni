@@ -26,7 +26,7 @@ export default async function PublicProfilPage({
   // Fetch profile — admin client ensures RLS doesn't block unauthenticated reads
   const { data: profile } = await admin
     .from('profiles')
-    .select('id, full_name, qyteti, avatar_url, bio, zeige_qyteti, zeige_telefon, created_at')
+    .select('id, full_name, bio, zeige_qyteti, zeige_telefon, created_at')
     .eq('id', id)
     .single()
 
@@ -46,10 +46,10 @@ export default async function PublicProfilPage({
   const initials = nameParts.length >= 2
     ? (nameParts[0][0] + nameParts[1][0]).toUpperCase()
     : nameParts[0]?.[0]?.toUpperCase() ?? ''
-  const avatarUrl = (profile?.avatar_url as string | null) ?? null
+  const avatarUrl = null // avatar_url column not yet migrated
   const bio = (profile?.bio as string | null) ?? null
   const zeigeQyteti = (profile?.zeige_qyteti as boolean | null) ?? true
-  const qyteti = (profile?.qyteti as string | null) ?? null
+  const qyteti = null // qyteti column not yet migrated
 
   const joinedDate = profile?.created_at
     ? new Date(profile.created_at as string).toLocaleDateString('sq-AL', { month: 'long', year: 'numeric' })

@@ -17,7 +17,7 @@ export default async function ProfilPage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('full_name, telefon, qyteti, avatar_url, bio, zeige_telefon, zeige_qyteti, created_at')
+    .select('full_name, bio, zeige_telefon, zeige_qyteti, created_at')
     .eq('id', user.id)
     .single()
 
@@ -28,9 +28,9 @@ export default async function ProfilPage() {
     .order('created_at', { ascending: false })
 
   const fullName        = (profile?.full_name  ?? user.user_metadata?.full_name ?? '') as string
-  const telefon         = (profile?.telefon    ?? '') as string
-  const qyteti          = (profile?.qyteti     ?? '') as string
-  const avatarUrl       = (profile?.avatar_url ?? '') as string
+  const telefon         = '' // telefon column not yet migrated
+  const qyteti          = '' // qyteti column not yet migrated
+  const avatarUrl       = '' // avatar_url column not yet migrated
   const bio             = (profile?.bio        ?? '') as string
   const zeigeTelefon    = (profile?.zeige_telefon ?? true) as boolean
   const zeigeQyteti     = (profile?.zeige_qyteti  ?? true) as boolean
