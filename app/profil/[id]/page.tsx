@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import NavBar from '@/app/components/NavBar'
 import Footer from '@/app/components/Footer'
 import MeldeModal from '@/app/components/MeldeModal'
@@ -14,31 +15,42 @@ export default async function PublicProfilPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const supabase = await createClient()
 
+  // Admin client bypasses RLS — safe for server-side read of public profile data
+  const admin = createAdminClient()
+
+  // Current viewer (may be null for logged-out users — no redirect)
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  const { data: profile } = await supabase
+  // Fetch profile — admin client ensures RLS doesn't block unauthenticated reads
+  const { data: profile } = await admin
     .from('profiles')
     .select('id, full_name, qyteti, avatar_url, bio, zeige_qyteti, zeige_telefon, created_at')
     .eq('id', id)
     .single()
 
-  if (!profile) notFound()
-
-  const { data: njoftimet } = await supabase
+  // Fetch active listings — public policy already allows this, but admin is consistent
+  const { data: njoftimet } = await admin
     .from('njoftimet')
-    .select('*')
+    .select('id, title, price, city, category, images, created_at')
     .eq('user_id', id)
     .neq('aktive', false)
     .order('created_at', { ascending: false })
 
-  const fullName = (profile.full_name as string | null) ?? 'Shitës'
+  // If no profile AND no ads at all, this user doesn't exist
+  if (!profile && (!njoftimet || njoftimet.length === 0)) notFound()
+
+  const fullName = (profile?.full_name as string | null) ?? 'Shitës'
   const initials = fullName.charAt(0).toUpperCase()
-  const joinedDate = new Date((profile as any).created_at).toLocaleDateString('sq-AL', {
-    month: 'long',
-    year: 'numeric',
-  })
+  const avatarUrl = (profile?.avatar_url as string | null) ?? null
+  const bio = (profile?.bio as string | null) ?? null
+  const zeigeQyteti = (profile?.zeige_qyteti as boolean | null) ?? true
+  const qyteti = (profile?.qyteti as string | null) ?? null
+
+  const joinedDate = profile?.created_at
+    ? new Date(profile.created_at as string).toLocaleDateString('sq-AL', { month: 'long', year: 'numeric' })
+    : null
 
   const isOwnProfile = user?.id === id
   const adCount = njoftimet?.length ?? 0
@@ -62,10 +74,10 @@ export default async function PublicProfilPage({
 
             {/* Avatar */}
             <div style={{ flexShrink: 0 }}>
-              {profile.avatar_url ? (
+              {avatarUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={profile.avatar_url}
+                  src={avatarUrl}
                   alt={fullName}
                   style={{
                     width: '88px', height: '88px', borderRadius: '50%',
@@ -105,24 +117,26 @@ export default async function PublicProfilPage({
               </div>
 
               <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '12px' }}>
-                <span style={{ fontSize: '13px', color: '#86868B' }}>
-                  Anëtar që nga {joinedDate}
-                </span>
-                {profile.zeige_qyteti !== false && profile.qyteti && (
+                {joinedDate && (
+                  <span style={{ fontSize: '13px', color: '#86868B' }}>
+                    Anëtar që nga {joinedDate}
+                  </span>
+                )}
+                {zeigeQyteti && qyteti && (
                   <>
-                    <span style={{ color: '#D0D0D5' }}>·</span>
-                    <span style={{ fontSize: '13px', color: '#86868B' }}>📍 {profile.qyteti}</span>
+                    {joinedDate && <span style={{ color: '#D0D0D5' }}>·</span>}
+                    <span style={{ fontSize: '13px', color: '#86868B' }}>📍 {qyteti}</span>
                   </>
                 )}
               </div>
 
-              {profile.bio && (
+              {bio && (
                 <p style={{
                   fontSize: '14px', color: '#3D3D3F',
                   lineHeight: '1.65', margin: 0, maxWidth: '480px',
                   whiteSpace: 'pre-wrap',
                 }}>
-                  {profile.bio}
+                  {bio}
                 </p>
               )}
             </div>
@@ -151,7 +165,7 @@ export default async function PublicProfilPage({
             fontSize: '20px', fontWeight: '700', color: '#1D1D1F',
             margin: '0 0 18px', letterSpacing: '-0.4px',
           }}>
-            Njoftimet {adCount === 1 ? 'e' : 'e'} {fullName}
+            Njoftimet e {fullName}
           </h2>
 
           {adCount === 0 ? (
@@ -167,7 +181,7 @@ export default async function PublicProfilPage({
           ) : (
             <div className="ad-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
               {njoftimet!.map(ad => {
-                const images: string[] = (ad as any).images ?? []
+                const images: string[] = (ad.images as string[] | null) ?? []
                 return (
                   <div key={ad.id} style={{
                     background: '#fff', borderRadius: '18px',
@@ -201,7 +215,7 @@ export default async function PublicProfilPage({
                           fontSize: '15px', fontWeight: '700', color: RED,
                           letterSpacing: '-0.2px', marginBottom: '4px',
                         }}>
-                          {ad.price.toLocaleString('de-DE')} €
+                          {(ad.price as number).toLocaleString('de-DE')} €
                         </div>
                         <div style={{ fontSize: '11px', color: '#86868B' }}>
                           {ad.city}
