@@ -316,7 +316,7 @@ export default async function NjoftimDetail({
     .eq('id', ad.user_id)
     .single()
 
-  const sellerName   = seller?.full_name ?? 'Shitës'
+  const sellerName   = seller?.full_name ?? 'Përdorues'
   const sellerAvatar = seller?.avatar_url ?? null
   const sellerParts  = sellerName.trim().split(/\s+/)
   const sellerInitials = sellerParts.length >= 2
@@ -754,7 +754,6 @@ export default async function NjoftimDetail({
               )}
             </a>
             <div>
-              <div style={{ fontSize: '12px', color: '#86868B', marginBottom: '2px' }}>Shitësi</div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <a href={`/profil/${ad.user_id}`} style={{ fontSize: '16px', fontWeight: '600', color: '#1D1D1F', textDecoration: 'none' }}>
                   {sellerName}
