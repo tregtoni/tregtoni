@@ -1153,23 +1153,14 @@ export default async function KategoriPage({
                       position: 'relative',
                     }}>
                   <a href={`/njoftim/${ad.id}`}
-                    style={{
-                      display: 'flex',
-                      flex: 1,
-                      textDecoration: 'none',
-                      minWidth: 0,
-                    }}>
+                    style={{ display: 'flex', flex: 1, textDecoration: 'none', minWidth: 0 }}>
+
+                    {/* Image */}
                     <div style={{
-                      width: '168px',
-                      minHeight: '120px',
-                      flexShrink: 0,
-                      background: '#F5F5F7',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '36px',
-                      overflow: 'hidden',
-                      position: 'relative',
+                      width: '168px', minHeight: '120px', flexShrink: 0,
+                      background: '#F5F5F7', display: 'flex', alignItems: 'center',
+                      justifyContent: 'center', fontSize: '36px',
+                      overflow: 'hidden', position: 'relative',
                     }}>
                       {images[0] ? (
                         // eslint-disable-next-line @next/next/no-img-element
@@ -1186,72 +1177,47 @@ export default async function KategoriPage({
                       )}
                       {images.length > 1 && (
                         <span style={{
-                          position: 'absolute',
-                          bottom: '6px',
-                          right: '6px',
-                          background: 'rgba(0,0,0,0.5)',
-                          color: '#fff',
-                          fontSize: '10px',
-                          padding: '2px 7px',
-                          borderRadius: '6px',
-                          fontWeight: '500',
-                        }}>
-                          +{images.length - 1}
-                        </span>
+                          position: 'absolute', bottom: '6px', right: '6px',
+                          background: 'rgba(0,0,0,0.5)', color: '#fff',
+                          fontSize: '10px', padding: '2px 7px',
+                          borderRadius: '6px', fontWeight: '500',
+                        }}>+{images.length - 1}</span>
                       )}
                     </div>
+
+                    {/* Info */}
                     <div style={{ flex: 1, padding: '14px 18px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minWidth: 0 }}>
+                      {/* Top: title + price + specs */}
                       <div>
+                        {/* Row 1: Title */}
                         <div style={{
-                          fontSize: '15px',
-                          fontWeight: '600',
-                          color: '#1D1D1F',
-                          marginBottom: '6px',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                          letterSpacing: '-0.1px',
+                          fontSize: '15px', fontWeight: '700', color: '#1D1D1F',
+                          marginBottom: '5px', overflow: 'hidden',
+                          textOverflow: 'ellipsis', whiteSpace: 'nowrap', letterSpacing: '-0.1px',
                         }}>
                           {ad.title}
                         </div>
-                        {ad.description && (
-                          <div style={{
-                            fontSize: '13px',
-                            color: '#6E6E73',
-                            overflow: 'hidden',
-                            display: '-webkit-box',
-                            WebkitLineClamp: 2,
-                            WebkitBoxOrient: 'vertical',
-                            lineHeight: '1.5',
-                          }}>
-                            {ad.description}
+                        {/* Row 2: Price */}
+                        <div style={{ fontSize: '17px', fontWeight: '700', color: '#DA291C', letterSpacing: '-0.2px', marginBottom: '5px' }}>
+                          {ad.price.toLocaleString('de-DE')} €
+                        </div>
+                        {/* Row 3: km / PS / Baujahr (only if present) */}
+                        {(ad.km || ad.leistung_ps || ad.baujahr) && (
+                          <div style={{ fontSize: '12px', color: '#6E6E73', display: 'flex', gap: '10px' }}>
+                            {ad.km && <span>{ad.km.toLocaleString('de-DE')} km</span>}
+                            {ad.leistung_ps && <span>{ad.leistung_ps} PS</span>}
+                            {ad.baujahr && <span>{ad.baujahr}</span>}
                           </div>
                         )}
                       </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '12px' }}>
-                        <div>
-                          <div style={{ fontSize: '20px', fontWeight: '700', color: '#DA291C', letterSpacing: '-0.3px' }}>
-                            {ad.price.toLocaleString('de-DE')} €
-                          </div>
-                          {ad.category === 'makina' && (ad.leistung_ps || ad.baujahr || ad.km) && (
-                            <div style={{ fontSize: '12px', color: '#6E6E73', marginTop: '3px', display: 'flex', flexDirection: 'column', gap: '1px' }}>
-                              {ad.leistung_ps && <span>{ad.leistung_ps} PS</span>}
-                              {ad.baujahr && <span>{ad.baujahr}</span>}
-                              {ad.km && <span>{ad.km.toLocaleString('de-DE')} km</span>}
-                            </div>
-                          )}
-                          <div style={{ fontSize: '12px', color: '#86868B', marginTop: '3px', display: 'flex', gap: '8px' }}>
-                            {ad.marka && <span style={{ color: '#1D1D1F', fontWeight: '500' }}>{ad.marka}</span>}
-                            {ad.subcategory && ad.subcategory !== 'Marka' && <span>{ad.subcategory}</span>}
-                            <span>{ad.city}</span>
-                          </div>
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-                          <div style={{ fontSize: '12px', color: '#86868B', fontWeight: '400' }}>{timeAgo(ad.created_at)}</div>
-                          <MeldeModal anzeige_id={ad.id} />
-                        </div>
+                      {/* Bottom: timeAgo + melde */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px' }}>
+                        <div style={{ fontSize: '12px', color: '#86868B', fontWeight: '400' }}>{timeAgo(ad.created_at)}</div>
+                        <MeldeModal anzeige_id={ad.id} />
                       </div>
                     </div>
+
+                    {/* Right column: seller logo (business only) */}
                     {sellerLogo && (
                       <div style={{
                         display: 'flex', flexDirection: 'column', alignItems: 'center',
@@ -1259,17 +1225,11 @@ export default async function KategoriPage({
                         padding: '14px 20px', flexShrink: 0,
                       }}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={sellerLogo}
-                          alt=""
-                          style={{
-                            width: '72px', height: '72px',
-                            borderRadius: '50%',
-                            border: '1.5px solid rgba(0,0,0,0.08)',
-                            objectFit: 'cover',
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.10)',
-                          }}
-                        />
+                        <img src={sellerLogo} alt="" style={{
+                          width: '72px', height: '72px', borderRadius: '50%',
+                          border: '1.5px solid rgba(0,0,0,0.08)', objectFit: 'cover',
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.10)',
+                        }} />
                         {sellerMap[ad.user_id]?.firma_name && (
                           <span style={{
                             fontSize: '11px', color: '#86868B', fontWeight: '500',
