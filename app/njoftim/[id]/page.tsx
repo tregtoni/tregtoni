@@ -316,12 +316,12 @@ export default async function NjoftimDetail({
     .eq('id', ad.user_id)
     .single()
 
-  const sellerName   = seller?.full_name ?? ''
-  const sellerAvatar = seller?.avatar_url ?? null
-  const sellerParts  = sellerName.trim().split(/\s+/).filter(Boolean)
+  const sellerName     = seller?.full_name ?? 'Përdorues'
+  const sellerAvatar   = seller?.avatar_url ?? null
+  const sellerParts    = sellerName.trim().split(/\s+/).filter(Boolean)
   const sellerInitials = sellerParts.length >= 2
     ? (sellerParts[0][0] + sellerParts[1][0]).toUpperCase()
-    : sellerParts[0]?.[0]?.toUpperCase() ?? ''
+    : sellerParts[0]?.[0]?.toUpperCase() ?? '?'
   const images: string[] = ad.images ?? []
   const isMakina     = ad.category === 'makina'
   const isMoto       = ad.subcategory === 'Motorra'
@@ -740,26 +740,24 @@ export default async function NjoftimDetail({
                 <img
                   src={sellerAvatar}
                   alt={sellerName}
-                  style={{ width: '44px', height: '44px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #DA291C', display: 'block' }}
+                  style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #DA291C', display: 'block' }}
                 />
               ) : (
                 <div style={{
-                  width: '44px', height: '44px', borderRadius: '50%',
+                  width: '48px', height: '48px', borderRadius: '50%',
                   background: '#DA291C', color: '#fff',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: '15px', fontWeight: '700',
+                  fontSize: '16px', fontWeight: '700', letterSpacing: '0.5px',
                 }}>
                   {sellerInitials}
                 </div>
               )}
             </a>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <a href={`/profil/${ad.user_id}`} style={{ fontSize: '16px', fontWeight: '600', color: '#1D1D1F', textDecoration: 'none' }}>
-                  {sellerName}
-                </a>
-                <MeldeModal nutzer_id={ad.user_id} />
-              </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <a href={`/profil/${ad.user_id}`} style={{ fontSize: '16px', fontWeight: '600', color: '#1D1D1F', textDecoration: 'none' }}>
+                {sellerName}
+              </a>
+              <MeldeModal nutzer_id={ad.user_id} />
             </div>
           </div>
 
