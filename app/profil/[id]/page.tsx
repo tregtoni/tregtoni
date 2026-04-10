@@ -22,7 +22,7 @@ export default async function PublicProfilPage({
 
   const { data: profile } = await admin
     .from('profiles')
-    .select('id, full_name, bio, zeige_qyteti, zeige_telefon, created_at, konto_typ, firma_name, adresa, website, beschreibung_firma')
+    .select('id, full_name, avatar_url, qyteti, bio, zeige_qyteti, zeige_telefon, created_at, konto_typ, firma_name, adresa, website, beschreibung_firma')
     .eq('id', id)
     .single()
 
@@ -45,10 +45,10 @@ export default async function PublicProfilPage({
   const initials = nameParts.length >= 2
     ? (nameParts[0][0] + nameParts[1][0]).toUpperCase()
     : nameParts[0]?.[0]?.toUpperCase() ?? ''
-  const avatarUrl          = null // avatar_url not yet migrated
+  const avatarUrl          = (profile?.avatar_url         as string | null) ?? null
   const bio                = (profile?.bio                as string | null) ?? null
   const zeigeQyteti        = (profile?.zeige_qyteti       as boolean | null) ?? true
-  const qyteti             = null // qyteti not yet migrated
+  const qyteti             = (profile?.qyteti             as string | null) ?? null
   const adresa             = (profile?.adresa             as string | null) ?? null
   const website            = (profile?.website            as string | null) ?? null
   const beschreibungFirma  = (profile?.beschreibung_firma as string | null) ?? null

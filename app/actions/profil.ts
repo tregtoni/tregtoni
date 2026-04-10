@@ -3,6 +3,7 @@
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function ndryshoEmrin(
   prevState: { error: string; success: boolean },
@@ -83,8 +84,17 @@ export async function ndryshoAvatarin(
   const url = (formData.get('avatar_url') as string)?.trim()
   if (!url) return { error: 'URL mungon.', success: false, url: '' }
 
-  await supabase.from('profiles').upsert({ id: user.id, avatar_url: url })
+  // Use admin client to bypass any RLS edge cases on upsert
+  const admin = createAdminClient()
+  const { error } = await admin
+    .from('profiles')
+    .update({ avatar_url: url })
+    .eq('id', user.id)
+
+  if (error) return { error: 'Gabim gjatë ruajtjes së fotos.', success: false, url: '' }
+
   revalidatePath('/profil')
+  revalidatePath(`/profil/${user.id}`)
   return { error: '', success: true, url }
 }
 

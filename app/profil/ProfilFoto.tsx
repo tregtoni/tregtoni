@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState, useTransition } from 'react'
+import { useRef, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { ndryshoAvatarin } from '@/app/actions/profil'
 
@@ -15,7 +15,6 @@ export default function ProfilFoto({
   const [uploading, setUploading] = useState(false)
   const [error, setError]         = useState('')
   const fileRef                   = useRef<HTMLInputElement>(null)
-  const [, startTransition]       = useTransition()
 
   async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -48,13 +47,18 @@ export default function ProfilFoto({
     }
 
     const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(path)
-    setPreview(publicUrl)
 
     const fd = new FormData()
     fd.append('avatar_url', publicUrl)
-    startTransition(() => {
-      ndryshoAvatarin({ error: '', success: false, url: '' }, fd)
-    })
+    const result = await ndryshoAvatarin({ error: '', success: false, url: '' }, fd)
+
+    if (result.error) {
+      setError(result.error)
+      setUploading(false)
+      return
+    }
+
+    setPreview(publicUrl)
     setUploading(false)
   }
 
