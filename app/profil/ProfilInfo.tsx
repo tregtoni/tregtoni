@@ -57,6 +57,7 @@ export default function ProfilInfo({
   bioAktual,
   zeigeTelefonAktual,
   zeigeQytetiAktual,
+  zeigeKontaktpersonAktual,
   kontoTypAktual,
   firmaNameAktual,
   adresaAktuale,
@@ -69,6 +70,7 @@ export default function ProfilInfo({
   bioAktual: string
   zeigeTelefonAktual: boolean
   zeigeQytetiAktual: boolean
+  zeigeKontaktpersonAktual: boolean
   kontoTypAktual: string
   firmaNameAktual: string
   adresaAktuale: string
@@ -210,6 +212,13 @@ export default function ProfilInfo({
                 style={{ width: '16px', height: '16px', accentColor: RED, cursor: 'pointer', flexShrink: 0 }} />
               <span style={{ fontSize: '14px', color: '#1D1D1F', fontWeight: '500' }}>Shfaq numrin e telefonit në profil publik</span>
             </label>
+            {isBusiness && (
+              <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+                <input type="checkbox" name="zeige_kontaktperson" defaultChecked={zeigeKontaktpersonAktual}
+                  style={{ width: '16px', height: '16px', accentColor: RED, cursor: 'pointer', flexShrink: 0 }} />
+                <span style={{ fontSize: '14px', color: '#1D1D1F', fontWeight: '500' }}>Shfaq personin e kontaktit në profil publik</span>
+              </label>
+            )}
           </div>
         </div>
 

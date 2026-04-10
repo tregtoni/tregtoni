@@ -17,8 +17,9 @@ export async function ndryshoEmrin(
   const telefon             = (formData.get('telefon')            as string)?.trim() || null
   const qyteti              = (formData.get('qyteti')             as string)?.trim() || null
   const bio                 = (formData.get('bio')                as string)?.trim() || null
-  const zeige_telefon       = formData.has('zeige_telefon')
-  const zeige_qyteti        = formData.has('zeige_qyteti')
+  const zeige_telefon          = formData.has('zeige_telefon')
+  const zeige_qyteti           = formData.has('zeige_qyteti')
+  const zeige_kontaktperson    = formData.has('zeige_kontaktperson')
   const firma_name          = (formData.get('firma_name')         as string)?.trim() || null
   const adresa              = (formData.get('adresa')             as string)?.trim() || null
   const website             = (formData.get('website')            as string)?.trim() || null
@@ -37,7 +38,7 @@ export async function ndryshoEmrin(
     .from('profiles')
     .update({
       full_name: emri || null, telefon, qyteti, bio,
-      zeige_telefon, zeige_qyteti,
+      zeige_telefon, zeige_qyteti, zeige_kontaktperson,
       firma_name, adresa, website, beschreibung_firma,
     })
     .eq('id', user.id)
