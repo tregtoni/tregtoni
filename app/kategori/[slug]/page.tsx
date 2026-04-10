@@ -1203,10 +1203,17 @@ export default async function KategoriPage({
                         </div>
                         {/* Row 3: km / PS / Baujahr (only if present) */}
                         {(ad.km || ad.leistung_ps || ad.baujahr) && (
-                          <div style={{ fontSize: '12px', color: '#6E6E73', display: 'flex', gap: '10px' }}>
-                            {ad.km && <span>{ad.km.toLocaleString('de-DE')} km</span>}
-                            {ad.leistung_ps && <span>{ad.leistung_ps} PS</span>}
-                            {ad.baujahr && <span>{ad.baujahr}</span>}
+                          <div style={{ fontSize: '12px', color: '#6E6E73', display: 'flex', gap: '6px', alignItems: 'center' }}>
+                            {[
+                              ad.km ? `${ad.km.toLocaleString('de-DE')} km` : null,
+                              ad.leistung_ps ? `${ad.leistung_ps} PS` : null,
+                              ad.baujahr ? `${ad.baujahr}` : null,
+                            ].filter(Boolean).map((val, i, arr) => (
+                              <span key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                {val}
+                                {i < arr.length - 1 && <span style={{ color: '#C7C7CC', fontSize: '10px' }}>·</span>}
+                              </span>
+                            ))}
                           </div>
                         )}
                       </div>
