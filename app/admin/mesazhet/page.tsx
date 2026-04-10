@@ -47,6 +47,7 @@ export default async function MesazhetAdminPage({ searchParams }: { searchParams
   const conversations: Conversation[] = Array.from(convMap.entries())
     .map(([key, { messages: msgs, user1Id, user2Id }]) => {
       const lastMsg = msgs[msgs.length - 1]
+      const njoftimId = msgs.find(m => m.njoftim_id)?.njoftim_id ?? null
       return {
         key,
         user1Id,
@@ -57,6 +58,7 @@ export default async function MesazhetAdminPage({ searchParams }: { searchParams
         lastDate: lastMsg.created_at,
         messageCount: msgs.length,
         messages: msgs,
+        njoftimId,
       }
     })
     .sort((a, b) => new Date(b.lastDate).getTime() - new Date(a.lastDate).getTime())

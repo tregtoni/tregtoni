@@ -24,6 +24,7 @@ export type Conversation = {
   lastDate: string
   messageCount: number
   messages: Message[]
+  njoftimId: string | null
 }
 
 function fmt(d: string) {
@@ -53,7 +54,7 @@ export default function ConversationList({ conversations }: { conversations: Con
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr style={{ background: '#F5F5F7' }}>
-              {['Von', 'An', 'Letzte Nachricht', 'Nachrichten', 'Datum'].map(h => (
+              {['Von', 'An', 'Letzte Nachricht', 'Anzeige', 'Nachrichten', 'Datum'].map(h => (
                 <th key={h} style={{
                   padding: '11px 14px', textAlign: 'left', fontSize: '11px',
                   fontWeight: '700', color: '#86868B', textTransform: 'uppercase',
@@ -87,6 +88,20 @@ export default function ConversationList({ conversations }: { conversations: Con
                   <div style={{ fontSize: '12px', color: '#6E6E73', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {conv.lastMessage}
                   </div>
+                </td>
+                <td style={{ padding: '12px 14px', fontFamily: FONT }} onClick={e => e.stopPropagation()}>
+                  {conv.njoftimId ? (
+                    <a
+                      href={`/njoftim/${conv.njoftimId}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ fontSize: '11px', color: RED, fontWeight: '600', textDecoration: 'none', whiteSpace: 'nowrap' }}
+                    >
+                      Anzeige →
+                    </a>
+                  ) : (
+                    <span style={{ fontSize: '11px', color: '#86868B' }}>—</span>
+                  )}
                 </td>
                 <td style={{ padding: '12px 14px', fontFamily: FONT }}>
                   <span style={{
