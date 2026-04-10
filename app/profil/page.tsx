@@ -17,7 +17,7 @@ export default async function ProfilPage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('full_name, avatar_url, telefon, qyteti, bio, zeige_telefon, zeige_qyteti, zeige_kontaktperson, created_at, konto_typ, firma_name, adresa, website, beschreibung_firma')
+    .select('full_name, avatar_url, telefon, qyteti, bio, zeige_telefon, zeige_qyteti, created_at, konto_typ, firma_name, adresa, website, beschreibung_firma')
     .eq('id', user.id)
     .single()
 
@@ -32,9 +32,8 @@ export default async function ProfilPage() {
   const qyteti              = (profile?.qyteti     ?? '') as string
   const avatarUrl           = (profile?.avatar_url ?? '') as string
   const bio                 = (profile?.bio        ?? '') as string
-  const zeigeTelefon        = (profile?.zeige_telefon        ?? true) as boolean
-  const zeigeQyteti         = (profile?.zeige_qyteti         ?? true) as boolean
-  const zeigeKontaktperson  = (profile?.zeige_kontaktperson  ?? true) as boolean
+  const zeigeTelefon        = (profile?.zeige_telefon ?? true) as boolean
+  const zeigeQyteti         = (profile?.zeige_qyteti  ?? true) as boolean
   const kontoTyp            = (profile?.konto_typ     ?? 'privat') as string
   const firmaName           = (profile?.firma_name    ?? '') as string
   const adresa              = (profile?.adresa        ?? '') as string
@@ -139,7 +138,6 @@ export default async function ProfilPage() {
             bioAktual={bio}
             zeigeTelefonAktual={zeigeTelefon}
             zeigeQytetiAktual={zeigeQyteti}
-            zeigeKontaktpersonAktual={zeigeKontaktperson}
             kontoTypAktual={kontoTyp}
             firmaNameAktual={firmaName}
             adresaAktuale={adresa}
