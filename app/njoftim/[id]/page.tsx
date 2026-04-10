@@ -740,7 +740,9 @@ export default async function NjoftimDetail({
             <div>
               <div style={{ fontSize: '12px', color: '#86868B', marginBottom: '2px' }}>Shitësi</div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <div style={{ fontSize: '16px', fontWeight: '600', color: '#1D1D1F' }}>{sellerName}</div>
+                <a href={`/profil/${ad.user_id}`} style={{ fontSize: '16px', fontWeight: '600', color: '#1D1D1F', textDecoration: 'none' }}>
+                  {sellerName}
+                </a>
                 <MeldeModal nutzer_id={ad.user_id} />
               </div>
             </div>

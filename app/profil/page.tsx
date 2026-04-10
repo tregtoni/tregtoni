@@ -17,7 +17,7 @@ export default async function ProfilPage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('full_name, telefon, qyteti, avatar_url, created_at')
+    .select('full_name, telefon, qyteti, avatar_url, bio, zeige_telefon, zeige_qyteti, created_at')
     .eq('id', user.id)
     .single()
 
@@ -27,14 +27,17 @@ export default async function ProfilPage() {
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
 
-  const fullName  = (profile?.full_name  ?? user.user_metadata?.full_name ?? '') as string
-  const telefon   = (profile?.telefon    ?? '') as string
-  const qyteti    = (profile?.qyteti     ?? '') as string
-  const avatarUrl = (profile?.avatar_url ?? '') as string
-  const email     = user.email ?? ''
-  const joinedAt  = new Date(profile?.created_at ?? user.created_at)
-  const joinedDate = joinedAt.toLocaleDateString('sq-AL', { day: 'numeric', month: 'long', year: 'numeric' })
-  const initials  = fullName ? fullName.charAt(0).toUpperCase() : email.charAt(0).toUpperCase()
+  const fullName        = (profile?.full_name  ?? user.user_metadata?.full_name ?? '') as string
+  const telefon         = (profile?.telefon    ?? '') as string
+  const qyteti          = (profile?.qyteti     ?? '') as string
+  const avatarUrl       = (profile?.avatar_url ?? '') as string
+  const bio             = (profile?.bio        ?? '') as string
+  const zeigeTelefon    = (profile?.zeige_telefon ?? true) as boolean
+  const zeigeQyteti     = (profile?.zeige_qyteti  ?? true) as boolean
+  const email           = user.email ?? ''
+  const joinedAt        = new Date(profile?.created_at ?? user.created_at)
+  const joinedDate      = joinedAt.toLocaleDateString('sq-AL', { day: 'numeric', month: 'long', year: 'numeric' })
+  const initials        = fullName ? fullName.charAt(0).toUpperCase() : email.charAt(0).toUpperCase()
 
   return (
     <main style={{
@@ -96,6 +99,23 @@ export default async function ProfilPage() {
               </div>
               <div style={{ fontSize: '12px', color: '#86868B', fontWeight: '500', marginTop: '2px' }}>njoftime aktive</div>
             </div>
+            <a
+              href={`/profil/${user.id}`}
+              style={{
+                display: 'block',
+                width: '100%',
+                background: '#F5F5F7',
+                color: '#1D1D1F',
+                padding: '10px',
+                borderRadius: '10px',
+                fontSize: '13px',
+                fontWeight: '600',
+                textDecoration: 'none',
+                border: '1px solid rgba(0,0,0,0.08)',
+              }}
+            >
+              Shiko profilin publik →
+            </a>
           </div>
 
           {/* Password change */}
@@ -110,6 +130,9 @@ export default async function ProfilPage() {
             emriAktual={fullName}
             telefonAktual={telefon}
             qytetiAktual={qyteti}
+            bioAktual={bio}
+            zeigeTelefonAktual={zeigeTelefon}
+            zeigeQytetiAktual={zeigeQyteti}
           />
 
           {/* My listings */}

@@ -12,18 +12,25 @@ export async function ndryshoEmrin(
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const emri    = (formData.get('emri')    as string)?.trim()
-  const telefon = (formData.get('telefon') as string)?.trim() || null
-  const qyteti  = (formData.get('qyteti')  as string)?.trim() || null
+  const emri           = (formData.get('emri')    as string)?.trim()
+  const telefon        = (formData.get('telefon') as string)?.trim() || null
+  const qyteti         = (formData.get('qyteti')  as string)?.trim() || null
+  const bio            = (formData.get('bio')      as string)?.trim() || null
+  const zeige_telefon  = formData.has('zeige_telefon')
+  const zeige_qyteti   = formData.has('zeige_qyteti')
 
   if (!emri) return { error: 'Emri nuk mund të jetë bosh.', success: false }
 
   const { error: authErr } = await supabase.auth.updateUser({ data: { full_name: emri } })
   if (authErr) return { error: 'Gabim gjatë ndryshimit. Provoni përsëri.', success: false }
 
-  await supabase.from('profiles').upsert({ id: user.id, full_name: emri, telefon, qyteti })
+  await supabase.from('profiles').upsert({
+    id: user.id, full_name: emri, telefon, qyteti, bio,
+    zeige_telefon, zeige_qyteti,
+  })
 
   revalidatePath('/profil')
+  revalidatePath(`/profil/${user.id}`)
   return { error: '', success: true }
 }
 
