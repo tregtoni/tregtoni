@@ -36,7 +36,6 @@ export default function CookiesPage() {
       required: true,
       purpose: 'Ruajnë gjendjen e autentikimit të llogarisë suaj gjatë vizitës. Pa këto cookies nuk mund të qëndroni të kyçur.',
       duration: 'Fshihen kur mbyllni shfletuesin',
-      examples: 'sb-access-token, sb-refresh-token',
     },
     {
       name: 'Cookies të preferencave',
@@ -44,7 +43,6 @@ export default function CookiesPage() {
       required: true,
       purpose: "Ruajnë preferencat tuaja si gjuha dhe cilësimet e shfaqjes. Ndihmojnë platformën t'ju ofrojë një përvojë të personalizuar.",
       duration: 'Deri në 1 vit',
-      examples: 'language, display_prefs',
     },
     {
       name: 'Cookies analitike',
@@ -52,7 +50,6 @@ export default function CookiesPage() {
       required: false,
       purpose: 'Na ndihmojnë të kuptojmë si e përdorin vizitorët platformën — cilat faqe vizitohen më shumë, sa kohë qëndrojnë dhe ku ndodhin gabimet. Të dhënat janë të anonimizuara.',
       duration: 'Deri në 2 vjet',
-      examples: 'analytics_session, page_views',
     },
     {
       name: 'Cookie e pëlqimit (cookie_consent)',
@@ -60,7 +57,6 @@ export default function CookiesPage() {
       required: true,
       purpose: 'Ruan zgjedhjen tuaj mbi cookies (pranoj të gjitha / vetëm të nevojshme) në localStorage të shfletuesit tuaj. Nevojitet për të mos shfaqur bannerin e cookies çdo herë.',
       duration: 'Deri në 1 vit (localStorage)',
-      examples: 'cookie_consent',
     },
   ]
 
@@ -144,19 +140,11 @@ export default function CookiesPage() {
                   {cookie.purpose}
                 </p>
 
-                <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
-                  <div>
-                    <span style={{ fontSize: '11px', fontWeight: '600', color: '#86868B', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
-                      Kohëzgjatja
-                    </span>
-                    <div style={{ fontSize: '13px', color: '#6E6E73', marginTop: '2px' }}>{cookie.duration}</div>
-                  </div>
-                  <div>
-                    <span style={{ fontSize: '11px', fontWeight: '600', color: '#86868B', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
-                      Shembuj
-                    </span>
-                    <div style={{ fontSize: '13px', color: '#6E6E73', marginTop: '2px', fontFamily: 'monospace' }}>{cookie.examples}</div>
-                  </div>
+                <div>
+                  <span style={{ fontSize: '11px', fontWeight: '600', color: '#86868B', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+                    Kohëzgjatja
+                  </span>
+                  <div style={{ fontSize: '13px', color: '#6E6E73', marginTop: '2px' }}>{cookie.duration}</div>
                 </div>
               </div>
             ))}
