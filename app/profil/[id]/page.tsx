@@ -22,7 +22,7 @@ export default async function PublicProfilPage({
 
   const { data: profile } = await admin
     .from('profiles')
-    .select('id, full_name, avatar_url, qyteti, bio, zeige_qyteti, zeige_telefon, created_at, konto_typ, firma_name, adresa, website, beschreibung_firma')
+    .select('id, full_name, avatar_url, qyteti, bio, telefon, zeige_qyteti, zeige_telefon, created_at, konto_typ, firma_name, adresa, website, beschreibung_firma')
     .eq('id', id)
     .single()
 
@@ -47,8 +47,10 @@ export default async function PublicProfilPage({
     : nameParts[0]?.[0]?.toUpperCase() ?? ''
   const avatarUrl          = (profile?.avatar_url         as string | null) ?? null
   const bio                = (profile?.bio                as string | null) ?? null
-  const zeigeQyteti           = (profile?.zeige_qyteti as boolean | null) ?? true
+  const zeigeQyteti           = (profile?.zeige_qyteti   as boolean | null) ?? true
+  const zeigeTelefon          = (profile?.zeige_telefon  as boolean | null) ?? true
   const qyteti             = (profile?.qyteti             as string | null) ?? null
+  const telefon            = (profile?.telefon            as string | null) ?? null
   const adresa             = (profile?.adresa             as string | null) ?? null
   const website            = (profile?.website            as string | null) ?? null
   const beschreibungFirma  = (profile?.beschreibung_firma as string | null) ?? null
@@ -149,7 +151,14 @@ export default async function PublicProfilPage({
                     </div>
                   )}
 
-                  {/* 5. Description */}
+                  {/* 5. Phone */}
+                  {zeigeTelefon && telefon && (
+                    <div style={{ fontSize: '13px', color: '#3D3D3F', marginBottom: '6px' }}>
+                      📞 {telefon}
+                    </div>
+                  )}
+
+                  {/* 6. Description */}
                   {beschreibungFirma && (
                     <p style={{
                       fontSize: '14px', color: '#3D3D3F', lineHeight: '1.65',
@@ -159,7 +168,7 @@ export default async function PublicProfilPage({
                     </p>
                   )}
 
-                  {/* 6. Member since — dezent, klein, unten */}
+                  {/* 7. Member since — dezent, klein, unten */}
                   {joinedDate && (
                     <div style={{ fontSize: '11px', color: '#AEAEB2', marginTop: '4px' }}>
                       Anëtar që nga {joinedDate}
@@ -181,6 +190,12 @@ export default async function PublicProfilPage({
                       </>
                     )}
                   </div>
+
+                  {zeigeTelefon && telefon && (
+                    <div style={{ fontSize: '13px', color: '#3D3D3F', marginBottom: '8px' }}>
+                      📞 {telefon}
+                    </div>
+                  )}
 
                   {bio && (
                     <p style={{
