@@ -1,13 +1,15 @@
 'use client'
 
-import { useActionState, useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { dergofeedback } from '@/app/actions/feedback'
 
 export default function FeedbackWidget() {
-  const [open, setOpen]     = useState(false)
-  const [rating, setRating] = useState(0)
+  const [open, setOpen]       = useState(false)
+  const [rating, setRating]   = useState(0)
   const [hovered, setHovered] = useState(0)
-  const [state, formAction, pending] = useActionState(dergofeedback, { error: '', success: false })
+  const [pending, setPending] = useState(false)
+  const [error, setError]     = useState('')
+  const [success, setSuccess] = useState(false)
 
   // Drag state — start bottom-right
   const [pos, setPos]       = useState({ x: 24, y: 24 }) // distance from bottom-right
@@ -63,6 +65,19 @@ export default function FeedbackWidget() {
     setOpen(false)
     setRating(0)
     setHovered(0)
+    setError('')
+    setSuccess(false)
+  }
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setPending(true)
+    setError('')
+    const fd = new FormData(e.currentTarget)
+    const result = await dergofeedback({ error: '', success: false }, fd)
+    setPending(false)
+    if (result.error) setError(result.error)
+    else setSuccess(true)
   }
 
   return (
@@ -123,7 +138,7 @@ export default function FeedbackWidget() {
               >×</button>
             </div>
 
-            {state.success ? (
+            {success ? (
               <div style={{ padding: '40px 24px', textAlign: 'center' }}>
                 <div style={{ fontSize: '48px', marginBottom: '14px' }}>🎉</div>
                 <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#111', marginBottom: '8px' }}>Faleminderit!</h3>
@@ -138,11 +153,11 @@ export default function FeedbackWidget() {
                 </button>
               </div>
             ) : (
-              <form action={formAction} style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <form onSubmit={handleSubmit} style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
 
-                {state.error && (
+                {error && (
                   <div style={{ background: '#fff0f0', border: '1px solid #ffcccc', borderRadius: '8px', padding: '10px 12px', fontSize: '13px', color: '#c0392b' }}>
-                    {state.error}
+                    {error}
                   </div>
                 )}
 
