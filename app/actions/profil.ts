@@ -32,11 +32,17 @@ export async function ndryshoEmrin(
     if (authErr) return { error: 'Gabim gjatë ndryshimit. Provoni përsëri.', success: false }
   }
 
-  await supabase.from('profiles').upsert({
-    id: user.id, full_name: emri || null, telefon, qyteti, bio,
-    zeige_telefon, zeige_qyteti,
-    firma_name, adresa, website, beschreibung_firma,
-  })
+  const admin = createAdminClient()
+  const { error: dbErr } = await admin
+    .from('profiles')
+    .update({
+      full_name: emri || null, telefon, qyteti, bio,
+      zeige_telefon, zeige_qyteti,
+      firma_name, adresa, website, beschreibung_firma,
+    })
+    .eq('id', user.id)
+
+  if (dbErr) return { error: 'Gabim gjatë ruajtjes. Provoni përsëri.', success: false }
 
   revalidatePath('/profil')
   revalidatePath(`/profil/${user.id}`)
