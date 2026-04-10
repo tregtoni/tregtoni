@@ -371,7 +371,7 @@ export default async function NjoftimDetail({
     }}>
       <NavBar />
 
-      <div style={{ maxWidth: '760px', margin: '0 auto', padding: '28px 24px 48px' }}>
+      <div className="detail-container" style={{ maxWidth: '760px', margin: '0 auto', padding: '28px 24px 48px' }}>
 
         {/* Breadcrumb */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '20px', fontSize: '13px', color: '#86868B' }}>

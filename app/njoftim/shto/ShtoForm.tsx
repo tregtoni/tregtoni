@@ -1037,7 +1037,7 @@ export default function ShtoForm() {
   }
 
   return (
-    <section style={{
+    <section className="shto-form-outer" style={{
       padding: '28px 32px 48px',
       maxWidth: '720px',
       margin: '0 auto',
@@ -1124,7 +1124,7 @@ export default function ShtoForm() {
               </select>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '18px' }}>
+            <div className="form-grid-2" style={{ gap: '16px', marginBottom: '18px' }}>
               <div>
                 <label style={labelStyle}>Fuqia (PS)</label>
                 <input name="leistung_ps" type="number" placeholder="p.sh. 150" min="0" style={inputStyle} />
@@ -1148,7 +1148,7 @@ export default function ShtoForm() {
               </select>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '18px' }}>
+            <div className="form-grid-2" style={{ gap: '16px', marginBottom: '18px' }}>
               <div>
                 <label style={labelStyle}>Transmisioni</label>
                 <select name="getriebe" style={inputStyle}>
@@ -1165,7 +1165,7 @@ export default function ShtoForm() {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '18px' }}>
+            <div className="form-grid-2" style={{ gap: '16px', marginBottom: '18px' }}>
               <div>
                 <label style={labelStyle}>Numri i dyerve</label>
                 <select name="tueren" style={inputStyle}>
@@ -1251,7 +1251,7 @@ export default function ShtoForm() {
               </select>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '18px' }}>
+            <div className="form-grid-2" style={{ gap: '16px', marginBottom: '18px' }}>
               <div>
                 <label style={labelStyle}>Fuqia (PS)</label>
                 <input name="leistung_ps" type="number" placeholder="p.sh. 80" min="0" style={inputStyle} />
@@ -1275,7 +1275,7 @@ export default function ShtoForm() {
               </select>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '18px' }}>
+            <div className="form-grid-2" style={{ gap: '16px', marginBottom: '18px' }}>
               <div>
                 <label style={labelStyle}>Cilindrata (cc)</label>
                 <input name="cilindrata" type="number" placeholder="p.sh. 600" min="0" style={inputStyle} />
@@ -1289,7 +1289,7 @@ export default function ShtoForm() {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '18px' }}>
+            <div className="form-grid-2" style={{ gap: '16px', marginBottom: '18px' }}>
               <div>
                 <label style={labelStyle}>Kontrolli teknik (viti)</label>
                 <input name="hu_gueltig" type="number" placeholder="p.sh. 2026" min="2000" max="2040" style={inputStyle} />
@@ -1328,7 +1328,7 @@ export default function ShtoForm() {
               </select>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '18px' }}>
+            <div className="form-grid-2" style={{ gap: '16px', marginBottom: '18px' }}>
               <div>
                 <label style={labelStyle}>Sipërfaqja (m²)</label>
                 <input name="siperfaqja" type="number" placeholder="p.sh. 75" min="0" style={inputStyle} />
@@ -1339,7 +1339,7 @@ export default function ShtoForm() {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '18px' }}>
+            <div className="form-grid-2" style={{ gap: '16px', marginBottom: '18px' }}>
               <div>
                 <label style={labelStyle}>Kati</label>
                 <input name="kati" type="number" placeholder="p.sh. 4" style={inputStyle} />
@@ -1350,7 +1350,7 @@ export default function ShtoForm() {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '18px' }}>
+            <div className="form-grid-2" style={{ gap: '16px', marginBottom: '18px' }}>
               <div>
                 <label style={labelStyle}>Lloji i ofertës</label>
                 <select name="angebotstyp" style={inputStyle}>
@@ -1486,7 +1486,7 @@ export default function ShtoForm() {
               </select>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '18px' }}>
+            <div className="form-grid-2" style={{ gap: '16px', marginBottom: '18px' }}>
               <div>
                 <label style={labelStyle}>Lloji i ofertës</label>
                 <select name="angebotstyp" style={inputStyle}>
@@ -1579,7 +1579,7 @@ export default function ShtoForm() {
               </div>
             )}
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div className="form-grid-2" style={{ gap: '16px' }}>
               <div>
                 <label style={labelStyle}>Lloji i punës</label>
                 <select name="lloji_punes" style={inputStyle}>
@@ -1615,7 +1615,7 @@ export default function ShtoForm() {
               </div>
             )}
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div className="form-grid-2" style={{ gap: '16px' }}>
               <div>
                 <label style={labelStyle}>Lloji i ofertës</label>
                 <select name="angebotstyp" style={inputStyle}>
@@ -1699,7 +1699,7 @@ export default function ShtoForm() {
               </select>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '18px' }}>
+            <div className="form-grid-2" style={{ gap: '16px', marginBottom: '18px' }}>
               <div>
                 <label style={labelStyle}>Lloji i ofertës</label>
                 <select name="angebotstyp" style={inputStyle}>
@@ -2012,7 +2012,7 @@ export default function ShtoForm() {
               Detajet e kursit
             </h2>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '18px' }}>
+            <div className="form-grid-2" style={{ gap: '16px', marginBottom: '18px' }}>
               <div>
                 <label style={labelStyle}>Lloji</label>
                 <select name="mesim_lloji" style={inputStyle}>
@@ -2076,7 +2076,7 @@ export default function ShtoForm() {
               Detajet e kafshës
             </h2>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '18px' }}>
+            <div className="form-grid-2" style={{ gap: '16px', marginBottom: '18px' }}>
               <div>
                 <label style={labelStyle}>Gjinia</label>
                 <select name="gjinia" style={inputStyle}>
@@ -2135,7 +2135,7 @@ export default function ShtoForm() {
             Çmimi dhe vendndodhja
           </h2>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+          <div className="form-grid-2" style={{ gap: '16px' }}>
             <div>
               <label style={labelStyle}>Çmimi (€) *</label>
               <input name="price" type="number" placeholder="0" required min="0" style={inputStyle} />

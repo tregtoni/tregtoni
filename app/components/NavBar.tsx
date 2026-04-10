@@ -18,7 +18,7 @@ export default async function NavBar() {
   }
 
   return (
-    <nav style={{
+    <nav className="navbar" style={{
       position: 'sticky',
       top: 0,
       zIndex: 100,
@@ -75,7 +75,7 @@ export default async function NavBar() {
                 </span>
               )}
             </a>
-            <a href="/profil" style={{
+            <a href="/profil" className="nav-name" style={{
               color: '#1D1D1F',
               fontSize: '14px',
               textDecoration: 'none',

@@ -611,10 +611,10 @@ export default async function KategoriPage({
       </section>
 
       {/* Main layout */}
-      <div style={{ maxWidth: '1140px', margin: '0 auto', padding: '24px 32px', display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
+      <div className="cat-layout" style={{ maxWidth: '1140px', margin: '0 auto', padding: '24px 32px', display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
 
         {/* ── SIDEBAR ── */}
-        <aside style={{ width: '232px', flexShrink: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <aside className="cat-sidebar" style={{ width: '232px', flexShrink: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
 
           {/* Subcategories */}
           <div style={{

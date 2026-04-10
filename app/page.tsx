@@ -34,13 +34,13 @@ export default async function Home() {
       <NavBar />
 
       {/* ── Hero ── */}
-      <section style={{
+      <section className="hero" style={{
         background: '#fff',
         padding: '72px 32px 56px',
         textAlign: 'center',
         borderBottom: '1px solid rgba(0,0,0,0.06)',
       }}>
-        <h1 style={{
+        <h1 className="hero-title" style={{
           fontSize: '52px',
           fontWeight: '700',
           color: '#1D1D1F',
@@ -64,7 +64,7 @@ export default async function Home() {
 
         {/* Search bar */}
         <form action="/kerko" method="GET" style={{ maxWidth: '880px', margin: '0 auto 0' }}>
-          <div style={{
+          <div className="search-bar" style={{
             display: 'flex',
             background: '#fff',
             border: '1.5px solid rgba(0,0,0,0.12)',
@@ -88,7 +88,7 @@ export default async function Home() {
                 fontFamily: 'inherit',
               }}
             />
-            <div style={{ width: '1px', background: 'rgba(0,0,0,0.08)', flexShrink: 0, margin: '12px 0' }} />
+            <div className="search-divider" style={{ width: '1px', background: 'rgba(0,0,0,0.08)', flexShrink: 0, margin: '12px 0' }} />
             <select
               name="kategoria"
               style={{
@@ -109,7 +109,7 @@ export default async function Home() {
                 <option key={k.slug} value={k.slug}>{k.shortName}</option>
               ))}
             </select>
-            <div style={{ width: '1px', background: 'rgba(0,0,0,0.08)', flexShrink: 0, margin: '12px 0' }} />
+            <div className="search-divider" style={{ width: '1px', background: 'rgba(0,0,0,0.08)', flexShrink: 0, margin: '12px 0' }} />
             <select
               name="qyteti"
               style={{
@@ -133,7 +133,7 @@ export default async function Home() {
                 {QYTETET_KOSOVE.map(q => <option key={q} value={q}>{q}</option>)}
               </optgroup>
             </select>
-            <div style={{ width: '1px', background: 'rgba(0,0,0,0.08)', flexShrink: 0, margin: '12px 0' }} />
+            <div className="search-divider" style={{ width: '1px', background: 'rgba(0,0,0,0.08)', flexShrink: 0, margin: '12px 0' }} />
             <select
               name="rrezja"
               style={{
@@ -210,7 +210,7 @@ export default async function Home() {
       </section>
 
       {/* ── Categories ── */}
-      <section style={{ padding: '56px 32px', background: '#F5F5F7' }}>
+      <section className="section-px" style={{ padding: '56px 32px', background: '#F5F5F7' }}>
         <div style={{ maxWidth: '960px', margin: '0 auto' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '28px' }}>
             <h2 style={{
@@ -232,7 +232,7 @@ export default async function Home() {
             </a>
           </div>
 
-          <div style={{
+          <div className="cat-grid" style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(7, 1fr)',
             gap: '12px',
@@ -275,7 +275,7 @@ export default async function Home() {
       </section>
 
       {/* ── Latest listings ── */}
-      <section style={{ padding: '0 32px 64px', background: '#F5F5F7' }}>
+      <section className="section-px" style={{ padding: '0 32px 64px', background: '#F5F5F7' }}>
         <div style={{ maxWidth: '960px', margin: '0 auto' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '28px' }}>
             <h2 style={{
@@ -298,7 +298,7 @@ export default async function Home() {
           </div>
 
           {njoftimet && njoftimet.length > 0 ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+            <div className="ad-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
               {njoftimet.map((ad) => (
                 <div
                   key={ad.id}
@@ -402,7 +402,7 @@ export default async function Home() {
       </section>
 
       {/* ── Stats ── */}
-      <section style={{
+      <section className="stats-section" style={{
         background: '#1D1D1F',
         padding: '56px 32px',
       }}>
@@ -449,7 +449,7 @@ export default async function Home() {
       </section>
 
       {/* ── CTA ── */}
-      <section style={{
+      <section className="cta-section" style={{
         padding: '80px 32px',
         background: '#fff',
         textAlign: 'center',
