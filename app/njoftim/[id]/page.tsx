@@ -314,13 +314,15 @@ export default async function NjoftimDetail({
   const adminClient = createAdminClient()
   const { data: seller } = await adminClient
     .from('profiles')
-    .select('full_name, id')
+    .select('full_name, id, konto_typ, firma_name')
     .eq('id', ad.user_id)
     .single()
 
-  const sellerAvatar   = null // avatar_url column not yet migrated
-  const sellerInitials = seller?.full_name
-    ? seller.full_name.split(' ').map((w: string) => w[0]).join('').toUpperCase().slice(0, 2)
+  const sellerAvatar    = null // avatar_url column not yet migrated
+  const isTregtar       = seller?.konto_typ === 'biznes'
+  const sellerDisplay   = isTregtar && seller?.firma_name ? seller.firma_name : (seller?.full_name ?? '')
+  const sellerInitials  = sellerDisplay
+    ? sellerDisplay.split(' ').map((w: string) => w[0]).join('').toUpperCase().slice(0, 2)
     : '?'
   const images: string[] = ad.images ?? []
   const isMakina     = ad.category === 'makina'
@@ -739,7 +741,7 @@ export default async function NjoftimDetail({
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={sellerAvatar}
-                  alt={seller?.full_name ?? ''}
+                  alt={sellerDisplay}
                   style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #DA291C', display: 'block' }}
                 />
               ) : (
@@ -753,10 +755,18 @@ export default async function NjoftimDetail({
                 </div>
               )}
             </a>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
               <a href={`/profil/${ad.user_id}`} style={{ fontSize: '16px', fontWeight: '600', color: '#1D1D1F', textDecoration: 'none' }}>
-                {seller?.full_name ?? ''}
+                {sellerDisplay}
               </a>
+              {isTregtar && (
+                <span style={{
+                  background: '#DA291C', color: '#fff',
+                  fontSize: '11px', fontWeight: '700',
+                  padding: '2px 8px', borderRadius: '5px',
+                  letterSpacing: '0.3px', textTransform: 'uppercase',
+                }}>Tregtar</span>
+              )}
               <MeldeModal nutzer_id={ad.user_id} />
             </div>
           </div>

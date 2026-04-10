@@ -1,10 +1,11 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useActionState, useState } from 'react'
 import { ndryshoEmrin } from '@/app/actions/profil'
 import { QYTETET_SHQIPERI, QYTETET_KOSOVE } from '@/lib/kategori-data'
 
 const FONT = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif'
+const RED = '#DA291C'
 
 const inputStyle: React.CSSProperties = {
   width: '100%',
@@ -36,6 +37,11 @@ export default function ProfilInfo({
   bioAktual,
   zeigeTelefonAktual,
   zeigeQytetiAktual,
+  kontoTypAktual,
+  firmaNameAktual,
+  adresaAktuale,
+  websiteAktual,
+  beschreibungFirmaAktual,
 }: {
   emriAktual: string
   telefonAktual: string
@@ -43,22 +49,22 @@ export default function ProfilInfo({
   bioAktual: string
   zeigeTelefonAktual: boolean
   zeigeQytetiAktual: boolean
+  kontoTypAktual: string
+  firmaNameAktual: string
+  adresaAktuale: string
+  websiteAktual: string
+  beschreibungFirmaAktual: string
 }) {
   const [state, formAction, pending] = useActionState(ndryshoEmrin, { error: '', success: false })
+  const [kontoTyp, setKontoTyp] = useState(kontoTypAktual === 'biznes' ? 'biznes' : 'privat')
 
   return (
     <div style={{
-      background: '#fff',
-      borderRadius: '20px',
-      padding: '28px',
-      boxShadow: '0 1px 10px rgba(0,0,0,0.06)',
-      border: '1px solid rgba(0,0,0,0.05)',
+      background: '#fff', borderRadius: '20px', padding: '28px',
+      boxShadow: '0 1px 10px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.05)',
       fontFamily: FONT,
     }}>
-      <h2 style={{
-        fontSize: '17px', fontWeight: '700', color: '#1D1D1F',
-        marginBottom: '24px', letterSpacing: '-0.3px',
-      }}>
+      <h2 style={{ fontSize: '17px', fontWeight: '700', color: '#1D1D1F', marginBottom: '24px', letterSpacing: '-0.3px' }}>
         Ndrysho të dhënat
       </h2>
 
@@ -75,17 +81,103 @@ export default function ProfilInfo({
         <div style={{
           background: '#FFF5F5', border: '1px solid rgba(218,41,28,0.2)',
           borderRadius: '10px', padding: '12px 14px', marginBottom: '16px',
-          fontSize: '14px', color: '#DA291C', fontWeight: '500',
+          fontSize: '14px', color: RED, fontWeight: '500',
         }}>
           {state.error}
         </div>
       )}
 
       <form action={formAction} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <input type="hidden" name="konto_typ" value={kontoTyp} />
+
+        {/* Account type toggle */}
+        <div>
+          <label style={labelStyle}>Lloji i llogarisë</label>
+          <div style={{
+            display: 'grid', gridTemplateColumns: '1fr 1fr',
+            border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: '10px', overflow: 'hidden',
+          }}>
+            <button
+              type="button"
+              onClick={() => setKontoTyp('privat')}
+              style={{
+                padding: '11px', border: 'none', cursor: 'pointer', fontFamily: FONT,
+                fontSize: '13px', fontWeight: '600',
+                background: kontoTyp === 'privat' ? RED : '#fff',
+                color: kontoTyp === 'privat' ? '#fff' : '#6E6E73',
+              }}
+            >
+              👤 Privat
+            </button>
+            <button
+              type="button"
+              onClick={() => setKontoTyp('biznes')}
+              style={{
+                padding: '11px', border: 'none', borderLeft: '1.5px solid rgba(0,0,0,0.1)',
+                cursor: 'pointer', fontFamily: FONT,
+                fontSize: '13px', fontWeight: '600',
+                background: kontoTyp === 'biznes' ? RED : '#fff',
+                color: kontoTyp === 'biznes' ? '#fff' : '#6E6E73',
+              }}
+            >
+              🏢 Tregtar
+            </button>
+          </div>
+        </div>
+
+        {/* Business fields */}
+        {kontoTyp === 'biznes' && (
+          <div style={{
+            background: '#FAFAFA', borderRadius: '14px',
+            padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: '14px',
+            border: '1px solid rgba(0,0,0,0.06)',
+          }}>
+            <div style={{ fontSize: '12px', fontWeight: '700', color: '#86868B', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              Të dhënat e biznesit
+            </div>
+
+            <div>
+              <label style={labelStyle}>Emri i firmës *</label>
+              <input name="firma_name" type="text" defaultValue={firmaNameAktual}
+                placeholder="p.sh. Auto Shpresa SH.P.K." required style={inputStyle} />
+            </div>
+
+            <div>
+              <label style={labelStyle}>Adresa{' '}
+                <span style={{ fontWeight: '400', textTransform: 'none', letterSpacing: 0, color: '#86868B' }}>(opsional)</span>
+              </label>
+              <input name="adresa" type="text" defaultValue={adresaAktuale}
+                placeholder="Rruga, Qyteti" style={inputStyle} />
+            </div>
+
+            <div>
+              <label style={labelStyle}>Website{' '}
+                <span style={{ fontWeight: '400', textTransform: 'none', letterSpacing: 0, color: '#86868B' }}>(opsional)</span>
+              </label>
+              <input name="website" type="url" defaultValue={websiteAktual}
+                placeholder="https://firma-juaj.al" style={inputStyle} />
+            </div>
+
+            <div>
+              <label style={labelStyle}>Përshkrimi i biznesit{' '}
+                <span style={{ fontWeight: '400', textTransform: 'none', letterSpacing: 0, color: '#86868B' }}>(opsional)</span>
+              </label>
+              <textarea
+                name="beschreibung_firma"
+                defaultValue={beschreibungFirmaAktual}
+                placeholder="Pak fjalë rreth biznesit tuaj..."
+                rows={3}
+                style={{ ...inputStyle, resize: 'vertical', lineHeight: '1.55', minHeight: '80px' }}
+              />
+            </div>
+          </div>
+        )}
 
         {/* Name */}
         <div>
-          <label style={labelStyle}>Emri i plotë *</label>
+          <label style={labelStyle}>
+            {kontoTyp === 'biznes' ? 'Emri i kontaktit' : 'Emri i plotë'} *
+          </label>
           <input name="emri" type="text" defaultValue={emriAktual} required style={inputStyle} />
         </div>
 
@@ -126,20 +218,12 @@ export default function ProfilInfo({
             defaultValue={bioAktual}
             placeholder="Pak fjalë rreth vetes ose biznesit tuaj..."
             rows={3}
-            style={{
-              ...inputStyle,
-              resize: 'vertical',
-              lineHeight: '1.55',
-              minHeight: '80px',
-            }}
+            style={{ ...inputStyle, resize: 'vertical', lineHeight: '1.55', minHeight: '80px' }}
           />
         </div>
 
         {/* Privacy settings */}
-        <div style={{
-          background: '#F5F5F7', borderRadius: '14px',
-          padding: '18px 20px',
-        }}>
+        <div style={{ background: '#F5F5F7', borderRadius: '14px', padding: '18px 20px' }}>
           <div style={{
             fontSize: '12px', fontWeight: '700', color: '#86868B',
             textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '14px',
@@ -149,19 +233,15 @@ export default function ProfilInfo({
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
               <input
-                type="checkbox"
-                name="zeige_qyteti"
-                defaultChecked={zeigeQytetiAktual}
-                style={{ width: '16px', height: '16px', accentColor: '#DA291C', cursor: 'pointer', flexShrink: 0 }}
+                type="checkbox" name="zeige_qyteti" defaultChecked={zeigeQytetiAktual}
+                style={{ width: '16px', height: '16px', accentColor: RED, cursor: 'pointer', flexShrink: 0 }}
               />
               <span style={{ fontSize: '14px', color: '#1D1D1F', fontWeight: '500' }}>Shfaq qytetin në profil publik</span>
             </label>
             <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
               <input
-                type="checkbox"
-                name="zeige_telefon"
-                defaultChecked={zeigeTelefonAktual}
-                style={{ width: '16px', height: '16px', accentColor: '#DA291C', cursor: 'pointer', flexShrink: 0 }}
+                type="checkbox" name="zeige_telefon" defaultChecked={zeigeTelefonAktual}
+                style={{ width: '16px', height: '16px', accentColor: RED, cursor: 'pointer', flexShrink: 0 }}
               />
               <span style={{ fontSize: '14px', color: '#1D1D1F', fontWeight: '500' }}>Shfaq numrin e telefonit në profil publik</span>
             </label>
@@ -172,7 +252,7 @@ export default function ProfilInfo({
           type="submit"
           disabled={pending}
           style={{
-            background: pending ? '#999' : '#DA291C',
+            background: pending ? '#999' : RED,
             color: '#fff', border: 'none', padding: '13px',
             borderRadius: '12px', fontSize: '14px', fontWeight: '600',
             cursor: pending ? 'not-allowed' : 'pointer', fontFamily: FONT,

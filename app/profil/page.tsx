@@ -17,7 +17,7 @@ export default async function ProfilPage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('full_name, bio, zeige_telefon, zeige_qyteti, created_at')
+    .select('full_name, bio, zeige_telefon, zeige_qyteti, created_at, konto_typ, firma_name, adresa, website, beschreibung_firma')
     .eq('id', user.id)
     .single()
 
@@ -27,13 +27,18 @@ export default async function ProfilPage() {
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
 
-  const fullName        = (profile?.full_name  ?? user.user_metadata?.full_name ?? '') as string
-  const telefon         = '' // telefon column not yet migrated
-  const qyteti          = '' // qyteti column not yet migrated
-  const avatarUrl       = '' // avatar_url column not yet migrated
-  const bio             = (profile?.bio        ?? '') as string
-  const zeigeTelefon    = (profile?.zeige_telefon ?? true) as boolean
-  const zeigeQyteti     = (profile?.zeige_qyteti  ?? true) as boolean
+  const fullName            = (profile?.full_name  ?? user.user_metadata?.full_name ?? '') as string
+  const telefon             = '' // avatar_url/telefon/qyteti columns not yet migrated
+  const qyteti              = ''
+  const avatarUrl           = ''
+  const bio                 = (profile?.bio        ?? '') as string
+  const zeigeTelefon        = (profile?.zeige_telefon ?? true) as boolean
+  const zeigeQyteti         = (profile?.zeige_qyteti  ?? true) as boolean
+  const kontoTyp            = (profile?.konto_typ     ?? 'privat') as string
+  const firmaName           = (profile?.firma_name    ?? '') as string
+  const adresa              = (profile?.adresa        ?? '') as string
+  const website             = (profile?.website       ?? '') as string
+  const beschreibungFirma   = (profile?.beschreibung_firma ?? '') as string
   const email           = user.email ?? ''
   const joinedAt        = new Date(profile?.created_at ?? user.created_at)
   const joinedDate      = joinedAt.toLocaleDateString('sq-AL', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -133,6 +138,11 @@ export default async function ProfilPage() {
             bioAktual={bio}
             zeigeTelefonAktual={zeigeTelefon}
             zeigeQytetiAktual={zeigeQyteti}
+            kontoTypAktual={kontoTyp}
+            firmaNameAktual={firmaName}
+            adresaAktuale={adresa}
+            websiteAktual={website}
+            beschreibungFirmaAktual={beschreibungFirma}
           />
 
           {/* My listings */}

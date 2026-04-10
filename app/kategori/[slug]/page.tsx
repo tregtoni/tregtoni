@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import NavBar from '@/app/components/NavBar'
 import Footer from '@/app/components/Footer'
 import { KATEGORI_MAP, MARKAT_MAKINA, MARKAT_MOTOCIKLETA, QYTETET, RENDITJA } from '@/lib/kategori-data'
@@ -449,6 +450,15 @@ export default async function KategoriPage({
   }
 
   const { data: njoftimet } = await query
+
+  // Batch-fetch seller konto_typ for Tregtar badges
+  const admin = createAdminClient()
+  const sellerIds = [...new Set((njoftimet ?? []).map(ad => ad.user_id).filter(Boolean))]
+  const { data: sellerProfiles } = sellerIds.length
+    ? await admin.from('profiles').select('id, konto_typ').in('id', sellerIds)
+    : { data: [] }
+  const sellerMap: Record<string, string> =
+    Object.fromEntries((sellerProfiles ?? []).map(p => [p.id, p.konto_typ ?? 'privat']))
 
   const numri = njoftimet?.length ?? 0
   const hasCarFilters = !!(
@@ -1129,6 +1139,7 @@ export default async function KategoriPage({
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {njoftimet.map(ad => {
                 const images: string[] = ad.images ?? []
+                const isTregtar = sellerMap[ad.user_id] === 'biznes'
                 return (
                   <div key={ad.id}
                     style={{
@@ -1163,6 +1174,15 @@ export default async function KategoriPage({
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={images[0]} alt={ad.title} style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }} />
                       ) : kategoria.icon}
+                      {isTregtar && (
+                        <span style={{
+                          position: 'absolute', top: '8px', left: '8px', zIndex: 1,
+                          background: '#DA291C', color: '#fff',
+                          fontSize: '10px', fontWeight: '700',
+                          padding: '2px 7px', borderRadius: '5px',
+                          letterSpacing: '0.3px', textTransform: 'uppercase',
+                        }}>Tregtar</span>
+                      )}
                       {images.length > 1 && (
                         <span style={{
                           position: 'absolute',

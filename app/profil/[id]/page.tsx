@@ -16,21 +16,16 @@ export default async function PublicProfilPage({
 }) {
   const { id } = await params
 
-  // Admin client bypasses RLS — safe for server-side read of public profile data
   const admin = createAdminClient()
-
-  // Current viewer (may be null for logged-out users — no redirect)
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  // Fetch profile — admin client ensures RLS doesn't block unauthenticated reads
   const { data: profile } = await admin
     .from('profiles')
-    .select('id, full_name, bio, zeige_qyteti, zeige_telefon, created_at')
+    .select('id, full_name, bio, zeige_qyteti, zeige_telefon, created_at, konto_typ, firma_name, adresa, website, beschreibung_firma')
     .eq('id', id)
     .single()
 
-  // Fetch active listings — public policy already allows this, but admin is consistent
   const { data: njoftimet } = await admin
     .from('njoftimet')
     .select('id, title, price, city, category, images, created_at')
@@ -38,18 +33,25 @@ export default async function PublicProfilPage({
     .neq('aktive', false)
     .order('created_at', { ascending: false })
 
-  // If no profile AND no ads at all, this user doesn't exist
   if (!profile && (!njoftimet || njoftimet.length === 0)) notFound()
 
-  const fullName = (profile?.full_name as string | null) ?? ''
-  const nameParts = fullName.trim().split(/\s+/).filter(Boolean)
+  const kontoTyp   = (profile?.konto_typ  as string | null) ?? 'privat'
+  const isBusiness = kontoTyp === 'biznes'
+  const firmaName  = (profile?.firma_name as string | null) ?? null
+  const fullName   = (profile?.full_name  as string | null) ?? ''
+  const displayName = isBusiness && firmaName ? firmaName : fullName
+
+  const nameParts = displayName.trim().split(/\s+/).filter(Boolean)
   const initials = nameParts.length >= 2
     ? (nameParts[0][0] + nameParts[1][0]).toUpperCase()
     : nameParts[0]?.[0]?.toUpperCase() ?? ''
-  const avatarUrl = null // avatar_url column not yet migrated
-  const bio = (profile?.bio as string | null) ?? null
-  const zeigeQyteti = (profile?.zeige_qyteti as boolean | null) ?? true
-  const qyteti = null // qyteti column not yet migrated
+  const avatarUrl          = null // avatar_url not yet migrated
+  const bio                = (profile?.bio                as string | null) ?? null
+  const zeigeQyteti        = (profile?.zeige_qyteti       as boolean | null) ?? true
+  const qyteti             = null // qyteti not yet migrated
+  const adresa             = (profile?.adresa             as string | null) ?? null
+  const website            = (profile?.website            as string | null) ?? null
+  const beschreibungFirma  = (profile?.beschreibung_firma as string | null) ?? null
 
   const joinedDate = profile?.created_at
     ? new Date(profile.created_at as string).toLocaleDateString('sq-AL', { month: 'long', year: 'numeric' })
@@ -66,11 +68,8 @@ export default async function PublicProfilPage({
 
         {/* ── Profile card ── */}
         <div style={{
-          background: '#fff',
-          borderRadius: '24px',
-          padding: '40px 32px',
-          boxShadow: '0 2px 20px rgba(0,0,0,0.07)',
-          border: '1px solid rgba(0,0,0,0.05)',
+          background: '#fff', borderRadius: '24px', padding: '40px 32px',
+          boxShadow: '0 2px 20px rgba(0,0,0,0.07)', border: '1px solid rgba(0,0,0,0.05)',
           marginBottom: '28px',
         }}>
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap' }}>
@@ -79,17 +78,13 @@ export default async function PublicProfilPage({
             <div style={{ flexShrink: 0 }}>
               {avatarUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={avatarUrl}
-                  alt={fullName}
-                  style={{
-                    width: '88px', height: '88px', borderRadius: '50%',
-                    objectFit: 'cover', border: `3px solid ${RED}`,
-                  }}
-                />
+                <img src={avatarUrl} alt={displayName} style={{
+                  width: '88px', height: '88px', borderRadius: '50%',
+                  objectFit: 'cover', border: `3px solid ${RED}`,
+                }} />
               ) : (
                 <div style={{
-                  width: '88px', height: '88px', borderRadius: '50%',
+                  width: '88px', height: '88px', borderRadius: isBusiness ? '20px' : '50%',
                   background: RED, color: '#fff',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontSize: '34px', fontWeight: '700', flexShrink: 0,
@@ -101,10 +96,22 @@ export default async function PublicProfilPage({
 
             {/* Info */}
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px', flexWrap: 'wrap' }}>
                 <h1 style={{ fontSize: '26px', fontWeight: '700', color: '#1D1D1F', margin: 0, letterSpacing: '-0.5px' }}>
-                  {fullName}
+                  {displayName}
                 </h1>
+                {/* Tregtar badge */}
+                {isBusiness && (
+                  <span style={{
+                    background: RED, color: '#fff',
+                    fontSize: '11px', fontWeight: '700',
+                    padding: '3px 9px', borderRadius: '6px',
+                    letterSpacing: '0.3px', textTransform: 'uppercase',
+                    flexShrink: 0,
+                  }}>
+                    Tregtar
+                  </span>
+                )}
                 {!isOwnProfile && <MeldeModal nutzer_id={id} />}
                 {isOwnProfile && (
                   <a href="/profil" style={{
@@ -119,7 +126,14 @@ export default async function PublicProfilPage({
                 )}
               </div>
 
-              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '12px' }}>
+              {/* Contact person name for business */}
+              {isBusiness && fullName && fullName !== displayName && (
+                <div style={{ fontSize: '13px', color: '#86868B', marginBottom: '8px' }}>
+                  Kontakt: {fullName}
+                </div>
+              )}
+
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '10px' }}>
                 {joinedDate && (
                   <span style={{ fontSize: '13px', color: '#86868B' }}>
                     Anëtar që nga {joinedDate}
@@ -133,11 +147,40 @@ export default async function PublicProfilPage({
                 )}
               </div>
 
-              {bio && (
+              {/* Business details */}
+              {isBusiness && (adresa || website) && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', marginBottom: '10px' }}>
+                  {adresa && (
+                    <span style={{ fontSize: '13px', color: '#3D3D3F' }}>📍 {adresa}</span>
+                  )}
+                  {website && (
+                    <a
+                      href={website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ fontSize: '13px', color: RED, textDecoration: 'none', fontWeight: '500' }}
+                    >
+                      🌐 {website.replace(/^https?:\/\//, '')}
+                    </a>
+                  )}
+                </div>
+              )}
+
+              {/* Business description */}
+              {isBusiness && beschreibungFirma && (
                 <p style={{
-                  fontSize: '14px', color: '#3D3D3F',
-                  lineHeight: '1.65', margin: 0, maxWidth: '480px',
-                  whiteSpace: 'pre-wrap',
+                  fontSize: '14px', color: '#3D3D3F', lineHeight: '1.65',
+                  margin: '0 0 8px', maxWidth: '480px', whiteSpace: 'pre-wrap',
+                }}>
+                  {beschreibungFirma}
+                </p>
+              )}
+
+              {/* Personal bio */}
+              {!isBusiness && bio && (
+                <p style={{
+                  fontSize: '14px', color: '#3D3D3F', lineHeight: '1.65',
+                  margin: 0, maxWidth: '480px', whiteSpace: 'pre-wrap',
                 }}>
                   {bio}
                 </p>
@@ -149,10 +192,7 @@ export default async function PublicProfilPage({
               background: '#F5F5F7', borderRadius: '16px',
               padding: '20px 28px', textAlign: 'center', flexShrink: 0,
             }}>
-              <div style={{
-                fontSize: '36px', fontWeight: '800', color: RED,
-                letterSpacing: '-1px', lineHeight: 1,
-              }}>
+              <div style={{ fontSize: '36px', fontWeight: '800', color: RED, letterSpacing: '-1px', lineHeight: 1 }}>
                 {adCount}
               </div>
               <div style={{ fontSize: '12px', color: '#86868B', fontWeight: '500', marginTop: '4px' }}>
@@ -164,20 +204,15 @@ export default async function PublicProfilPage({
 
         {/* ── Listings ── */}
         <div>
-          <h2 style={{
-            fontSize: '20px', fontWeight: '700', color: '#1D1D1F',
-            margin: '0 0 18px', letterSpacing: '-0.4px',
-          }}>
-            Njoftimet e {fullName}
+          <h2 style={{ fontSize: '20px', fontWeight: '700', color: '#1D1D1F', margin: '0 0 18px', letterSpacing: '-0.4px' }}>
+            Njoftimet e {isBusiness && firmaName ? firmaName : fullName}
           </h2>
 
           {adCount === 0 ? (
             <div style={{
-              background: '#fff', borderRadius: '18px',
-              padding: '60px 24px', textAlign: 'center',
+              background: '#fff', borderRadius: '18px', padding: '60px 24px', textAlign: 'center',
               color: '#86868B', fontSize: '15px',
-              boxShadow: '0 1px 8px rgba(0,0,0,0.05)',
-              border: '1px solid rgba(0,0,0,0.05)',
+              boxShadow: '0 1px 8px rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.05)',
             }}>
               Ky shitës nuk ka njoftime aktualisht.
             </div>
@@ -187,9 +222,8 @@ export default async function PublicProfilPage({
                 const images: string[] = (ad.images as string[] | null) ?? []
                 return (
                   <div key={ad.id} style={{
-                    background: '#fff', borderRadius: '18px',
-                    overflow: 'hidden', boxShadow: '0 2px 12px rgba(0,0,0,0.07)',
-                    border: '1px solid rgba(0,0,0,0.05)',
+                    background: '#fff', borderRadius: '18px', overflow: 'hidden',
+                    boxShadow: '0 2px 12px rgba(0,0,0,0.07)', border: '1px solid rgba(0,0,0,0.05)',
                   }}>
                     <a href={`/njoftim/${ad.id}`} style={{ display: 'block', textDecoration: 'none' }}>
                       <div style={{
@@ -199,12 +233,21 @@ export default async function PublicProfilPage({
                       }}>
                         {images[0] ? (
                           // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={images[0]}
-                            alt={ad.title}
-                            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                          />
+                          <img src={images[0]} alt={ad.title as string}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                         ) : CATEGORY_ICON(ad.category)}
+                        {/* Tregtar badge on card */}
+                        {isBusiness && (
+                          <span style={{
+                            position: 'absolute', top: '8px', left: '8px',
+                            background: RED, color: '#fff',
+                            fontSize: '10px', fontWeight: '700',
+                            padding: '2px 7px', borderRadius: '5px',
+                            letterSpacing: '0.3px', textTransform: 'uppercase',
+                          }}>
+                            Tregtar
+                          </span>
+                        )}
                       </div>
                       <div style={{ padding: '12px 14px 12px' }}>
                         <div style={{
@@ -214,15 +257,10 @@ export default async function PublicProfilPage({
                         }}>
                           {ad.title}
                         </div>
-                        <div style={{
-                          fontSize: '15px', fontWeight: '700', color: RED,
-                          letterSpacing: '-0.2px', marginBottom: '4px',
-                        }}>
+                        <div style={{ fontSize: '15px', fontWeight: '700', color: RED, letterSpacing: '-0.2px', marginBottom: '4px' }}>
                           {(ad.price as number).toLocaleString('de-DE')} €
                         </div>
-                        <div style={{ fontSize: '11px', color: '#86868B' }}>
-                          {ad.city}
-                        </div>
+                        <div style={{ fontSize: '11px', color: '#86868B' }}>{ad.city}</div>
                       </div>
                     </a>
                   </div>

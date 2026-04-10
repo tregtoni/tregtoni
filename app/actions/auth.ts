@@ -29,9 +29,15 @@ export async function register(prevState: { error: string }, formData: FormData)
   const email = formData.get('email') as string
   const password = formData.get('password') as string
   const confirmPassword = formData.get('confirmPassword') as string
+  const kontoTyp = (formData.get('kontoTyp') as string) === 'biznes' ? 'biznes' : 'privat'
+  const firmaName = (formData.get('firmaName') as string)?.trim() || null
 
   if (!fullName || !email || !password || !confirmPassword) {
     return { error: 'Të gjitha fushat janë të detyrueshme.' }
+  }
+
+  if (kontoTyp === 'biznes' && !firmaName) {
+    return { error: 'Emri i firmës është i detyrueshëm për llogaritë tregtare.' }
   }
 
   if (password !== confirmPassword) {
@@ -46,7 +52,7 @@ export async function register(prevState: { error: string }, formData: FormData)
     email,
     password,
     options: {
-      data: { full_name: fullName },
+      data: { full_name: fullName, konto_typ: kontoTyp, firma_name: firmaName },
     },
   })
 

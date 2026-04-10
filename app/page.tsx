@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import NavBar from '@/app/components/NavBar'
 import Footer from '@/app/components/Footer'
 import { KATEGORITË, CATEGORY_ICON, QYTETET_SHQIPERI, QYTETET_KOSOVE } from '@/lib/kategori-data'
@@ -6,6 +7,7 @@ import MeldeModal from '@/app/components/MeldeModal'
 
 export default async function Home() {
   const supabase = await createClient()
+  const admin = createAdminClient()
 
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -15,6 +17,14 @@ export default async function Home() {
     .neq('aktive', false)
     .order('created_at', { ascending: false })
     .limit(8)
+
+  // Batch-fetch seller konto_typ for Tregtar badges
+  const userIds = [...new Set((njoftimet ?? []).map(ad => ad.user_id).filter(Boolean))]
+  const { data: sellerProfiles } = userIds.length
+    ? await admin.from('profiles').select('id, konto_typ, firma_name').in('id', userIds)
+    : { data: [] }
+  const sellerMap: Record<string, { konto_typ?: string; firma_name?: string }> =
+    Object.fromEntries((sellerProfiles ?? []).map(p => [p.id, p]))
 
   const { data: counts } = await supabase
     .from('njoftimet')
@@ -299,7 +309,9 @@ export default async function Home() {
 
           {njoftimet && njoftimet.length > 0 ? (
             <div className="ad-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
-              {njoftimet.map((ad) => (
+              {njoftimet.map((ad) => {
+                const isTregtar = sellerMap[ad.user_id]?.konto_typ === 'biznes'
+                return (
                 <div
                   key={ad.id}
                   style={{
@@ -330,6 +342,15 @@ export default async function Home() {
                         />
                       ) : (
                         CATEGORY_ICON(ad.category)
+                      )}
+                      {isTregtar && (
+                        <span style={{
+                          position: 'absolute', top: '8px', left: '8px',
+                          background: '#DA291C', color: '#fff',
+                          fontSize: '10px', fontWeight: '700',
+                          padding: '2px 7px', borderRadius: '5px',
+                          letterSpacing: '0.3px', textTransform: 'uppercase',
+                        }}>Tregtar</span>
                       )}
                     </div>
                     <div style={{ padding: '12px 14px 10px' }}>
@@ -381,7 +402,7 @@ export default async function Home() {
                     </div>
                   )}
                 </div>
-              ))}
+              )})}
             </div>
           ) : (
             <div style={{
