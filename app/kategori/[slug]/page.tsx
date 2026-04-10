@@ -1246,16 +1246,18 @@ export default async function KategoriPage({
                             <span>{ad.city}</span>
                           </div>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-                          <div style={{ fontSize: '12px', color: '#86868B', fontWeight: '400' }}>{timeAgo(ad.created_at)}</div>
-                          <MeldeModal anzeige_id={ad.id} />
-                        </div>
+                        {!sellerLogo && (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+                            <div style={{ fontSize: '12px', color: '#86868B', fontWeight: '400' }}>{timeAgo(ad.created_at)}</div>
+                            <MeldeModal anzeige_id={ad.id} />
+                          </div>
+                        )}
                       </div>
                     </div>
                     {sellerLogo && (
                       <div style={{
                         display: 'flex', flexDirection: 'column', alignItems: 'center',
-                        justifyContent: 'center', gap: '6px',
+                        justifyContent: 'flex-start', gap: '6px',
                         padding: '14px 20px', flexShrink: 0,
                       }}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -1279,6 +1281,10 @@ export default async function KategoriPage({
                             {sellerMap[ad.user_id].firma_name}
                           </span>
                         )}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
+                          <div style={{ fontSize: '11px', color: '#AEAEB2', fontWeight: '400' }}>{timeAgo(ad.created_at)}</div>
+                          <MeldeModal anzeige_id={ad.id} />
+                        </div>
                       </div>
                     )}
                   </a>
