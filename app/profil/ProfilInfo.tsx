@@ -30,6 +30,26 @@ const labelStyle: React.CSSProperties = {
   letterSpacing: '0.5px',
 }
 
+const opt = (
+  <span style={{ fontWeight: '400', textTransform: 'none', letterSpacing: 0, color: '#86868B' }}>
+    {' '}(opsional)
+  </span>
+)
+
+function CitySelect({ defaultValue }: { defaultValue: string }) {
+  return (
+    <select name="qyteti" defaultValue={defaultValue} style={inputStyle}>
+      <option value="">Zgjidh qytetin</option>
+      <optgroup label="Shqipëri">
+        {QYTETET_SHQIPERI.map(q => <option key={q} value={q}>{q}</option>)}
+      </optgroup>
+      <optgroup label="Kosovë">
+        {QYTETET_KOSOVE.map(q => <option key={q} value={q}>{q}</option>)}
+      </optgroup>
+    </select>
+  )
+}
+
 export default function ProfilInfo({
   emriAktual,
   telefonAktual,
@@ -89,17 +109,9 @@ export default function ProfilInfo({
 
       <form action={formAction} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
-        {/* Business fields — shown only for business accounts, type is fixed at registration */}
-        {isBusiness && (
-          <div style={{
-            background: '#FAFAFA', borderRadius: '14px',
-            padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: '14px',
-            border: '1px solid rgba(0,0,0,0.06)',
-          }}>
-            <div style={{ fontSize: '12px', fontWeight: '700', color: '#86868B', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-              Të dhënat e biznesit
-            </div>
-
+        {isBusiness ? (
+          /* ── Business account fields ── */
+          <>
             <div>
               <label style={labelStyle}>Emri i firmës *</label>
               <input name="firma_name" type="text" defaultValue={firmaNameAktual}
@@ -107,106 +119,95 @@ export default function ProfilInfo({
             </div>
 
             <div>
-              <label style={labelStyle}>Adresa{' '}
-                <span style={{ fontWeight: '400', textTransform: 'none', letterSpacing: 0, color: '#86868B' }}>(opsional)</span>
-              </label>
+              <label style={labelStyle}>Personi i kontaktit{opt}</label>
+              <input name="emri" type="text" defaultValue={emriAktual}
+                placeholder="Emri Mbiemri" style={inputStyle} />
+            </div>
+
+            <div>
+              <label style={labelStyle}>Adresa{opt}</label>
               <input name="adresa" type="text" defaultValue={adresaAktuale}
                 placeholder="Rruga, Qyteti" style={inputStyle} />
             </div>
 
             <div>
-              <label style={labelStyle}>Website{' '}
-                <span style={{ fontWeight: '400', textTransform: 'none', letterSpacing: 0, color: '#86868B' }}>(opsional)</span>
-              </label>
+              <label style={labelStyle}>Website{opt}</label>
               <input name="website" type="url" defaultValue={websiteAktual}
                 placeholder="https://firma-juaj.al" style={inputStyle} />
             </div>
 
             <div>
-              <label style={labelStyle}>Përshkrimi i biznesit{' '}
-                <span style={{ fontWeight: '400', textTransform: 'none', letterSpacing: 0, color: '#86868B' }}>(opsional)</span>
-              </label>
+              <label style={labelStyle}>Telefoni{opt}</label>
+              <input name="telefon" type="tel" defaultValue={telefonAktual}
+                placeholder="+355 6X XXX XXXX" style={inputStyle} />
+            </div>
+
+            <div>
+              <label style={labelStyle}>Rreth nesh{opt}</label>
               <textarea
                 name="beschreibung_firma"
                 defaultValue={beschreibungFirmaAktual}
                 placeholder="Pak fjalë rreth biznesit tuaj..."
-                rows={3}
-                style={{ ...inputStyle, resize: 'vertical', lineHeight: '1.55', minHeight: '80px' }}
+                rows={4}
+                style={{ ...inputStyle, resize: 'vertical', lineHeight: '1.6', minHeight: '96px' }}
               />
             </div>
-          </div>
+
+            <div>
+              <label style={labelStyle}>Qyteti{opt}</label>
+              <CitySelect defaultValue={qytetiAktual} />
+            </div>
+          </>
+        ) : (
+          /* ── Private account fields ── */
+          <>
+            <div>
+              <label style={labelStyle}>Emri i plotë *</label>
+              <input name="emri" type="text" defaultValue={emriAktual}
+                placeholder="Emri Mbiemri" required style={inputStyle} />
+            </div>
+
+            <div>
+              <label style={labelStyle}>Qyteti{opt}</label>
+              <CitySelect defaultValue={qytetiAktual} />
+            </div>
+
+            <div>
+              <label style={labelStyle}>Telefoni{opt}</label>
+              <input name="telefon" type="tel" defaultValue={telefonAktual}
+                placeholder="+355 6X XXX XXXX" style={inputStyle} />
+            </div>
+
+            <div>
+              <label style={labelStyle}>Bio{opt}</label>
+              <textarea
+                name="bio"
+                defaultValue={bioAktual}
+                placeholder="Pak fjalë rreth vetes..."
+                rows={4}
+                style={{ ...inputStyle, resize: 'vertical', lineHeight: '1.6', minHeight: '96px' }}
+              />
+            </div>
+          </>
         )}
 
-        {/* Name */}
-        <div>
-          <label style={labelStyle}>
-            {isBusiness ? 'Emri i kontaktit' : 'Emri i plotë'} *
-          </label>
-          <input name="emri" type="text" defaultValue={emriAktual} required style={inputStyle} />
-        </div>
-
-        {/* Phone */}
-        <div>
-          <label style={labelStyle}>
-            Telefoni{' '}
-            <span style={{ fontWeight: '400', textTransform: 'none', letterSpacing: 0, color: '#86868B' }}>(opsional)</span>
-          </label>
-          <input name="telefon" type="tel" defaultValue={telefonAktual} placeholder="+355 6X XXX XXXX" style={inputStyle} />
-        </div>
-
-        {/* City */}
-        <div>
-          <label style={labelStyle}>
-            Qyteti{' '}
-            <span style={{ fontWeight: '400', textTransform: 'none', letterSpacing: 0, color: '#86868B' }}>(opsional)</span>
-          </label>
-          <select name="qyteti" defaultValue={qytetiAktual} style={inputStyle}>
-            <option value="">Zgjidh qytetin</option>
-            <optgroup label="Shqipëri">
-              {QYTETET_SHQIPERI.map(q => <option key={q} value={q}>{q}</option>)}
-            </optgroup>
-            <optgroup label="Kosovë">
-              {QYTETET_KOSOVE.map(q => <option key={q} value={q}>{q}</option>)}
-            </optgroup>
-          </select>
-        </div>
-
-        {/* Bio */}
-        <div>
-          <label style={labelStyle}>
-            Bio{' '}
-            <span style={{ fontWeight: '400', textTransform: 'none', letterSpacing: 0, color: '#86868B' }}>(opsional)</span>
-          </label>
-          <textarea
-            name="bio"
-            defaultValue={bioAktual}
-            placeholder="Pak fjalë rreth vetes ose biznesit tuaj..."
-            rows={3}
-            style={{ ...inputStyle, resize: 'vertical', lineHeight: '1.55', minHeight: '80px' }}
-          />
-        </div>
-
-        {/* Privacy settings */}
-        <div style={{ background: '#F5F5F7', borderRadius: '14px', padding: '18px 20px' }}>
+        {/* Privacy */}
+        <div style={{ background: '#F5F5F7', borderRadius: '14px', padding: '16px 20px' }}>
           <div style={{
             fontSize: '12px', fontWeight: '700', color: '#86868B',
-            textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '14px',
+            textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '12px',
           }}>
             Privatësia
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-              <input
-                type="checkbox" name="zeige_qyteti" defaultChecked={zeigeQytetiAktual}
-                style={{ width: '16px', height: '16px', accentColor: RED, cursor: 'pointer', flexShrink: 0 }}
-              />
+              <input type="checkbox" name="zeige_qyteti" defaultChecked={zeigeQytetiAktual}
+                style={{ width: '16px', height: '16px', accentColor: RED, cursor: 'pointer', flexShrink: 0 }} />
               <span style={{ fontSize: '14px', color: '#1D1D1F', fontWeight: '500' }}>Shfaq qytetin në profil publik</span>
             </label>
             <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-              <input
-                type="checkbox" name="zeige_telefon" defaultChecked={zeigeTelefonAktual}
-                style={{ width: '16px', height: '16px', accentColor: RED, cursor: 'pointer', flexShrink: 0 }}
-              />
+              <input type="checkbox" name="zeige_telefon" defaultChecked={zeigeTelefonAktual}
+                style={{ width: '16px', height: '16px', accentColor: RED, cursor: 'pointer', flexShrink: 0 }} />
               <span style={{ fontSize: '14px', color: '#1D1D1F', fontWeight: '500' }}>Shfaq numrin e telefonit në profil publik</span>
             </label>
           </div>

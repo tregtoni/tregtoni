@@ -24,13 +24,16 @@ export async function ndryshoEmrin(
   const website             = (formData.get('website')            as string)?.trim() || null
   const beschreibung_firma  = (formData.get('beschreibung_firma') as string)?.trim() || null
 
-  if (!emri) return { error: 'Emri nuk mund të jetë bosh.', success: false }
+  // Private accounts require a name; business accounts require firma_name
+  if (!firma_name && !emri) return { error: 'Emri nuk mund të jetë bosh.', success: false }
 
-  const { error: authErr } = await supabase.auth.updateUser({ data: { full_name: emri } })
-  if (authErr) return { error: 'Gabim gjatë ndryshimit. Provoni përsëri.', success: false }
+  if (emri) {
+    const { error: authErr } = await supabase.auth.updateUser({ data: { full_name: emri } })
+    if (authErr) return { error: 'Gabim gjatë ndryshimit. Provoni përsëri.', success: false }
+  }
 
   await supabase.from('profiles').upsert({
-    id: user.id, full_name: emri, telefon, qyteti, bio,
+    id: user.id, full_name: emri || null, telefon, qyteti, bio,
     zeige_telefon, zeige_qyteti,
     firma_name, adresa, website, beschreibung_firma,
   })
