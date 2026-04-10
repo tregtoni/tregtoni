@@ -455,10 +455,10 @@ export default async function KategoriPage({
   const admin = createAdminClient()
   const sellerIds = [...new Set((njoftimet ?? []).map(ad => ad.user_id).filter(Boolean))]
   const { data: sellerProfiles } = sellerIds.length
-    ? await admin.from('profiles').select('id, konto_typ, avatar_url, firma_name').in('id', sellerIds)
+    ? await admin.from('profiles').select('id, konto_typ').in('id', sellerIds)
     : { data: [] }
-  const sellerMap: Record<string, { konto_typ: string; avatar_url?: string; firma_name?: string }> =
-    Object.fromEntries((sellerProfiles ?? []).map(p => [p.id, { konto_typ: p.konto_typ ?? 'privat', avatar_url: p.avatar_url ?? undefined, firma_name: p.firma_name ?? undefined }]))
+  const sellerMap: Record<string, string> =
+    Object.fromEntries((sellerProfiles ?? []).map(p => [p.id, p.konto_typ ?? 'privat']))
 
   const numri = njoftimet?.length ?? 0
   const hasCarFilters = !!(
@@ -1139,8 +1139,7 @@ export default async function KategoriPage({
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {njoftimet.map(ad => {
                 const images: string[] = ad.images ?? []
-                const isTregtar = sellerMap[ad.user_id]?.konto_typ === 'biznes'
-                const sellerLogo = isTregtar ? (sellerMap[ad.user_id]?.avatar_url ?? null) : null
+                const isTregtar = sellerMap[ad.user_id] === 'biznes'
                 return (
                   <div key={ad.id}
                     style={{
@@ -1246,47 +1245,12 @@ export default async function KategoriPage({
                             <span>{ad.city}</span>
                           </div>
                         </div>
-                        {!sellerLogo && (
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-                            <div style={{ fontSize: '12px', color: '#86868B', fontWeight: '400' }}>{timeAgo(ad.created_at)}</div>
-                            <MeldeModal anzeige_id={ad.id} />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    {sellerLogo && (
-                      <div style={{
-                        display: 'flex', flexDirection: 'column', alignItems: 'flex-end',
-                        justifyContent: 'flex-start', gap: '6px',
-                        padding: '14px 20px 14px 12px', flexShrink: 0,
-                      }}>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={sellerLogo}
-                          alt=""
-                          style={{
-                            width: '72px', height: '72px',
-                            borderRadius: '50%',
-                            border: '1.5px solid rgba(0,0,0,0.08)',
-                            objectFit: 'cover',
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.10)',
-                          }}
-                        />
-                        {sellerMap[ad.user_id]?.firma_name && (
-                          <span style={{
-                            fontSize: '11px', color: '#86868B', fontWeight: '500',
-                            textAlign: 'right', lineHeight: '1.35',
-                            maxWidth: '96px', wordBreak: 'break-word',
-                          }}>
-                            {sellerMap[ad.user_id].firma_name}
-                          </span>
-                        )}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
                           <div style={{ fontSize: '12px', color: '#86868B', fontWeight: '400' }}>{timeAgo(ad.created_at)}</div>
                           <MeldeModal anzeige_id={ad.id} />
                         </div>
                       </div>
-                    )}
+                    </div>
                   </a>
                   </div>
                 )
