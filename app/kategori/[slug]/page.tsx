@@ -1246,12 +1246,10 @@ export default async function KategoriPage({
                             <span>{ad.city}</span>
                           </div>
                         </div>
-                        {!sellerLogo && (
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-                            <div style={{ fontSize: '12px', color: '#86868B', fontWeight: '400' }}>{timeAgo(ad.created_at)}</div>
-                            <MeldeModal anzeige_id={ad.id} />
-                          </div>
-                        )}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+                          <div style={{ fontSize: '12px', color: '#86868B', fontWeight: '400' }}>{timeAgo(ad.created_at)}</div>
+                          <MeldeModal anzeige_id={ad.id} />
+                        </div>
                       </div>
                     </div>
                     {sellerLogo && (
@@ -1281,10 +1279,6 @@ export default async function KategoriPage({
                             {sellerMap[ad.user_id].firma_name}
                           </span>
                         )}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <div style={{ fontSize: '12px', color: '#86868B', fontWeight: '400' }}>{timeAgo(ad.created_at)}</div>
-                          <MeldeModal anzeige_id={ad.id} />
-                        </div>
                       </div>
                     )}
                   </a>
