@@ -455,10 +455,10 @@ export default async function KategoriPage({
   const admin = createAdminClient()
   const sellerIds = [...new Set((njoftimet ?? []).map(ad => ad.user_id).filter(Boolean))]
   const { data: sellerProfiles } = sellerIds.length
-    ? await admin.from('profiles').select('id, konto_typ, avatar_url').in('id', sellerIds)
+    ? await admin.from('profiles').select('id, konto_typ, avatar_url, firma_name').in('id', sellerIds)
     : { data: [] }
-  const sellerMap: Record<string, { konto_typ: string; avatar_url?: string }> =
-    Object.fromEntries((sellerProfiles ?? []).map(p => [p.id, { konto_typ: p.konto_typ ?? 'privat', avatar_url: p.avatar_url ?? undefined }]))
+  const sellerMap: Record<string, { konto_typ: string; avatar_url?: string; firma_name?: string }> =
+    Object.fromEntries((sellerProfiles ?? []).map(p => [p.id, { konto_typ: p.konto_typ ?? 'privat', avatar_url: p.avatar_url ?? undefined, firma_name: p.firma_name ?? undefined }]))
 
   const numri = njoftimet?.length ?? 0
   const hasCarFilters = !!(
@@ -1254,21 +1254,33 @@ export default async function KategoriPage({
                     </div>
                     {sellerLogo && (
                       <div style={{
-                        display: 'flex', alignItems: 'center',
-                        padding: '0 18px 0 8px', flexShrink: 0,
+                        display: 'flex', flexDirection: 'column', alignItems: 'center',
+                        justifyContent: 'center', gap: '6px',
+                        padding: '0 20px 0 12px', flexShrink: 0, minWidth: '88px',
+                        borderLeft: '1px solid rgba(0,0,0,0.05)',
                       }}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={sellerLogo}
                           alt=""
                           style={{
-                            width: '40px', height: '40px',
+                            width: '64px', height: '64px',
                             borderRadius: '50%',
                             border: '1.5px solid rgba(0,0,0,0.08)',
                             objectFit: 'cover',
-                            boxShadow: '0 1px 6px rgba(0,0,0,0.10)',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.10)',
                           }}
                         />
+                        {sellerMap[ad.user_id]?.firma_name && (
+                          <span style={{
+                            fontSize: '11px', color: '#86868B', fontWeight: '500',
+                            textAlign: 'center', lineHeight: '1.3',
+                            maxWidth: '80px',
+                            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                          }}>
+                            {sellerMap[ad.user_id].firma_name}
+                          </span>
+                        )}
                       </div>
                     )}
                   </a>
