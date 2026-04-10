@@ -168,28 +168,14 @@ export default async function PublicProfilPage({
                     </p>
                   )}
 
-                  {/* 7. Member since — dezent, klein, unten */}
-                  {joinedDate && (
-                    <div style={{ fontSize: '11px', color: '#AEAEB2', marginTop: '4px' }}>
-                      Anëtar që nga {joinedDate}
-                    </div>
-                  )}
                 </>
               ) : (
                 <>
-                  <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '10px' }}>
-                    {joinedDate && (
-                      <span style={{ fontSize: '13px', color: '#86868B' }}>
-                        Anëtar që nga {joinedDate}
-                      </span>
-                    )}
-                    {zeigeQyteti && qyteti && (
-                      <>
-                        {joinedDate && <span style={{ color: '#D0D0D5' }}>·</span>}
-                        <span style={{ fontSize: '13px', color: '#86868B' }}>📍 {qyteti}</span>
-                      </>
-                    )}
-                  </div>
+                  {zeigeQyteti && qyteti && (
+                    <div style={{ marginBottom: '10px' }}>
+                      <span style={{ fontSize: '13px', color: '#86868B' }}>📍 {qyteti}</span>
+                    </div>
+                  )}
 
                   {zeigeTelefon && telefon && (
                     <div style={{ fontSize: '13px', color: '#3D3D3F', marginBottom: '8px' }}>
@@ -220,6 +206,11 @@ export default async function PublicProfilPage({
               <div style={{ fontSize: '12px', color: '#86868B', fontWeight: '500', marginTop: '4px' }}>
                 njoftime
               </div>
+              {joinedDate && (
+                <div style={{ fontSize: '11px', color: '#AEAEB2', marginTop: '14px', textAlign: 'center', lineHeight: '1.4' }}>
+                  Anëtar që nga<br />{joinedDate}
+                </div>
+              )}
             </div>
           </div>
         </div>
