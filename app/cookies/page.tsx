@@ -52,7 +52,7 @@ export default function CookiesPage() {
       duration: 'Deri në 2 vjet',
     },
     {
-      name: 'Cookie e pëlqimit (cookie_consent)',
+      name: 'Cookie e pëlqimit',
       type: 'Të nevojshme',
       required: true,
       purpose: 'Ruan zgjedhjen tuaj mbi cookies (pranoj të gjitha / vetëm të nevojshme) në localStorage të shfletuesit tuaj. Nevojitet për të mos shfaqur bannerin e cookies çdo herë.',
