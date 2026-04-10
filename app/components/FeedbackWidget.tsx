@@ -149,14 +149,16 @@ export default function FeedbackWidget() {
                 {/* Star rating */}
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: '500', color: '#111', marginBottom: '8px' }}>Vlerësimi</label>
-                  <div style={{ display: 'flex', gap: '6px' }}>
+                  <div
+                    style={{ display: 'flex', gap: '6px' }}
+                    onMouseLeave={() => setHovered(0)}
+                  >
                     {[1, 2, 3, 4, 5].map(star => (
                       <button
                         key={star}
                         type="button"
                         onClick={() => setRating(star)}
                         onMouseEnter={() => setHovered(star)}
-                        onMouseLeave={() => setHovered(0)}
                         style={{
                           background: 'none', border: 'none', cursor: 'pointer', padding: '2px',
                           fontSize: '28px', lineHeight: 1,
