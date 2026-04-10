@@ -1256,15 +1256,14 @@ export default async function KategoriPage({
                       <div style={{
                         display: 'flex', flexDirection: 'column', alignItems: 'center',
                         justifyContent: 'center', gap: '6px',
-                        padding: '0 20px 0 12px', flexShrink: 0, minWidth: '88px',
-                        borderLeft: '1px solid rgba(0,0,0,0.05)',
+                        padding: '14px 20px', flexShrink: 0,
                       }}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={sellerLogo}
                           alt=""
                           style={{
-                            width: '64px', height: '64px',
+                            width: '72px', height: '72px',
                             borderRadius: '50%',
                             border: '1.5px solid rgba(0,0,0,0.08)',
                             objectFit: 'cover',
@@ -1274,9 +1273,8 @@ export default async function KategoriPage({
                         {sellerMap[ad.user_id]?.firma_name && (
                           <span style={{
                             fontSize: '11px', color: '#86868B', fontWeight: '500',
-                            textAlign: 'center', lineHeight: '1.3',
-                            maxWidth: '80px',
-                            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                            textAlign: 'center', lineHeight: '1.35',
+                            maxWidth: '96px', wordBreak: 'break-word',
                           }}>
                             {sellerMap[ad.user_id].firma_name}
                           </span>
