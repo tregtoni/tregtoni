@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, useState } from 'react'
+import { useActionState } from 'react'
 import { ndryshoEmrin } from '@/app/actions/profil'
 import { QYTETET_SHQIPERI, QYTETET_KOSOVE } from '@/lib/kategori-data'
 
@@ -56,7 +56,7 @@ export default function ProfilInfo({
   beschreibungFirmaAktual: string
 }) {
   const [state, formAction, pending] = useActionState(ndryshoEmrin, { error: '', success: false })
-  const [kontoTyp, setKontoTyp] = useState(kontoTypAktual === 'biznes' ? 'biznes' : 'privat')
+  const isBusiness = kontoTypAktual === 'biznes'
 
   return (
     <div style={{
@@ -88,45 +88,9 @@ export default function ProfilInfo({
       )}
 
       <form action={formAction} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        <input type="hidden" name="konto_typ" value={kontoTyp} />
 
-        {/* Account type toggle */}
-        <div>
-          <label style={labelStyle}>Lloji i llogarisë</label>
-          <div style={{
-            display: 'grid', gridTemplateColumns: '1fr 1fr',
-            border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: '10px', overflow: 'hidden',
-          }}>
-            <button
-              type="button"
-              onClick={() => setKontoTyp('privat')}
-              style={{
-                padding: '11px', border: 'none', cursor: 'pointer', fontFamily: FONT,
-                fontSize: '13px', fontWeight: '600',
-                background: kontoTyp === 'privat' ? RED : '#fff',
-                color: kontoTyp === 'privat' ? '#fff' : '#6E6E73',
-              }}
-            >
-              👤 Privat
-            </button>
-            <button
-              type="button"
-              onClick={() => setKontoTyp('biznes')}
-              style={{
-                padding: '11px', border: 'none', borderLeft: '1.5px solid rgba(0,0,0,0.1)',
-                cursor: 'pointer', fontFamily: FONT,
-                fontSize: '13px', fontWeight: '600',
-                background: kontoTyp === 'biznes' ? RED : '#fff',
-                color: kontoTyp === 'biznes' ? '#fff' : '#6E6E73',
-              }}
-            >
-              🏢 Tregtar
-            </button>
-          </div>
-        </div>
-
-        {/* Business fields */}
-        {kontoTyp === 'biznes' && (
+        {/* Business fields — shown only for business accounts, type is fixed at registration */}
+        {isBusiness && (
           <div style={{
             background: '#FAFAFA', borderRadius: '14px',
             padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: '14px',
@@ -176,7 +140,7 @@ export default function ProfilInfo({
         {/* Name */}
         <div>
           <label style={labelStyle}>
-            {kontoTyp === 'biznes' ? 'Emri i kontaktit' : 'Emri i plotë'} *
+            {isBusiness ? 'Emri i kontaktit' : 'Emri i plotë'} *
           </label>
           <input name="emri" type="text" defaultValue={emriAktual} required style={inputStyle} />
         </div>

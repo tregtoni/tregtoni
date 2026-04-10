@@ -18,16 +18,12 @@ export async function ndryshoEmrin(
   const bio                 = (formData.get('bio')                as string)?.trim() || null
   const zeige_telefon       = formData.has('zeige_telefon')
   const zeige_qyteti        = formData.has('zeige_qyteti')
-  const konto_typ           = (formData.get('konto_typ')          as string) === 'biznes' ? 'biznes' : 'privat'
   const firma_name          = (formData.get('firma_name')         as string)?.trim() || null
   const adresa              = (formData.get('adresa')             as string)?.trim() || null
   const website             = (formData.get('website')            as string)?.trim() || null
   const beschreibung_firma  = (formData.get('beschreibung_firma') as string)?.trim() || null
 
   if (!emri) return { error: 'Emri nuk mund të jetë bosh.', success: false }
-  if (konto_typ === 'biznes' && !firma_name) {
-    return { error: 'Emri i firmës është i detyrueshëm për llogaritë tregtare.', success: false }
-  }
 
   const { error: authErr } = await supabase.auth.updateUser({ data: { full_name: emri } })
   if (authErr) return { error: 'Gabim gjatë ndryshimit. Provoni përsëri.', success: false }
@@ -35,7 +31,7 @@ export async function ndryshoEmrin(
   await supabase.from('profiles').upsert({
     id: user.id, full_name: emri, telefon, qyteti, bio,
     zeige_telefon, zeige_qyteti,
-    konto_typ, firma_name, adresa, website, beschreibung_firma,
+    firma_name, adresa, website, beschreibung_firma,
   })
 
   revalidatePath('/profil')
