@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import NavBar from '@/app/components/NavBar'
 import Footer from '@/app/components/Footer'
 import ImageGallery from './ImageGallery'
@@ -310,18 +311,20 @@ export default async function NjoftimDetail({
 
   if (!ad) notFound()
 
-  const { data: seller } = await supabase
+  const admin = createAdminClient()
+  const { data: seller } = await admin
     .from('profiles')
     .select('full_name, avatar_url')
     .eq('id', ad.user_id)
     .single()
 
-  const sellerName     = seller?.full_name ?? 'Përdorues'
+  const sellerName     = seller?.full_name ?? ''
   const sellerAvatar   = seller?.avatar_url ?? null
   const sellerParts    = sellerName.trim().split(/\s+/).filter(Boolean)
   const sellerInitials = sellerParts.length >= 2
     ? (sellerParts[0][0] + sellerParts[1][0]).toUpperCase()
     : sellerParts[0]?.[0]?.toUpperCase() ?? '?'
+  const sellerDisplay  = sellerName || null
   const images: string[] = ad.images ?? []
   const isMakina     = ad.category === 'makina'
   const isMoto       = ad.subcategory === 'Motorra'
@@ -754,9 +757,11 @@ export default async function NjoftimDetail({
               )}
             </a>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <a href={`/profil/${ad.user_id}`} style={{ fontSize: '16px', fontWeight: '600', color: '#1D1D1F', textDecoration: 'none' }}>
-                {sellerName}
-              </a>
+              {sellerDisplay && (
+                <a href={`/profil/${ad.user_id}`} style={{ fontSize: '16px', fontWeight: '600', color: '#1D1D1F', textDecoration: 'none' }}>
+                  {sellerDisplay}
+                </a>
+              )}
               <MeldeModal nutzer_id={ad.user_id} />
             </div>
           </div>
