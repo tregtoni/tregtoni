@@ -202,16 +202,6 @@ export default function ProfilInfo({
             Privatësia
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-              <input type="checkbox" name="zeige_qyteti" defaultChecked={zeigeQytetiAktual}
-                style={{ width: '16px', height: '16px', accentColor: RED, cursor: 'pointer', flexShrink: 0 }} />
-              <span style={{ fontSize: '14px', color: '#1D1D1F', fontWeight: '500' }}>Shfaq qytetin në profil publik</span>
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-              <input type="checkbox" name="zeige_telefon" defaultChecked={zeigeTelefonAktual}
-                style={{ width: '16px', height: '16px', accentColor: RED, cursor: 'pointer', flexShrink: 0 }} />
-              <span style={{ fontSize: '14px', color: '#1D1D1F', fontWeight: '500' }}>Shfaq numrin e telefonit në profil publik</span>
-            </label>
             {isBusiness && (
               <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
                 <input type="checkbox" name="zeige_kontaktperson" defaultChecked={zeigeKontaktpersonAktual}
@@ -219,6 +209,16 @@ export default function ProfilInfo({
                 <span style={{ fontSize: '14px', color: '#1D1D1F', fontWeight: '500' }}>Shfaq personin e kontaktit në profil publik</span>
               </label>
             )}
+            <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+              <input type="checkbox" name="zeige_telefon" defaultChecked={zeigeTelefonAktual}
+                style={{ width: '16px', height: '16px', accentColor: RED, cursor: 'pointer', flexShrink: 0 }} />
+              <span style={{ fontSize: '14px', color: '#1D1D1F', fontWeight: '500' }}>Shfaq numrin e telefonit në profil publik</span>
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+              <input type="checkbox" name="zeige_qyteti" defaultChecked={zeigeQytetiAktual}
+                style={{ width: '16px', height: '16px', accentColor: RED, cursor: 'pointer', flexShrink: 0 }} />
+              <span style={{ fontSize: '14px', color: '#1D1D1F', fontWeight: '500' }}>Shfaq qytetin në profil publik</span>
+            </label>
           </div>
         </div>
 
