@@ -127,64 +127,78 @@ export default async function PublicProfilPage({
                 )}
               </div>
 
-              {/* Contact person name for business */}
-              {isBusiness && zeigeKontaktperson && fullName && fullName !== displayName && (
-                <div style={{ fontSize: '13px', color: '#86868B', marginBottom: '8px' }}>
-                  Kontakt: {fullName}
-                </div>
-              )}
-
-              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '10px' }}>
-                {joinedDate && (
-                  <span style={{ fontSize: '13px', color: '#86868B' }}>
-                    Anëtar që nga {joinedDate}
-                  </span>
-                )}
-                {zeigeQyteti && qyteti && (
-                  <>
-                    {joinedDate && <span style={{ color: '#D0D0D5' }}>·</span>}
-                    <span style={{ fontSize: '13px', color: '#86868B' }}>📍 {qyteti}</span>
-                  </>
-                )}
-              </div>
-
-              {/* Business details */}
-              {isBusiness && (adresa || website) && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', marginBottom: '10px' }}>
-                  {adresa && (
-                    <span style={{ fontSize: '13px', color: '#3D3D3F' }}>📍 {adresa}</span>
+              {isBusiness ? (
+                <>
+                  {/* 2. Contact person */}
+                  {zeigeKontaktperson && fullName && fullName !== displayName && (
+                    <div style={{ fontSize: '13px', color: '#86868B', marginBottom: '10px' }}>
+                      Kontakt: {fullName}
+                    </div>
                   )}
+
+                  {/* 3. Address + City in one line */}
+                  {(adresa || (zeigeQyteti && qyteti)) && (
+                    <div style={{ fontSize: '13px', color: '#3D3D3F', marginBottom: '6px' }}>
+                      📍 {[adresa, zeigeQyteti ? qyteti : null].filter(Boolean).join(', ')}
+                    </div>
+                  )}
+
+                  {/* 4. Website */}
                   {website && (
-                    <a
-                      href={website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ fontSize: '13px', color: RED, textDecoration: 'none', fontWeight: '500' }}
-                    >
-                      🌐 {website.replace(/^https?:\/\//, '')}
-                    </a>
+                    <div style={{ marginBottom: '10px' }}>
+                      <a
+                        href={website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ fontSize: '13px', color: RED, textDecoration: 'none', fontWeight: '500' }}
+                      >
+                        🌐 {website.replace(/^https?:\/\//, '')}
+                      </a>
+                    </div>
                   )}
-                </div>
-              )}
 
-              {/* Business description */}
-              {isBusiness && beschreibungFirma && (
-                <p style={{
-                  fontSize: '14px', color: '#3D3D3F', lineHeight: '1.65',
-                  margin: '0 0 8px', maxWidth: '480px', whiteSpace: 'pre-wrap',
-                }}>
-                  {beschreibungFirma}
-                </p>
-              )}
+                  {/* 5. Description */}
+                  {beschreibungFirma && (
+                    <p style={{
+                      fontSize: '14px', color: '#3D3D3F', lineHeight: '1.65',
+                      margin: '0 0 12px', maxWidth: '480px', whiteSpace: 'pre-wrap',
+                    }}>
+                      {beschreibungFirma}
+                    </p>
+                  )}
 
-              {/* Personal bio */}
-              {!isBusiness && bio && (
-                <p style={{
-                  fontSize: '14px', color: '#3D3D3F', lineHeight: '1.65',
-                  margin: 0, maxWidth: '480px', whiteSpace: 'pre-wrap',
-                }}>
-                  {bio}
-                </p>
+                  {/* 6. Member since — dezent, klein, unten */}
+                  {joinedDate && (
+                    <div style={{ fontSize: '11px', color: '#AEAEB2', marginTop: '4px' }}>
+                      Anëtar që nga {joinedDate}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '10px' }}>
+                    {joinedDate && (
+                      <span style={{ fontSize: '13px', color: '#86868B' }}>
+                        Anëtar që nga {joinedDate}
+                      </span>
+                    )}
+                    {zeigeQyteti && qyteti && (
+                      <>
+                        {joinedDate && <span style={{ color: '#D0D0D5' }}>·</span>}
+                        <span style={{ fontSize: '13px', color: '#86868B' }}>📍 {qyteti}</span>
+                      </>
+                    )}
+                  </div>
+
+                  {bio && (
+                    <p style={{
+                      fontSize: '14px', color: '#3D3D3F', lineHeight: '1.65',
+                      margin: 0, maxWidth: '480px', whiteSpace: 'pre-wrap',
+                    }}>
+                      {bio}
+                    </p>
+                  )}
+                </>
               )}
             </div>
 
