@@ -1,22 +1,18 @@
 import { createAdminClient } from '@/lib/supabase/admin'
+import ConversationList, { type Conversation, type Message } from './ConversationList'
 
 const FONT = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif'
 const RED = '#DA291C'
-
-function fmt(d: string) {
-  return new Date(d).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' })
-}
 
 export default async function MesazhetAdminPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const { q } = await searchParams
   const admin = createAdminClient()
 
-  // Get recent messages with pagination
   let query = admin
     .from('mesazhet')
     .select('id, sender_id, receiver_id, content, created_at, njoftim_id', { count: 'exact' })
-    .order('created_at', { ascending: false })
-    .limit(50)
+    .order('created_at', { ascending: true })
+    .limit(500)
 
   if (q) query = query.ilike('content', `%${q}%`)
 
@@ -31,14 +27,39 @@ export default async function MesazhetAdminPage({ searchParams }: { searchParams
   const { data: profiles } = userIds.length
     ? await admin.from('profiles').select('id, full_name').in('id', userIds)
     : { data: [] }
-  const pMap: Record<string, string> = Object.fromEntries((profiles ?? []).map((p: any) => [p.id, p.full_name ?? '—']))
+  const pMap: Record<string, string> = Object.fromEntries(
+    (profiles ?? []).map((p: any) => [p.id, p.full_name ?? p.id.slice(0, 8) + '…'])
+  )
 
-  // Conversation stats: unique (sender, receiver) pairs
-  const convSet = new Set<string>()
+  // Group messages into conversations
+  const convMap = new Map<string, { messages: Message[]; user1Id: string; user2Id: string }>()
+
   for (const m of messages ?? []) {
-    const key = [m.sender_id, m.receiver_id].sort().join('—')
-    convSet.add(key)
+    const [a, b] = [m.sender_id, m.receiver_id].sort()
+    const key = `${a}—${b}`
+    if (!convMap.has(key)) {
+      convMap.set(key, { messages: [], user1Id: a, user2Id: b })
+    }
+    convMap.get(key)!.messages.push(m as Message)
   }
+
+  // Build sorted conversation list (most recent first)
+  const conversations: Conversation[] = Array.from(convMap.entries())
+    .map(([key, { messages: msgs, user1Id, user2Id }]) => {
+      const lastMsg = msgs[msgs.length - 1]
+      return {
+        key,
+        user1Id,
+        user2Id,
+        user1Name: pMap[user1Id] ?? user1Id.slice(0, 8) + '…',
+        user2Name: pMap[user2Id] ?? user2Id.slice(0, 8) + '…',
+        lastMessage: lastMsg.content,
+        lastDate: lastMsg.created_at,
+        messageCount: msgs.length,
+        messages: msgs,
+      }
+    })
+    .sort((a, b) => new Date(b.lastDate).getTime() - new Date(a.lastDate).getTime())
 
   return (
     <div style={{ fontFamily: FONT }}>
@@ -46,7 +67,7 @@ export default async function MesazhetAdminPage({ searchParams }: { searchParams
         <h1 style={{ fontSize: '26px', fontWeight: '800', color: '#1D1D1F', margin: 0, letterSpacing: '-0.5px' }}>
           Nachrichten
           <span style={{ marginLeft: '10px', fontSize: '16px', fontWeight: '500', color: '#86868B' }}>
-            {count ?? 0} gesamt · {convSet.size} Konversationen (letzte 50)
+            {conversations.length} Konversationen · {count ?? 0} Nachrichten
           </span>
         </h1>
       </div>
@@ -78,57 +99,10 @@ export default async function MesazhetAdminPage({ searchParams }: { searchParams
         )}
       </form>
 
-      <div style={{ background: '#fff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 1px 6px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.05)' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ background: '#F5F5F7' }}>
-              {['Von', 'An', 'Inhalt', 'Anzeige', 'Datum'].map(h => (
-                <th key={h} style={{ padding: '11px 14px', textAlign: 'left', fontSize: '11px', fontWeight: '700', color: '#86868B', textTransform: 'uppercase', letterSpacing: '0.5px', whiteSpace: 'nowrap' }}>
-                  {h}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {(messages ?? []).map((m: any) => (
-              <tr key={m.id} style={{ borderTop: '1px solid rgba(0,0,0,0.05)' }}>
-                <td style={{ padding: '11px 14px', fontSize: '12px', color: '#1D1D1F', fontWeight: '500', whiteSpace: 'nowrap' }}>
-                  {pMap[m.sender_id] ?? m.sender_id?.slice(0, 8) + '…'}
-                </td>
-                <td style={{ padding: '11px 14px', fontSize: '12px', color: '#1D1D1F', whiteSpace: 'nowrap' }}>
-                  {pMap[m.receiver_id] ?? m.receiver_id?.slice(0, 8) + '…'}
-                </td>
-                <td style={{ padding: '11px 14px', maxWidth: '300px' }}>
-                  <div style={{ fontSize: '12px', color: '#6E6E73', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {m.content}
-                  </div>
-                </td>
-                <td style={{ padding: '11px 14px' }}>
-                  {m.njoftim_id ? (
-                    <a href={`/njoftim/${m.njoftim_id}`} target="_blank" rel="noreferrer" style={{
-                      fontSize: '11px', color: RED, fontWeight: '600', textDecoration: 'none',
-                    }}>
-                      Anzeige →
-                    </a>
-                  ) : <span style={{ fontSize: '11px', color: '#86868B' }}>—</span>}
-                </td>
-                <td style={{ padding: '11px 14px', fontSize: '11px', color: '#86868B', whiteSpace: 'nowrap' }}>
-                  {fmt(m.created_at)}
-                </td>
-              </tr>
-            ))}
-            {(messages ?? []).length === 0 && (
-              <tr>
-                <td colSpan={5} style={{ padding: '40px', textAlign: 'center', fontSize: '14px', color: '#86868B' }}>
-                  Keine Nachrichten gefunden
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+      <ConversationList conversations={conversations} />
+
       <div style={{ marginTop: '12px', fontSize: '12px', color: '#86868B' }}>
-        Zeige die letzten 50 Nachrichten. Zum Löschen bitte direkt in der Supabase-Datenbank.
+        Zeigt die letzten 500 Nachrichten, gruppiert nach Konversation. Klick auf eine Zeile öffnet den vollständigen Chatverlauf.
       </div>
     </div>
   )
