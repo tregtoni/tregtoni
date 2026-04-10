@@ -42,10 +42,10 @@ export default async function PublicProfilPage({
   if (!profile && (!njoftimet || njoftimet.length === 0)) notFound()
 
   const fullName = (profile?.full_name as string | null) ?? ''
-  const nameParts = fullName.trim().split(/\s+/)
+  const nameParts = fullName.trim().split(/\s+/).filter(Boolean)
   const initials = nameParts.length >= 2
     ? (nameParts[0][0] + nameParts[1][0]).toUpperCase()
-    : nameParts[0][0].toUpperCase()
+    : nameParts[0]?.[0]?.toUpperCase() ?? ''
   const avatarUrl = (profile?.avatar_url as string | null) ?? null
   const bio = (profile?.bio as string | null) ?? null
   const zeigeQyteti = (profile?.zeige_qyteti as boolean | null) ?? true

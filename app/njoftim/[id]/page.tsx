@@ -318,10 +318,10 @@ export default async function NjoftimDetail({
 
   const sellerName   = seller?.full_name ?? ''
   const sellerAvatar = seller?.avatar_url ?? null
-  const sellerParts  = sellerName.trim().split(/\s+/)
+  const sellerParts  = sellerName.trim().split(/\s+/).filter(Boolean)
   const sellerInitials = sellerParts.length >= 2
     ? (sellerParts[0][0] + sellerParts[1][0]).toUpperCase()
-    : sellerParts[0][0].toUpperCase()
+    : sellerParts[0]?.[0]?.toUpperCase() ?? ''
   const images: string[] = ad.images ?? []
   const isMakina     = ad.category === 'makina'
   const isMoto       = ad.subcategory === 'Motorra'
