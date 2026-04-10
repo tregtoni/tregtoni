@@ -742,7 +742,7 @@ export default async function NjoftimDetail({
                 <img
                   src={sellerAvatar}
                   alt={sellerDisplay}
-                  style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #DA291C', display: 'block' }}
+                  style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover', display: 'block' }}
                 />
               ) : (
                 <div style={{

@@ -80,7 +80,7 @@ export default async function PublicProfilPage({
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={avatarUrl} alt={displayName} style={{
                   width: '88px', height: '88px', borderRadius: '50%',
-                  objectFit: 'cover', border: `3px solid ${RED}`,
+                  objectFit: 'cover',
                 }} />
               ) : (
                 <div style={{
