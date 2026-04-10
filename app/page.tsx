@@ -21,9 +21,9 @@ export default async function Home() {
   // Batch-fetch seller konto_typ for Tregtar badges
   const userIds = [...new Set((njoftimet ?? []).map(ad => ad.user_id).filter(Boolean))]
   const { data: sellerProfiles } = userIds.length
-    ? await admin.from('profiles').select('id, konto_typ, firma_name').in('id', userIds)
+    ? await admin.from('profiles').select('id, konto_typ, firma_name, avatar_url').in('id', userIds)
     : { data: [] }
-  const sellerMap: Record<string, { konto_typ?: string; firma_name?: string }> =
+  const sellerMap: Record<string, { konto_typ?: string; firma_name?: string; avatar_url?: string }> =
     Object.fromEntries((sellerProfiles ?? []).map(p => [p.id, p]))
 
   const { data: counts } = await supabase
@@ -351,6 +351,21 @@ export default async function Home() {
                           padding: '2px 7px', borderRadius: '5px',
                           letterSpacing: '0.3px', textTransform: 'uppercase',
                         }}>Tregtar</span>
+                      )}
+                      {isTregtar && sellerMap[ad.user_id]?.avatar_url && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={sellerMap[ad.user_id].avatar_url!}
+                          alt=""
+                          style={{
+                            position: 'absolute', bottom: '8px', right: '8px',
+                            width: '34px', height: '34px',
+                            borderRadius: '50%',
+                            border: '2px solid #fff',
+                            objectFit: 'cover',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
+                          }}
+                        />
                       )}
                     </div>
                     <div style={{ padding: '12px 14px 10px' }}>
