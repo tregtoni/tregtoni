@@ -320,7 +320,8 @@ export default async function NjoftimDetail({
 
   const sellerAvatar   = seller?.avatar_url ?? null
   const sellerInitials = seller?.full_name
-    ?.split(' ').map((w: string) => w[0]).join('').toUpperCase().slice(0, 2)
+    ? seller.full_name.split(' ').map((w: string) => w[0]).join('').toUpperCase().slice(0, 2)
+    : '?'
   const images: string[] = ad.images ?? []
   const isMakina     = ad.category === 'makina'
   const isMoto       = ad.subcategory === 'Motorra'
@@ -753,11 +754,9 @@ export default async function NjoftimDetail({
               )}
             </a>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              {seller?.full_name && (
-                <a href={`/profil/${ad.user_id}`} style={{ fontSize: '16px', fontWeight: '600', color: '#1D1D1F', textDecoration: 'none' }}>
-                  {seller.full_name}
-                </a>
-              )}
+              <a href={`/profil/${ad.user_id}`} style={{ fontSize: '16px', fontWeight: '600', color: '#1D1D1F', textDecoration: 'none' }}>
+                {seller?.full_name ?? ''}
+              </a>
               <MeldeModal nutzer_id={ad.user_id} />
             </div>
           </div>
