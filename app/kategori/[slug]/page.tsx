@@ -1211,7 +1211,7 @@ export default async function KategoriPage({
                             ].filter(Boolean).map((val, i, arr) => (
                               <span key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                                 {val}
-                                {i < arr.length - 1 && <span style={{ color: '#C7C7CC', fontSize: '10px' }}>·</span>}
+                                {i < arr.length - 1 && <span style={{ color: '#AEAEB2', fontSize: '14px', lineHeight: 1 }}>·</span>}
                               </span>
                             ))}
                           </div>
