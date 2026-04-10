@@ -69,6 +69,7 @@ export default function Footer() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <a href="/kushtet" style={{ color: '#6E6E73', fontSize: '13px', textDecoration: 'none' }}>Kushtet</a>
                 <a href="/privatesia" style={{ color: '#6E6E73', fontSize: '13px', textDecoration: 'none' }}>Privatësia</a>
+                <a href="/cookies" style={{ color: '#6E6E73', fontSize: '13px', textDecoration: 'none' }}>Cookies</a>
               </div>
             </div>
           </div>
