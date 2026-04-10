@@ -59,7 +59,7 @@ export default function RrethNeshPage() {
           </h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             {[
-              { label: 'Falas', title: 'Falas për gjithmonë', text: 'Publiko njoftimet tua pa asnjë kosto. Nuk ka tarifa të fshehura.' },
+              { label: 'Falas', title: 'Falas', text: 'Publiko njoftimet tua pa asnjë kosto. Nuk ka tarifa të fshehura.' },
               { label: '⚡', title: 'E shpejtë dhe e thjeshtë', text: 'Publiko një njoftim në pak sekonda — pa regjistrimin e detyrueshëm.' },
               { label: 'AL', title: 'Bërë për shqiptarët', text: 'Platformë e ndërtuar për komunitetin shqiptar, kudo që ndodheni.' },
               { label: '✓', title: 'E sigurt', text: 'Komunikimi direkt mes palëve, pa ndërmjetës të panevojshëm.' },
