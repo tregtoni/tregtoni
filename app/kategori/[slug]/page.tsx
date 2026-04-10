@@ -1246,17 +1246,19 @@ export default async function KategoriPage({
                             <span>{ad.city}</span>
                           </div>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-                          <div style={{ fontSize: '12px', color: '#86868B', fontWeight: '400' }}>{timeAgo(ad.created_at)}</div>
-                          <MeldeModal anzeige_id={ad.id} />
-                        </div>
+                        {!sellerLogo && (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+                            <div style={{ fontSize: '12px', color: '#86868B', fontWeight: '400' }}>{timeAgo(ad.created_at)}</div>
+                            <MeldeModal anzeige_id={ad.id} />
+                          </div>
+                        )}
                       </div>
                     </div>
                     {sellerLogo && (
                       <div style={{
-                        display: 'flex', flexDirection: 'column', alignItems: 'center',
-                        justifyContent: 'center', gap: '6px',
-                        padding: '14px 20px', flexShrink: 0,
+                        display: 'flex', flexDirection: 'column', alignItems: 'flex-end',
+                        justifyContent: 'flex-start', gap: '6px',
+                        padding: '14px 20px 14px 12px', flexShrink: 0,
                       }}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
@@ -1273,12 +1275,16 @@ export default async function KategoriPage({
                         {sellerMap[ad.user_id]?.firma_name && (
                           <span style={{
                             fontSize: '11px', color: '#86868B', fontWeight: '500',
-                            textAlign: 'center', lineHeight: '1.35',
+                            textAlign: 'right', lineHeight: '1.35',
                             maxWidth: '96px', wordBreak: 'break-word',
                           }}>
                             {sellerMap[ad.user_id].firma_name}
                           </span>
                         )}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <div style={{ fontSize: '12px', color: '#86868B', fontWeight: '400' }}>{timeAgo(ad.created_at)}</div>
+                          <MeldeModal anzeige_id={ad.id} />
+                        </div>
                       </div>
                     )}
                   </a>
