@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, useState } from 'react'
+import { useState } from 'react'
 import { dergofeedback } from '@/app/actions/feedback'
 
 const inputStyle: React.CSSProperties = {
@@ -17,11 +17,24 @@ const inputStyle: React.CSSProperties = {
 }
 
 export default function FeedbackForm() {
-  const [rating, setRating] = useState(0)
+  const [rating, setRating]   = useState(0)
   const [hovered, setHovered] = useState(0)
-  const [state, formAction, pending] = useActionState(dergofeedback, { error: '', success: false })
+  const [pending, setPending] = useState(false)
+  const [error, setError]     = useState('')
+  const [success, setSuccess] = useState(false)
 
-  if (state.success) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setPending(true)
+    setError('')
+    const fd = new FormData(e.currentTarget)
+    const result = await dergofeedback({ error: '', success: false }, fd)
+    setPending(false)
+    if (result.error) setError(result.error)
+    else setSuccess(true)
+  }
+
+  if (success) {
     return (
       <div style={{
         background: '#fff',
@@ -80,7 +93,7 @@ export default function FeedbackForm() {
         Na ndihmoni ta bëjmë Tregtoni më të mirë. Çdo mendim është i vlefshëm për ne.
       </p>
 
-      {state.error && (
+      {error && (
         <div style={{
           background: '#FFF5F5',
           border: '1px solid rgba(218,41,28,0.2)',
@@ -91,37 +104,35 @@ export default function FeedbackForm() {
           color: '#DA291C',
           fontWeight: '500',
         }}>
-          {state.error}
+          {error}
         </div>
       )}
 
-      <form action={formAction} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
         <div>
           <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: '#86868B', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             Vlerësimi juaj
           </label>
-          <div style={{ display: 'flex', gap: '6px' }}>
+          <div
+            style={{ display: 'flex', gap: '4px' }}
+            onMouseLeave={() => setHovered(0)}
+          >
             {[1, 2, 3, 4, 5].map(star => (
               <button
                 key={star}
                 type="button"
                 onClick={() => setRating(star)}
                 onMouseEnter={() => setHovered(star)}
-                onMouseLeave={() => setHovered(0)}
                 style={{
-                  background: star <= (hovered || rating) ? '#FFF5F5' : '#F5F5F7',
-                  border: star <= (hovered || rating) ? '1.5px solid rgba(218,41,28,0.3)' : '1.5px solid rgba(0,0,0,0.08)',
-                  borderRadius: '10px',
-                  width: '44px',
-                  height: '44px',
+                  background: 'none',
+                  border: 'none',
                   cursor: 'pointer',
-                  fontSize: '20px',
+                  padding: '0 2px',
+                  fontSize: '40px',
                   lineHeight: 1,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  transition: 'all 0.15s',
+                  color: star <= (hovered || rating) ? '#111' : '#ccc',
+                  transition: 'color 0.1s',
                   fontFamily: 'inherit',
                 }}
               >
