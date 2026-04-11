@@ -102,12 +102,12 @@ export default function PrivatesiaPage() {
         <div style={card}>
           <h2 style={h2}>Si i përdorim të dhënat</h2>
           <ul style={{ paddingLeft: '20px', margin: 0 }}>
-            <li style={li}>Për të ofruar dhe mirëmbajtur shërbimet e platformës</li>
-            <li style={li}>Për të mundësuar publikimin dhe menaxhimin e njoftimeve tuaja</li>
-            <li style={li}>Për të verifikuar identitetin dhe parandaluar mashtrimet</li>
-            <li style={li}>Për të dërguar njoftime rreth llogarisë suaj</li>
-            <li style={li}>Për të analizuar dhe përmirësuar funksionimin e platformës</li>
-            <li style={li}>Për të zbatuar Kushtet e Përdorimit dhe politikat e Tregtoni.com</li>
+            <li style={li}>Për të ofruar dhe mirëmbajtur shërbimet e platformës.</li>
+            <li style={li}>Për të mundësuar publikimin dhe menaxhimin e njoftimeve tuaja.</li>
+            <li style={li}>Për të verifikuar identitetin dhe parandaluar mashtrimet.</li>
+            <li style={li}>Për të dërguar njoftime rreth llogarisë suaj.</li>
+            <li style={li}>Për të analizuar dhe përmirësuar funksionimin e platformës.</li>
+            <li style={li}>Për të zbatuar Kushtet e Përdorimit dhe politikat e Tregtoni.com.</li>
           </ul>
         </div>
 
@@ -172,8 +172,6 @@ export default function PrivatesiaPage() {
             <a href="mailto:info@tregtoni.com" style={{ color: RED, fontWeight: '600', textDecoration: 'none' }}>
               info@tregtoni.com
             </a>.
-            Keni gjithashtu të drejtë të paraqisni ankesë pranë autoritetit kompetent të mbrojtjes
-            së të dhënave në vendin tuaj të rezidencës.
           </div>
         </div>
 
