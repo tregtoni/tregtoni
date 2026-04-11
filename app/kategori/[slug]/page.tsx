@@ -1154,20 +1154,21 @@ export default async function KategoriPage({
                     style={{
                       display: 'flex',
                       background: '#fff',
-                      borderRadius: '14px',
+                      borderRadius: '18px',
                       overflow: 'hidden',
-                      boxShadow: '0 1px 8px rgba(0,0,0,0.06)',
+                      boxShadow: '0 2px 14px rgba(0,0,0,0.07)',
                       border: '1px solid rgba(0,0,0,0.05)',
                       position: 'relative',
+                      transition: 'box-shadow 0.18s',
                     }}>
                   <a href={`/njoftim/${ad.id}`}
                     style={{ display: 'flex', flex: 1, textDecoration: 'none', minWidth: 0 }}>
 
                     {/* Image */}
                     <div style={{
-                      width: '168px', minHeight: '120px', flexShrink: 0,
+                      width: '220px', minHeight: '160px', flexShrink: 0,
                       background: '#F5F5F7', display: 'flex', alignItems: 'center',
-                      justifyContent: 'center', fontSize: '36px',
+                      justifyContent: 'center', fontSize: '42px',
                       overflow: 'hidden', position: 'relative',
                     }}>
                       {images[0] ? (
@@ -1176,19 +1177,19 @@ export default async function KategoriPage({
                       ) : kategoria.icon}
                       {isTregtar && (
                         <span style={{
-                          position: 'absolute', top: '8px', left: '8px', zIndex: 1,
+                          position: 'absolute', top: '10px', left: '10px', zIndex: 1,
                           background: '#DA291C', color: '#fff',
                           fontSize: '10px', fontWeight: '700',
-                          padding: '2px 7px', borderRadius: '5px',
+                          padding: '3px 8px', borderRadius: '6px',
                           letterSpacing: '0.3px', textTransform: 'uppercase',
                         }}>Tregtar</span>
                       )}
                       {images.length > 1 && (
                         <span style={{
-                          position: 'absolute', bottom: '6px', right: '6px',
-                          background: 'rgba(0,0,0,0.5)', color: '#fff',
-                          fontSize: '10px', padding: '2px 7px',
-                          borderRadius: '6px', fontWeight: '500',
+                          position: 'absolute', bottom: '8px', right: '8px',
+                          background: 'rgba(0,0,0,0.52)', color: '#fff',
+                          fontSize: '11px', padding: '3px 8px',
+                          borderRadius: '7px', fontWeight: '500',
                         }}>+{images.length - 1}</span>
                       )}
                       <FavoriteButton
@@ -1199,24 +1200,23 @@ export default async function KategoriPage({
                     </div>
 
                     {/* Info */}
-                    <div style={{ flex: 1, padding: '14px 18px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minWidth: 0 }}>
-                      {/* Top: title + price + specs */}
+                    <div style={{ flex: 1, padding: '20px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minWidth: 0 }}>
                       <div>
-                        {/* Row 1: Title */}
+                        {/* Title */}
                         <div style={{
-                          fontSize: '15px', fontWeight: '700', color: '#1D1D1F',
-                          marginBottom: '5px', overflow: 'hidden',
-                          textOverflow: 'ellipsis', whiteSpace: 'nowrap', letterSpacing: '-0.1px',
+                          fontSize: '17px', fontWeight: '700', color: '#1D1D1F',
+                          marginBottom: '8px', overflow: 'hidden',
+                          textOverflow: 'ellipsis', whiteSpace: 'nowrap', letterSpacing: '-0.2px',
                         }}>
                           {ad.title}
                         </div>
-                        {/* Row 2: Price */}
-                        <div style={{ fontSize: '17px', fontWeight: '700', color: '#DA291C', letterSpacing: '-0.2px', marginBottom: '5px' }}>
+                        {/* Price */}
+                        <div style={{ fontSize: '20px', fontWeight: '800', color: '#DA291C', letterSpacing: '-0.4px', marginBottom: '10px' }}>
                           {ad.price.toLocaleString('de-DE')} €
                         </div>
-                        {/* Row 3: km / PS / Baujahr (only if present) */}
+                        {/* km / PS / Baujahr */}
                         {(ad.km || ad.leistung_ps || ad.baujahr) && (
-                          <div style={{ fontSize: '12px', color: '#6E6E73', display: 'flex', gap: '6px', alignItems: 'center' }}>
+                          <div style={{ fontSize: '13px', color: '#6E6E73', display: 'flex', gap: '6px', alignItems: 'center' }}>
                             {[
                               ad.km ? `${ad.km.toLocaleString('de-DE')} km` : null,
                               ad.leistung_ps ? `${ad.leistung_ps} PS` : null,
@@ -1230,8 +1230,15 @@ export default async function KategoriPage({
                           </div>
                         )}
                       </div>
-                      {/* Bottom: timeAgo + melde */}
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px' }}>
+                      {/* Bottom: city + timeAgo + melde */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '16px' }}>
+                        <span style={{ fontSize: '12px', color: '#86868B', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                          </svg>
+                          {ad.city}
+                        </span>
+                        <span style={{ color: '#D1D1D6', fontSize: '11px' }}>·</span>
                         <div style={{ fontSize: '12px', color: '#86868B', fontWeight: '400' }}>{timeAgo(ad.created_at)}</div>
                         <MeldeModal anzeige_id={ad.id} />
                       </div>
@@ -1241,20 +1248,21 @@ export default async function KategoriPage({
                     {sellerLogo && (
                       <div style={{
                         display: 'flex', flexDirection: 'column', alignItems: 'center',
-                        justifyContent: 'center', gap: '6px',
-                        padding: '14px 20px', flexShrink: 0,
+                        justifyContent: 'center', gap: '7px',
+                        padding: '20px 24px', flexShrink: 0,
+                        borderLeft: '1px solid rgba(0,0,0,0.04)',
                       }}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={sellerLogo} alt="" style={{
-                          width: '72px', height: '72px', borderRadius: '50%',
-                          border: '1.5px solid rgba(0,0,0,0.08)', objectFit: 'cover',
+                          width: '64px', height: '64px', borderRadius: '50%',
+                          border: 'none', objectFit: 'cover',
                           boxShadow: '0 2px 8px rgba(0,0,0,0.10)',
                         }} />
                         {sellerMap[ad.user_id]?.firma_name && (
                           <span style={{
                             fontSize: '11px', color: '#86868B', fontWeight: '500',
                             textAlign: 'center', lineHeight: '1.35',
-                            maxWidth: '96px', wordBreak: 'break-word',
+                            maxWidth: '88px', wordBreak: 'break-word',
                           }}>
                             {sellerMap[ad.user_id].firma_name}
                           </span>

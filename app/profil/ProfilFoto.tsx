@@ -81,7 +81,7 @@ export default function ProfilFoto({
               height: '88px',
               borderRadius: '50%',
               objectFit: 'cover',
-              border: '3px solid #DA291C',
+              border: 'none',
             }}
           />
         ) : (
