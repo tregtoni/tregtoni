@@ -6,6 +6,7 @@ import Footer from '@/app/components/Footer'
 import ImageGallery from './ImageGallery'
 import { KATEGORI_MAP, CATEGORY_ICON } from '@/lib/kategori-data'
 import MeldeModal from '@/app/components/MeldeModal'
+import FavoriteButton from '@/app/components/FavoriteButton'
 
 const KRAFTSTOFF_LABEL: Record<string, string> = {
   benzine: 'Benzinë', diesel: 'Diesel', cng: 'Gas natyror (CNG)',
@@ -312,11 +313,11 @@ export default async function NjoftimDetail({
   if (!ad) notFound()
 
   const adminClient = createAdminClient()
-  const { data: seller } = await adminClient
-    .from('profiles')
-    .select('full_name, avatar_url, id, konto_typ, firma_name')
-    .eq('id', ad.user_id)
-    .single()
+  const [{ data: seller }, { data: favRow }] = await Promise.all([
+    adminClient.from('profiles').select('full_name, avatar_url, id, konto_typ, firma_name').eq('id', ad.user_id).single(),
+    user ? supabase.from('favorites').select('id').eq('user_id', user.id).eq('njoftim_id', id).maybeSingle() : Promise.resolve({ data: null }),
+  ])
+  const isFavorited = !!favRow
 
   const sellerAvatar    = (seller as any)?.avatar_url ?? null
   const isTregtar       = seller?.konto_typ === 'biznes'
@@ -771,24 +772,34 @@ export default async function NjoftimDetail({
             </div>
           </div>
 
-          {user && user.id !== ad.user_id && (
-            <a href={`/mesazhet/${ad.user_id}?njoftim=${ad.id}`} style={{
-              background: '#DA291C', color: '#fff',
-              padding: '11px 24px', borderRadius: '12px',
-              fontSize: '14px', fontWeight: '600', textDecoration: 'none', flexShrink: 0,
-            }}>
-              Dërgo mesazh
-            </a>
-          )}
-          {!user && (
-            <a href="/login" style={{
-              background: '#1D1D1F', color: '#fff',
-              padding: '11px 24px', borderRadius: '12px',
-              fontSize: '14px', fontWeight: '600', textDecoration: 'none', flexShrink: 0,
-            }}>
-              Hyr për të kontaktuar
-            </a>
-          )}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+            {user?.id !== ad.user_id && (
+              <FavoriteButton
+                njoftim_id={ad.id}
+                userId={user?.id ?? null}
+                initialFavorited={isFavorited}
+                variant="inline"
+              />
+            )}
+            {user && user.id !== ad.user_id && (
+              <a href={`/mesazhet/${ad.user_id}?njoftim=${ad.id}`} style={{
+                background: '#DA291C', color: '#fff',
+                padding: '11px 24px', borderRadius: '12px',
+                fontSize: '14px', fontWeight: '600', textDecoration: 'none', flexShrink: 0,
+              }}>
+                Dërgo mesazh
+              </a>
+            )}
+            {!user && (
+              <a href="/login" style={{
+                background: '#1D1D1F', color: '#fff',
+                padding: '11px 24px', borderRadius: '12px',
+                fontSize: '14px', fontWeight: '600', textDecoration: 'none', flexShrink: 0,
+              }}>
+                Hyr për të kontaktuar
+              </a>
+            )}
+          </div>
 
           {user && user.id === ad.user_id && (
             <a href={`/njoftim/${ad.id}/ndrysho`} style={{

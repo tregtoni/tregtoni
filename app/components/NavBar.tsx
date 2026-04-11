@@ -8,13 +8,14 @@ export default async function NavBar() {
   const fullName = user?.user_metadata?.full_name as string | undefined
 
   let unreadCount = 0
+  let favCount = 0
   if (user) {
-    const { count } = await supabase
-      .from('mesazhet')
-      .select('id', { count: 'exact', head: true })
-      .eq('receiver_id', user.id)
-      .eq('read', false)
-    unreadCount = count ?? 0
+    const [{ count: unread }, { count: fav }] = await Promise.all([
+      supabase.from('mesazhet').select('id', { count: 'exact', head: true }).eq('receiver_id', user.id).eq('read', false),
+      supabase.from('favorites').select('id', { count: 'exact', head: true }).eq('user_id', user.id),
+    ])
+    unreadCount = unread ?? 0
+    favCount = fav ?? 0
   }
 
   return (
@@ -46,6 +47,35 @@ export default async function NavBar() {
       <div style={{ display: 'flex', gap: '2px', alignItems: 'center' }}>
         {user ? (
           <>
+            <a href="/favorites" style={{
+              position: 'relative',
+              color: '#1D1D1F',
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '5px',
+              padding: '7px 12px',
+              borderRadius: '8px',
+            }}>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+              {favCount > 0 && (
+                <span style={{
+                  background: '#DA291C',
+                  color: '#fff',
+                  fontSize: '10px',
+                  fontWeight: '700',
+                  borderRadius: '10px',
+                  padding: '1px 6px',
+                  lineHeight: '16px',
+                  minWidth: '18px',
+                  textAlign: 'center',
+                }}>
+                  {favCount}
+                </span>
+              )}
+            </a>
             <a href="/mesazhet" style={{
               position: 'relative',
               color: '#1D1D1F',

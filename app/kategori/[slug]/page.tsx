@@ -20,6 +20,7 @@ import HobiFilterSidebar, { HobiFilters } from './HobiFilterSidebar'
 import MuzikeFilterSidebar, { MuzikeFilters } from './MuzikeFilterSidebar'
 import DhurateFilterSidebar, { DhurateFilters } from './DhurateFilterSidebar'
 import MeldeModal from '@/app/components/MeldeModal'
+import FavoriteButton from '@/app/components/FavoriteButton'
 
 type SearchParams = {
   nenkategoria?: string
@@ -450,6 +451,13 @@ export default async function KategoriPage({
   }
 
   const { data: njoftimet } = await query
+
+  // Batch-fetch favorites for current user
+  const njoftimIds = (njoftimet ?? []).map(ad => ad.id)
+  const { data: favRows } = user && njoftimIds.length
+    ? await supabase.from('favorites').select('njoftim_id').eq('user_id', user.id).in('njoftim_id', njoftimIds)
+    : { data: [] }
+  const favSet = new Set((favRows ?? []).map(r => r.njoftim_id))
 
   // Batch-fetch seller konto_typ for Tregtar badges
   const admin = createAdminClient()
@@ -1183,6 +1191,11 @@ export default async function KategoriPage({
                           borderRadius: '6px', fontWeight: '500',
                         }}>+{images.length - 1}</span>
                       )}
+                      <FavoriteButton
+                        njoftim_id={ad.id}
+                        userId={user?.id ?? null}
+                        initialFavorited={favSet.has(ad.id)}
+                      />
                     </div>
 
                     {/* Info */}

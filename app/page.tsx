@@ -4,6 +4,7 @@ import NavBar from '@/app/components/NavBar'
 import Footer from '@/app/components/Footer'
 import { KATEGORITË, CATEGORY_ICON, QYTETET_SHQIPERI, QYTETET_KOSOVE } from '@/lib/kategori-data'
 import MeldeModal from '@/app/components/MeldeModal'
+import FavoriteButton from '@/app/components/FavoriteButton'
 
 export default async function Home() {
   const supabase = await createClient()
@@ -25,6 +26,13 @@ export default async function Home() {
     : { data: [] }
   const sellerMap: Record<string, { konto_typ?: string; firma_name?: string; avatar_url?: string }> =
     Object.fromEntries((sellerProfiles ?? []).map(p => [p.id, p]))
+
+  // Batch-fetch favorites for current user
+  const njoftimIds = (njoftimet ?? []).map(ad => ad.id)
+  const { data: favRows } = user && njoftimIds.length
+    ? await supabase.from('favorites').select('njoftim_id').eq('user_id', user.id).in('njoftim_id', njoftimIds)
+    : { data: [] }
+  const favSet = new Set((favRows ?? []).map(r => r.njoftim_id))
 
   const { data: counts } = await supabase
     .from('njoftimet')
@@ -367,6 +375,11 @@ export default async function Home() {
                           }}
                         />
                       )}
+                      <FavoriteButton
+                        njoftim_id={ad.id}
+                        userId={user?.id ?? null}
+                        initialFavorited={favSet.has(ad.id)}
+                      />
                     </div>
                     <div style={{ padding: '12px 14px 10px' }}>
                       <div style={{
