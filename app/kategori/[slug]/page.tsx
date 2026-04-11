@@ -1151,7 +1151,6 @@ export default async function KategoriPage({
                 const sellerLogo = isTregtar ? (sellerMap[ad.user_id]?.avatar_url ?? null) : null
                 return (
                   <div key={ad.id}
-                    className="kat-card-outer"
                     style={{
                       display: 'flex',
                       background: '#fff',
@@ -1163,18 +1162,15 @@ export default async function KategoriPage({
                       transition: 'box-shadow 0.18s',
                     }}>
                   <a href={`/njoftim/${ad.id}`}
-                    className="kat-card-link"
                     style={{ display: 'flex', flex: 1, textDecoration: 'none', minWidth: 0 }}>
 
                     {/* Image */}
-                    <div
-                      className="kat-card-img"
-                      style={{
-                        width: '220px', minHeight: '160px', flexShrink: 0,
-                        background: '#F5F5F7', display: 'flex', alignItems: 'center',
-                        justifyContent: 'center', fontSize: '42px',
-                        overflow: 'hidden', position: 'relative',
-                      }}>
+                    <div style={{
+                      width: '220px', minHeight: '160px', flexShrink: 0,
+                      background: '#F5F5F7', display: 'flex', alignItems: 'center',
+                      justifyContent: 'center', fontSize: '42px',
+                      overflow: 'hidden', position: 'relative',
+                    }}>
                       {images[0] ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={images[0]} alt={ad.title} style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }} />
@@ -1196,20 +1192,6 @@ export default async function KategoriPage({
                           borderRadius: '7px', fontWeight: '500',
                         }}>+{images.length - 1}</span>
                       )}
-                      {sellerLogo && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          className="kat-seller-overlay"
-                          src={sellerLogo}
-                          alt=""
-                          style={{
-                            position: 'absolute', bottom: '10px', left: '10px', zIndex: 2,
-                            width: '36px', height: '36px', borderRadius: '50%',
-                            border: '2px solid #fff', objectFit: 'cover',
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.22)',
-                          }}
-                        />
-                      )}
                       <FavoriteButton
                         njoftim_id={ad.id}
                         userId={user?.id ?? null}
@@ -1218,7 +1200,7 @@ export default async function KategoriPage({
                     </div>
 
                     {/* Info */}
-                    <div className="kat-card-info" style={{ flex: 1, padding: '20px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minWidth: 0 }}>
+                    <div style={{ flex: 1, padding: '20px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minWidth: 0 }}>
                       <div>
                         {/* Title */}
                         <div style={{
@@ -1264,7 +1246,7 @@ export default async function KategoriPage({
 
                     {/* Right column: seller logo (business only) */}
                     {sellerLogo && (
-                      <div className="kat-card-seller" style={{
+                      <div style={{
                         display: 'flex', flexDirection: 'column', alignItems: 'center',
                         justifyContent: 'center', gap: '7px',
                         padding: '20px 24px', flexShrink: 0,
