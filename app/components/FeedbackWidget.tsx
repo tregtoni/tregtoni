@@ -177,7 +177,7 @@ export default function FeedbackWidget() {
                         style={{
                           background: 'none', border: 'none', cursor: 'pointer', padding: '2px',
                           fontSize: '28px', lineHeight: 1,
-                          color: star <= (hovered || rating) ? '#FFD700' : '#D1D1D6',
+                          color: star <= (hovered || rating) ? '#111111' : '#D1D1D6',
                           transform: star <= (hovered || rating) ? 'scale(1.15)' : 'scale(1)',
                           transition: 'transform 0.1s, color 0.1s',
                         }}
