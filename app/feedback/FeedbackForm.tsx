@@ -122,7 +122,7 @@ export default function FeedbackForm() {
               <button
                 key={star}
                 type="button"
-                onClick={() => setRating(star)}
+                onClick={() => setRating(star === rating ? 0 : star)}
                 onMouseEnter={() => setHovered(star)}
                 style={{
                   background: 'none',
@@ -131,7 +131,7 @@ export default function FeedbackForm() {
                   padding: '0 2px',
                   fontSize: '40px',
                   lineHeight: 1,
-                  color: star <= (hovered || rating) ? '#111' : '#ccc',
+                  color: star <= (hovered || rating) ? '#E24B4A' : '#ccc',
                   transition: 'color 0.1s',
                   fontFamily: 'inherit',
                 }}
