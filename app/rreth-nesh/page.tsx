@@ -112,7 +112,7 @@ export default function RrethNeshPage() {
             po ndërtojmë diçka të rëndësishme — tregun dixhital shqiptar.
           </p>
           <p style={{ fontSize: '15px', fontWeight: '600', color: '#E24B4A', textAlign: 'center', margin: 0, letterSpacing: '0.1px' }}>
-            Tregtoni Team — Made by DK
+            Tregtoni.com - Made by DK
           </p>
         </div>
 
