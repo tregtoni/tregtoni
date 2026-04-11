@@ -78,4 +78,39 @@ body {
   /* Shto form */
   .shto-form-outer { padding-left: 16px !important; padding-right: 16px !important; }
   .form-grid-2 { grid-template-columns: 1fr !important; }
+
+  /* Kategori listing cards — stack vertically */
+  .kat-card-link { flex-direction: column !important; }
+  .kat-card-img  { width: 100% !important; min-height: 200px !important; }
+  .kat-card-info { padding: 14px 16px !important; }
+  .kat-card-seller {
+    border-left: none !important;
+    border-top: 1px solid rgba(0,0,0,0.05) !important;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    padding: 12px 16px !important;
+    gap: 10px !important;
+  }
+
+  /* Favorites page — 1 column on mobile */
+  .fav-grid { grid-template-columns: 1fr !important; }
+
+  /* Public profile header — stack vertically */
+  .profil-pub-header { flex-direction: column !important; }
+  .profil-pub-stats {
+    width: 100% !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 20px !important;
+    padding: 14px 18px !important;
+    text-align: left !important;
+  }
+  .profil-pub-stats-num { font-size: 28px !important; }
+
+  /* ProfilInfo form card */
+  .profil-info-card { padding: 20px 16px !important; }
+
+  /* NavBar icons — larger touch targets */
+  .nav-icon-btn { padding: 10px 14px !important; }
 }

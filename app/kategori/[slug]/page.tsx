@@ -1162,15 +1162,18 @@ export default async function KategoriPage({
                       transition: 'box-shadow 0.18s',
                     }}>
                   <a href={`/njoftim/${ad.id}`}
+                    className="kat-card-link"
                     style={{ display: 'flex', flex: 1, textDecoration: 'none', minWidth: 0 }}>
 
                     {/* Image */}
-                    <div style={{
-                      width: '220px', minHeight: '160px', flexShrink: 0,
-                      background: '#F5F5F7', display: 'flex', alignItems: 'center',
-                      justifyContent: 'center', fontSize: '42px',
-                      overflow: 'hidden', position: 'relative',
-                    }}>
+                    <div
+                      className="kat-card-img"
+                      style={{
+                        width: '220px', minHeight: '160px', flexShrink: 0,
+                        background: '#F5F5F7', display: 'flex', alignItems: 'center',
+                        justifyContent: 'center', fontSize: '42px',
+                        overflow: 'hidden', position: 'relative',
+                      }}>
                       {images[0] ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={images[0]} alt={ad.title} style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }} />
@@ -1200,7 +1203,7 @@ export default async function KategoriPage({
                     </div>
 
                     {/* Info */}
-                    <div style={{ flex: 1, padding: '20px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minWidth: 0 }}>
+                    <div className="kat-card-info" style={{ flex: 1, padding: '20px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minWidth: 0 }}>
                       <div>
                         {/* Title */}
                         <div style={{
@@ -1246,7 +1249,7 @@ export default async function KategoriPage({
 
                     {/* Right column: seller logo (business only) */}
                     {sellerLogo && (
-                      <div style={{
+                      <div className="kat-card-seller" style={{
                         display: 'flex', flexDirection: 'column', alignItems: 'center',
                         justifyContent: 'center', gap: '7px',
                         padding: '20px 24px', flexShrink: 0,

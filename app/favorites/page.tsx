@@ -118,7 +118,7 @@ export default async function FavoritesPage() {
             </a>
           </div>
         ) : (
-          <div className="ad-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+          <div className="fav-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
             {sortedAds.map((ad) => {
               const isTregtar = sellerMap[ad.user_id as string]?.konto_typ === 'biznes'
               return (

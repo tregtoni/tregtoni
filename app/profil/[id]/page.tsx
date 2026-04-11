@@ -74,7 +74,7 @@ export default async function PublicProfilPage({
           boxShadow: '0 2px 20px rgba(0,0,0,0.07)', border: '1px solid rgba(0,0,0,0.05)',
           marginBottom: '28px',
         }}>
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap' }}>
+          <div className="profil-pub-header" style={{ display: 'flex', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap' }}>
 
             {/* Avatar */}
             <div style={{ flexShrink: 0 }}>
@@ -196,18 +196,18 @@ export default async function PublicProfilPage({
             </div>
 
             {/* Stats badge */}
-            <div style={{
+            <div className="profil-pub-stats" style={{
               background: '#F5F5F7', borderRadius: '16px',
               padding: '20px 28px', textAlign: 'center', flexShrink: 0,
             }}>
-              <div style={{ fontSize: '36px', fontWeight: '800', color: RED, letterSpacing: '-1px', lineHeight: 1 }}>
+              <div className="profil-pub-stats-num" style={{ fontSize: '36px', fontWeight: '800', color: RED, letterSpacing: '-1px', lineHeight: 1 }}>
                 {adCount}
               </div>
               <div style={{ fontSize: '12px', color: '#86868B', fontWeight: '500', marginTop: '4px' }}>
                 njoftime
               </div>
               {joinedDate && (
-                <div style={{ fontSize: '11px', color: '#AEAEB2', marginTop: '14px', textAlign: 'center', lineHeight: '1.4' }}>
+                <div style={{ fontSize: '11px', color: '#AEAEB2', marginTop: '14px', lineHeight: '1.4' }}>
                   Anëtar që nga<br />{joinedDate}
                 </div>
               )}

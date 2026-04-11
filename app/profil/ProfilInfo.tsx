@@ -79,7 +79,7 @@ export default function ProfilInfo({
   const isBusiness = kontoTypAktual === 'biznes'
 
   return (
-    <div style={{
+    <div className="profil-info-card" style={{
       background: '#fff', borderRadius: '20px', padding: '28px',
       boxShadow: '0 1px 10px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.05)',
       fontFamily: FONT,

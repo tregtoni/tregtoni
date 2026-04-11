@@ -47,7 +47,7 @@ export default async function NavBar() {
       <div style={{ display: 'flex', gap: '2px', alignItems: 'center' }}>
         {user ? (
           <>
-            <a href="/favorites" style={{
+            <a href="/favorites" className="nav-icon-btn" style={{
               position: 'relative',
               color: '#1D1D1F',
               textDecoration: 'none',
@@ -76,7 +76,7 @@ export default async function NavBar() {
                 </span>
               )}
             </a>
-            <a href="/mesazhet" style={{
+            <a href="/mesazhet" className="nav-icon-btn" style={{
               position: 'relative',
               color: '#1D1D1F',
               textDecoration: 'none',
