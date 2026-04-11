@@ -35,28 +35,24 @@ export default function CookiesPage() {
       type: 'Të nevojshme',
       required: true,
       purpose: 'Ruajnë gjendjen e autentikimit të llogarisë suaj gjatë vizitës. Pa këto cookies nuk mund të qëndroni të kyçur.',
-      duration: 'Fshihen kur mbyllni shfletuesin',
     },
     {
       name: 'Cookies të preferencave',
       type: 'Funksionale',
       required: true,
       purpose: "Ruajnë preferencat tuaja si gjuha dhe cilësimet e shfaqjes. Ndihmojnë platformën t'ju ofrojë një përvojë të personalizuar.",
-      duration: 'Deri në 1 vit',
     },
     {
       name: 'Cookies analitike',
       type: 'Opsionale',
       required: false,
       purpose: 'Na ndihmojnë të kuptojmë si e përdorin vizitorët platformën — cilat faqe vizitohen më shumë, sa kohë qëndrojnë dhe ku ndodhin gabimet. Të dhënat janë të anonimizuara.',
-      duration: 'Deri në 2 vjet',
     },
     {
       name: 'Cookie e pëlqimit',
       type: 'Të nevojshme',
       required: true,
       purpose: 'Ruan zgjedhjen tuaj mbi cookies (pranoj të gjitha / vetëm të nevojshme) në localStorage të shfletuesit tuaj. Nevojitet për të mos shfaqur bannerin e cookies çdo herë.',
-      duration: 'Deri në 1 vit (localStorage)',
     },
   ]
 
@@ -136,16 +132,9 @@ export default function CookiesPage() {
                   </span>
                 </div>
 
-                <p style={{ fontSize: '14px', color: '#3D3D3F', lineHeight: '1.65', margin: '0 0 10px' }}>
+                <p style={{ fontSize: '14px', color: '#3D3D3F', lineHeight: '1.65', margin: 0 }}>
                   {cookie.purpose}
                 </p>
-
-                <div>
-                  <span style={{ fontSize: '11px', fontWeight: '600', color: '#86868B', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
-                    Kohëzgjatja
-                  </span>
-                  <div style={{ fontSize: '13px', color: '#6E6E73', marginTop: '2px' }}>{cookie.duration}</div>
-                </div>
               </div>
             ))}
           </div>
