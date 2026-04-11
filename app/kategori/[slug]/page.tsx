@@ -1151,6 +1151,7 @@ export default async function KategoriPage({
                 const sellerLogo = isTregtar ? (sellerMap[ad.user_id]?.avatar_url ?? null) : null
                 return (
                   <div key={ad.id}
+                    className="kat-card-outer"
                     style={{
                       display: 'flex',
                       background: '#fff',
@@ -1194,6 +1195,20 @@ export default async function KategoriPage({
                           fontSize: '11px', padding: '3px 8px',
                           borderRadius: '7px', fontWeight: '500',
                         }}>+{images.length - 1}</span>
+                      )}
+                      {sellerLogo && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          className="kat-seller-overlay"
+                          src={sellerLogo}
+                          alt=""
+                          style={{
+                            position: 'absolute', bottom: '10px', left: '10px', zIndex: 2,
+                            width: '36px', height: '36px', borderRadius: '50%',
+                            border: '2px solid #fff', objectFit: 'cover',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.22)',
+                          }}
+                        />
                       )}
                       <FavoriteButton
                         njoftim_id={ad.id}

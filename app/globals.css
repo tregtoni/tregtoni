@@ -29,6 +29,9 @@ body {
   to { transform: rotate(360deg); }
 }
 
+/* Seller overlay in image — only visible on mobile */
+.kat-seller-overlay { display: none; }
+
 /* ─── Mobile responsive ──────────────────────────────────────────────────────── */
 
 /* Form 2-column grid (default desktop) */
@@ -79,18 +82,13 @@ body {
   .shto-form-outer { padding-left: 16px !important; padding-right: 16px !important; }
   .form-grid-2 { grid-template-columns: 1fr !important; }
 
-  /* Kategori listing cards — stack vertically */
-  .kat-card-link { flex-direction: column !important; }
-  .kat-card-img  { width: 100% !important; min-height: 200px !important; }
-  .kat-card-info { padding: 14px 16px !important; }
-  .kat-card-seller {
-    border-left: none !important;
-    border-top: 1px solid rgba(0,0,0,0.05) !important;
-    flex-direction: row !important;
-    justify-content: flex-start !important;
-    padding: 12px 16px !important;
-    gap: 10px !important;
-  }
+  /* Kategori listing cards — stack vertically, full width */
+  .kat-card-outer { width: 100% !important; }
+  .kat-card-link  { flex-direction: column !important; }
+  .kat-card-img   { width: 100% !important; min-height: 200px !important; }
+  .kat-card-info  { padding: 14px 16px !important; }
+  .kat-card-seller { display: none !important; }
+  .kat-seller-overlay { display: block !important; }
 
   /* Favorites page — 1 column on mobile */
   .fav-grid { grid-template-columns: 1fr !important; }
