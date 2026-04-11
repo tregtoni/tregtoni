@@ -107,9 +107,12 @@ export default function RrethNeshPage() {
             lehtë dhe pa komplikime. Si startup i ri, jemi të përkushtuar ndaj komunitetit dhe vazhdimisht punojmë
             për të përmirësuar platformën.
           </p>
-          <p style={{ fontSize: '16px', color: '#3D3D3F', lineHeight: '1.75', margin: 0 }}>
+          <p style={{ fontSize: '16px', color: '#3D3D3F', lineHeight: '1.75', marginBottom: '24px' }}>
             Jemi ende në fillim të rrugës, por me çdo njoftim të publikuar dhe çdo transaksion të kryer,
             po ndërtojmë diçka të rëndësishme — tregun dixhital shqiptar.
+          </p>
+          <p style={{ fontSize: '15px', fontWeight: '600', color: '#E24B4A', textAlign: 'center', margin: 0, letterSpacing: '0.1px' }}>
+            Tregtoni Team — Made by DK
           </p>
         </div>
 
