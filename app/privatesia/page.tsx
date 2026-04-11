@@ -84,13 +84,16 @@ export default function PrivatesiaPage() {
           </p>
           <p style={p}>
             Kjo Politikë Privatësie shpjegon se çfarë të dhënash personale mbledhim, si i përdorim, me kë i
-            ndajmë dhe cilat janë të drejtat tuaja sipas <strong>Ligjit Nr. 9887 "Për mbrojtjen e të dhënave
-            personale"</strong> (i ndryshuar me Ligjin Nr. 48/2012) dhe akteve nënligjore të nxjerra nga
-            <strong> Komisioneri për të Drejtën e Informimit dhe Mbrojtjen e të Dhënave (KDIM)</strong>.
+            ndajmë dhe cilat janë të drejtat tuaja. Baza kryesore ligjore është{' '}
+            <strong>Ligji Nr. 9887 "Për mbrojtjen e të dhënave personale"</strong> (i ndryshuar me Ligjin
+            Nr. 48/2012) dhe aktet nënligjore të{' '}
+            <strong>Komisionerit për të Drejtën e Informimit dhe Mbrojtjen e të Dhënave (KDIM)</strong>.
           </p>
           <p style={pLast}>
-            Duke përdorur Tregtoni.com, pranoni kushtet e kësaj politike. Të gjithë përdoruesit,
-            pavarësisht vendndodhjes, i nënshtrohen legjislacionit shqiptar të mbrojtjes së të dhënave.
+            Për përdoruesit e vendosur në Bashkimin Evropian — në veçanti diasporën shqiptare në Gjermani,
+            Austri dhe Zvicër — respektojmë gjithashtu parimet e{' '}
+            <strong>Rregullores së Përgjithshme të Mbrojtjes së të Dhënave (GDPR/DSGVO)</strong> si kornizë
+            plotësuese. Duke përdorur Tregtoni.com, pranoni kushtet e kësaj politike.
           </p>
         </div>
 
@@ -144,14 +147,23 @@ export default function PrivatesiaPage() {
           <span style={label}>4</span>
           <h2 style={h2}>Baza ligjore e përpunimit</h2>
           <p style={p}>
-            Sipas nenit 6 të Ligjit Nr. 9887, përpunojmë të dhënat tuaja personale mbi bazat e mëposhtme:
+            Baza kryesore e përpunimit mbështetet në <strong>Ligjin Nr. 9887</strong> (i ndryshuar me
+            Ligjin Nr. 48/2012). Për përdoruesit e vendosur në BE, zbatojmë njëkohësisht edhe bazat e
+            nenit 6 të <strong>GDPR</strong> si kornizë plotësuese:
           </p>
-          <ul style={{ paddingLeft: '20px', margin: 0 }}>
-            <li style={li}><strong>Kontrata:</strong> Përpunimi është i nevojshëm për ekzekutimin e shërbimeve që keni kërkuar (p.sh. publikimi i njoftimeve, dërgimi i mesazheve).</li>
-            <li style={li}><strong>Pëlqimi:</strong> Për cookies opsionale dhe komunikime marketingu, mbështetemi në pëlqimin tuaj të shprehur.</li>
-            <li style={li}><strong>Interesi legjitim:</strong> Për sigurinë e platformës, parandalimin e abuzimeve dhe përmirësimin e shërbimeve.</li>
-            <li style={li}><strong>Detyrimi ligjor:</strong> Kur kemi detyrim ligjor për të ruajtur ose dhënë të dhëna sipas legjislacionit shqiptar.</li>
+          <ul style={{ paddingLeft: '20px', margin: '0 0 16px' }}>
+            <li style={li}><strong>Kontrata (neni 6§1/b GDPR · neni 6 Ligji 9887):</strong> Përpunimi i nevojshëm për ofrimin e shërbimeve të platformës (publikim njoftimesh, mesazhe, llogari).</li>
+            <li style={li}><strong>Pëlqimi (neni 6§1/a GDPR · neni 5 Ligji 9887):</strong> Për cookies opsionale dhe komunikime marketingu — mund ta tërhiqni në çdo kohë.</li>
+            <li style={li}><strong>Interesi legjitim (neni 6§1/f GDPR · neni 6 Ligji 9887):</strong> Siguria e platformës, parandalimi i abuzimeve dhe përmirësimi i shërbimeve.</li>
+            <li style={li}><strong>Detyrimi ligjor (neni 6§1/c GDPR · neni 6 Ligji 9887):</strong> Kur kemi detyrim ligjor sipas legjislacionit shqiptar ose evropian në fuqi.</li>
           </ul>
+          <div style={{
+            background: '#F5F5F7', borderRadius: '10px', padding: '14px 18px',
+            fontSize: '13px', color: '#6E6E73', lineHeight: '1.6',
+          }}>
+            Ligji shqiptar Nr. 9887 është ligji bazë për të gjithë përdoruesit. GDPR/DSGVO zbatohet si
+            shtesë për përdoruesit rezidentë në vendet e BE-së (Gjermani, Austri, Zvicër etj.).
+          </div>
         </div>
 
         {/* 5. Ruajtja */}
