@@ -56,7 +56,7 @@ export default function KushtetPage() {
             },
             {
               title: '5. Ndalimet',
-              text: 'Është e ndaluar të publikoni: mallra të vjedhura ose të falsifikuara, armë e municion, substanca të kontrolluara, produkte për të miturit, shërbime seksuale, njoftimet mashtruese ose spam. Tregtoni ka të drejtën të heqë çdo njoftim dhe të mbyllë çdo llogari që shkel këto rregulla.',
+              text: 'Është e ndaluar të publikoni: mallra të vjedhura ose të falsifikuara, armë e municion, substanca të kontrolluara, shërbime seksuale, njoftimet mashtruese ose spam. Tregtoni ka të drejtën të heqë çdo njoftim dhe të mbyllë çdo llogari që shkel këto rregulla.',
             },
             {
               title: '6. Kufizimi i përgjegjësisë',
