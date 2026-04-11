@@ -79,16 +79,16 @@ export default async function NavBar() {
             <a href="/mesazhet" style={{
               position: 'relative',
               color: '#1D1D1F',
-              fontSize: '14px',
               textDecoration: 'none',
               display: 'flex',
               alignItems: 'center',
-              gap: '6px',
+              gap: '5px',
               padding: '7px 12px',
               borderRadius: '8px',
-              fontWeight: '500',
             }}>
-              Mesazhet
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
               {unreadCount > 0 && (
                 <span style={{
                   background: '#DA291C',
