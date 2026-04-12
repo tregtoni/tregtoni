@@ -880,6 +880,22 @@ export default function ShtoForm() {
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedSubcategory, setSelectedSubcategory] = useState('')
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const dragIdx = useRef<number | null>(null)
+
+  function onDragStart(idx: number) { dragIdx.current = idx }
+  function onDragOver(e: React.DragEvent, idx: number) {
+    e.preventDefault()
+    const from = dragIdx.current
+    if (from === null || from === idx) return
+    setImages(prev => {
+      const next = [...prev]
+      const [moved] = next.splice(from, 1)
+      next.splice(idx, 0, moved)
+      dragIdx.current = idx
+      return next
+    })
+  }
+  function onDragEnd() { dragIdx.current = null }
 
   const nenkategori = selectedCategory ? (KATEGORI_MAP[selectedCategory]?.nenkategori ?? []) : []
   const isMoto = selectedSubcategory === 'Motorra' || selectedSubcategory === 'Pjesë motorrash'
@@ -2221,29 +2237,46 @@ export default function ShtoForm() {
             Foto
           </h2>
           <p style={{ fontSize: '13px', color: '#86868B', marginBottom: '20px', fontWeight: '500' }}>
-            Deri në 20 foto · PNG, JPG, WebP
+            Deri në 20 foto · PNG, JPG, WebP · Zvarrit për të ndryshuar rendin
           </p>
 
           {images.length > 0 && (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px', marginBottom: '14px' }}>
               {images.map((img, idx) => (
-                <div key={img.id} style={{
-                  position: 'relative',
-                  aspectRatio: '1',
-                  borderRadius: '12px',
-                  overflow: 'hidden',
-                  border: idx === 0 ? '2px solid #DA291C' : '1.5px solid rgba(0,0,0,0.08)',
-                }}>
+                <div
+                  key={img.id}
+                  draggable={img.url !== null}
+                  onDragStart={() => onDragStart(idx)}
+                  onDragOver={e => onDragOver(e, idx)}
+                  onDragEnd={onDragEnd}
+                  style={{
+                    position: 'relative',
+                    aspectRatio: '1',
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                    border: idx === 0 ? '2.5px solid #DA291C' : '1.5px solid rgba(0,0,0,0.08)',
+                    cursor: img.url !== null ? 'grab' : 'default',
+                    userSelect: 'none',
+                  }}
+                >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={img.preview} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                  <img src={img.preview} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', pointerEvents: 'none' }} />
                   {idx === 0 && (
                     <span style={{
                       position: 'absolute', bottom: '4px', left: '4px',
                       background: '#DA291C', color: '#fff',
                       fontSize: '8px', padding: '2px 6px', borderRadius: '4px', fontWeight: '700',
+                      pointerEvents: 'none',
                     }}>
                       KRYESORJA
                     </span>
+                  )}
+                  {img.url !== null && (
+                    <span style={{
+                      position: 'absolute', top: '4px', left: '4px',
+                      color: 'rgba(255,255,255,0.8)', fontSize: '11px', lineHeight: 1,
+                      pointerEvents: 'none', textShadow: '0 1px 2px rgba(0,0,0,0.5)',
+                    }}>⠿</span>
                   )}
                   {img.url === null && (
                     <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
