@@ -93,6 +93,12 @@ export async function ndryshoAvatarin(
   const url = (formData.get('avatar_url') as string)?.trim()
   if (!url) return { error: 'URL mungon.', success: false, url: '' }
 
+  // Only allow Supabase Storage URLs to prevent storing arbitrary external URLs
+  const supabaseHost = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace('https://', '')
+  if (!supabaseHost || !url.startsWith(`https://${supabaseHost}/storage/`)) {
+    return { error: 'URL e fotos nuk është e vlefshme.', success: false, url: '' }
+  }
+
   // Use admin client to bypass any RLS edge cases on upsert
   const admin = createAdminClient()
   const { error } = await admin

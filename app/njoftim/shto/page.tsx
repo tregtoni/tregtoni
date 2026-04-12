@@ -1,8 +1,14 @@
+import { redirect } from 'next/navigation'
+import { createClient } from '@/lib/supabase/server'
 import NavBar from '@/app/components/NavBar'
 import Footer from '@/app/components/Footer'
 import ShtoForm from './ShtoForm'
 
-export default function ShtoNjoftim() {
+export default async function ShtoNjoftim() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/login')
+
   return (
     <main style={{
       minHeight: '100vh',

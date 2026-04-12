@@ -3,6 +3,12 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 
+const SUPABASE_HOST = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace('https://', '') ?? ''
+
+function isValidStorageUrl(url: string): boolean {
+  return SUPABASE_HOST !== '' && url.startsWith(`https://${SUPABASE_HOST}/storage/`)
+}
+
 export async function shtoNjoftim(prevState: { error: string }, formData: FormData) {
   const supabase = await createClient()
 
@@ -19,10 +25,22 @@ export async function shtoNjoftim(prevState: { error: string }, formData: FormDa
   const city = formData.get('city') as string
   const subcategory = (formData.get('subcategory') as string) ?? ''
   const marka = (formData.get('marka') as string) ?? ''
-  const images = formData.getAll('image_url').map(v => v.toString()).filter(Boolean)
+  // Only accept images that are valid Supabase Storage URLs
+  const images = formData.getAll('image_url')
+    .map(v => v.toString())
+    .filter(url => url && isValidStorageUrl(url))
 
   if (!title || !category || !description || !price || !city) {
     return { error: 'Të gjitha fushat e detyrueshme duhen plotësuar.' }
+  }
+
+  // Limit number of ads per user to prevent spam (max 50 active listings)
+  const { count } = await supabase
+    .from('njoftimet')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', user.id)
+  if ((count ?? 0) >= 50) {
+    return { error: 'Keni arritur limitin maksimal prej 50 njoftimesh.' }
   }
 
   // car-specific fields (only saved for makina category)

@@ -138,7 +138,14 @@ export default function ChatView({
     }
 
     setUploading(true)
-    const ext  = file.name.split('.').pop() ?? 'bin'
+    const mimeToExt: Record<string, string> = {
+      'image/jpeg': 'jpg',
+      'image/png': 'png',
+      'image/webp': 'webp',
+      'image/gif': 'gif',
+      'application/pdf': 'pdf',
+    }
+    const ext  = mimeToExt[file.type] ?? 'bin'
     const path = `${currentUserId}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
 
     const { error: uploadErr } = await supabase.storage

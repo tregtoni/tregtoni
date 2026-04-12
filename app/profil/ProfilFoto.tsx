@@ -33,7 +33,12 @@ export default function ProfilFoto({
 
     setUploading(true)
     const supabase = createClient()
-    const ext  = file.name.split('.').pop() ?? 'jpg'
+    const mimeToExt: Record<string, string> = {
+      'image/jpeg': 'jpg',
+      'image/png': 'png',
+      'image/webp': 'webp',
+    }
+    const ext  = mimeToExt[file.type] ?? 'jpg'
     const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
 
     const { error: upErr } = await supabase.storage

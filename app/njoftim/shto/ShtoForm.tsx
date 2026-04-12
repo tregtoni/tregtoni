@@ -1021,11 +1021,29 @@ export default function ShtoForm() {
     const supabase = createClient()
 
     for (const file of selected) {
+      // Validate file size (max 10 MB)
+      if (file.size > 10 * 1024 * 1024) {
+        setUploadError('Foto është shumë e madhe. Maksimumi është 10 MB.')
+        continue
+      }
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp']
+      if (!allowedTypes.includes(file.type)) {
+        setUploadError('Lejohen vetëm JPG, PNG, WebP.')
+        continue
+      }
+
       const id = `${Date.now()}-${Math.random().toString(36).slice(2)}`
       const preview = URL.createObjectURL(file)
       setImages(prev => [...prev, { id, preview, url: null }])
 
-      const ext = file.name.split('.').pop() ?? 'jpg'
+      // Use a safe extension from the MIME type, not from the filename
+      const mimeToExt: Record<string, string> = {
+        'image/jpeg': 'jpg',
+        'image/png': 'png',
+        'image/webp': 'webp',
+      }
+      const ext = mimeToExt[file.type] ?? 'jpg'
       const path = `${id}.${ext}`
 
       const { error: uploadErr } = await supabase.storage
