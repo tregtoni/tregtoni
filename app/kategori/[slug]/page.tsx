@@ -1203,7 +1203,7 @@ export default async function KategoriPage({
                           src={sellerLogo}
                           alt=""
                           style={{
-                            position: 'absolute', bottom: '10px', left: '10px', zIndex: 2,
+                            position: 'absolute', bottom: '10px', right: '10px', zIndex: 2,
                             width: '34px', height: '34px', borderRadius: '50%',
                             border: '2px solid #fff', objectFit: 'cover',
                             boxShadow: '0 2px 8px rgba(0,0,0,0.22)',
