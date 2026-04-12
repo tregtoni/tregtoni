@@ -1014,7 +1014,7 @@ export default function ShtoForm() {
 
   async function handleFiles(files: FileList | null) {
     if (!files) return
-    const remaining = 10 - images.length
+    const remaining = 20 - images.length
     if (remaining <= 0) return
     const selected = Array.from(files).slice(0, remaining)
     setUploadError('')
@@ -2221,7 +2221,7 @@ export default function ShtoForm() {
             Foto
           </h2>
           <p style={{ fontSize: '13px', color: '#86868B', marginBottom: '20px', fontWeight: '500' }}>
-            Deri në 10 foto · PNG, JPG, WebP
+            Deri në 20 foto · PNG, JPG, WebP
           </p>
 
           {images.length > 0 && (
@@ -2270,7 +2270,7 @@ export default function ShtoForm() {
             </div>
           )}
 
-          {images.length < 10 && (
+          {images.length < 20 && (
             <div
               onClick={() => fileInputRef.current?.click()}
               style={{
@@ -2296,7 +2296,7 @@ export default function ShtoForm() {
                 Kliko për të ngarkuar foto
               </p>
               <p style={{ fontSize: '12px', color: '#86868B', margin: 0 }}>
-                PNG, JPG deri në 10MB · {10 - images.length} foto mbetur
+                PNG, JPG deri në 10MB · {20 - images.length} foto mbetur
               </p>
             </div>
           )}

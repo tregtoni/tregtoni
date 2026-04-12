@@ -17,7 +17,7 @@ export default async function NdyshoNjoftimin({
 
   const { data: ad } = await supabase
     .from('njoftimet')
-    .select('id, title, category, subcategory, marka, description, price, city, user_id, km, baujahr, kraftstoff, leistung_ps, getriebe, fahrzeugtyp, tueren, umweltplakette, schadstoffklasse, innen_material, farbe, ausstattung, innen_ausstattung, sicherheit, cilindrata, hu_gueltig, moto_art, angebotstyp, ofruesi, apt_type, shkembim, pajisjet, karakteristika, siperfaqja, dhoma, kati, disponueshem, zustand, dergesa, pajisja, ngjyra, ram, os, madhesia, el_lloji, numri_kepuces, mode_lloji')
+    .select('id, title, category, subcategory, marka, description, price, city, user_id, images, km, baujahr, kraftstoff, leistung_ps, getriebe, fahrzeugtyp, tueren, umweltplakette, schadstoffklasse, innen_material, farbe, ausstattung, innen_ausstattung, sicherheit, cilindrata, hu_gueltig, moto_art, angebotstyp, ofruesi, apt_type, shkembim, pajisjet, karakteristika, siperfaqja, dhoma, kati, disponueshem, zustand, dergesa, pajisja, ngjyra, ram, os, madhesia, el_lloji, numri_kepuces, mode_lloji')
     .eq('id', id)
     .single()
 

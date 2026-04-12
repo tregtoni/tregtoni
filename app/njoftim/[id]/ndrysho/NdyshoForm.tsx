@@ -1,8 +1,13 @@
 'use client'
 
-import { useActionState, useState } from 'react'
+import { useActionState, useState, useRef } from 'react'
 import { ndryshoNjoftimin } from '@/app/actions/profil'
+import { createClient } from '@/lib/supabase/client'
 import { KATEGORITË, KATEGORI_MAP, MARKAT_MAKINA, MARKAT_MOTOCIKLETA, QYTETET_SHQIPERI, QYTETET_KOSOVE } from '@/lib/kategori-data'
+
+const MAX_IMAGES = 20
+
+type ImageEntry = { id: string; url: string }
 
 type Listing = {
   id: string
@@ -13,6 +18,7 @@ type Listing = {
   description: string
   price: number
   city: string
+  images?: string[] | null
   km?: number | null
   baujahr?: number | null
   kraftstoff?: string | null
@@ -183,6 +189,65 @@ export default function NdyshoForm({ listing }: { listing: Listing }) {
   const [state, formAction, pending] = useActionState(action, { error: '' })
   const [selectedCategory, setSelectedCategory] = useState(listing.category)
   const [selectedSubcategory, setSelectedSubcategory] = useState(listing.subcategory)
+
+  // ── Image state ──────────────────────────────────────────────────────────────
+  const [images, setImages] = useState<ImageEntry[]>(
+    (listing.images ?? []).map((url, i) => ({ id: `existing-${i}`, url }))
+  )
+  const [uploading, setUploading] = useState(false)
+  const [uploadError, setUploadError] = useState('')
+  const fileRef = useRef<HTMLInputElement>(null)
+  const dragIdx = useRef<number | null>(null)
+
+  async function handleFiles(files: FileList | null) {
+    if (!files) return
+    const remaining = MAX_IMAGES - images.length
+    if (remaining <= 0) return
+    const selected = Array.from(files).slice(0, remaining)
+    setUploadError('')
+    setUploading(true)
+    const supabase = createClient()
+
+    for (const file of selected) {
+      if (file.size > 10 * 1024 * 1024) { setUploadError('Foto është shumë e madhe. Maksimumi është 10 MB.'); continue }
+      const allowed = ['image/jpeg', 'image/png', 'image/webp']
+      if (!allowed.includes(file.type)) { setUploadError('Lejohen vetëm JPG, PNG, WebP.'); continue }
+
+      const mimeToExt: Record<string, string> = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' }
+      const ext = mimeToExt[file.type] ?? 'jpg'
+      const uid = `${Date.now()}-${Math.random().toString(36).slice(2)}`
+      const path = `${uid}.${ext}`
+
+      const { error: upErr } = await supabase.storage.from('njoftimet-images').upload(path, file, { contentType: file.type })
+      if (upErr) { setUploadError(`Gabim ngarkimi: ${upErr.message}`); continue }
+
+      const { data: { publicUrl } } = supabase.storage.from('njoftimet-images').getPublicUrl(path)
+      setImages(prev => [...prev, { id: uid, url: publicUrl }])
+    }
+
+    setUploading(false)
+    if (fileRef.current) fileRef.current.value = ''
+  }
+
+  function removeImage(id: string) {
+    setImages(prev => prev.filter(img => img.id !== id))
+  }
+
+  // Drag & drop handlers
+  function onDragStart(idx: number) { dragIdx.current = idx }
+  function onDragOver(e: React.DragEvent, idx: number) {
+    e.preventDefault()
+    const from = dragIdx.current
+    if (from === null || from === idx) return
+    setImages(prev => {
+      const next = [...prev]
+      const [moved] = next.splice(from, 1)
+      next.splice(idx, 0, moved)
+      dragIdx.current = idx
+      return next
+    })
+  }
+  function onDragEnd() { dragIdx.current = null }
   const nenkategori = KATEGORI_MAP[selectedCategory]?.nenkategori ?? []
   const isMoto = selectedSubcategory === 'Motorra' || selectedSubcategory === 'Pjesë motorrash'
   const isApartament = selectedCategory === 'imobiliare' &&
@@ -799,6 +864,122 @@ export default function NdyshoForm({ listing }: { listing: Listing }) {
           />
         </div>
 
+        {/* ── Foto ─────────────────────────────────────────────────────────── */}
+        <div style={{ background: '#fff', border: '1px solid #eee', borderRadius: '12px', padding: '24px', marginBottom: '24px' }}>
+          <h2 style={{ fontSize: '16px', fontWeight: '600', color: '#111', borderLeft: '3px solid #DA291C', paddingLeft: '10px', marginBottom: '4px' }}>Foto</h2>
+          <p style={{ fontSize: '12px', color: '#86868B', marginBottom: '16px' }}>
+            Deri në {MAX_IMAGES} foto · Zvarrit për të ndryshuar rendin · E para është kryesorja
+          </p>
+
+          {uploadError && (
+            <div style={{ background: '#fff0f0', border: '1px solid #ffcccc', borderRadius: '8px', padding: '10px 12px', marginBottom: '12px', fontSize: '13px', color: '#c0392b' }}>
+              {uploadError}
+            </div>
+          )}
+
+          {/* Hidden inputs — one per image URL, in order */}
+          {images.map(img => (
+            <input key={img.id} type="hidden" name="image_url" value={img.url} />
+          ))}
+
+          {/* Grid */}
+          {images.length > 0 && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px', marginBottom: '14px' }}>
+              {images.map((img, idx) => (
+                <div
+                  key={img.id}
+                  draggable
+                  onDragStart={() => onDragStart(idx)}
+                  onDragOver={e => onDragOver(e, idx)}
+                  onDragEnd={onDragEnd}
+                  style={{
+                    position: 'relative',
+                    aspectRatio: '1',
+                    borderRadius: '10px',
+                    overflow: 'hidden',
+                    border: idx === 0 ? '2.5px solid #DA291C' : '1.5px solid rgba(0,0,0,0.08)',
+                    cursor: 'grab',
+                    userSelect: 'none',
+                  }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={img.url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', pointerEvents: 'none' }} />
+
+                  {idx === 0 && (
+                    <span style={{
+                      position: 'absolute', bottom: '4px', left: '4px',
+                      background: '#DA291C', color: '#fff',
+                      fontSize: '8px', padding: '2px 6px', borderRadius: '4px', fontWeight: '700',
+                      pointerEvents: 'none',
+                    }}>
+                      KRYESORJA
+                    </span>
+                  )}
+
+                  {/* Drag handle hint */}
+                  <span style={{
+                    position: 'absolute', top: '4px', left: '4px',
+                    color: 'rgba(255,255,255,0.8)', fontSize: '11px', lineHeight: 1,
+                    pointerEvents: 'none', textShadow: '0 1px 2px rgba(0,0,0,0.5)',
+                  }}>⠿</span>
+
+                  {/* Remove button */}
+                  <button
+                    type="button"
+                    onClick={() => removeImage(img.id)}
+                    style={{
+                      position: 'absolute', top: '4px', right: '4px',
+                      background: 'rgba(0,0,0,0.55)', color: '#fff',
+                      border: 'none', borderRadius: '50%',
+                      width: '20px', height: '20px',
+                      fontSize: '14px', cursor: 'pointer',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      lineHeight: 1, padding: 0, fontFamily: 'inherit',
+                    }}
+                  >×</button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Upload zone */}
+          {images.length < MAX_IMAGES && (
+            <div
+              onClick={() => fileRef.current?.click()}
+              style={{
+                border: '2px dashed rgba(0,0,0,0.12)', borderRadius: '10px',
+                padding: '24px', textAlign: 'center', cursor: uploading ? 'not-allowed' : 'pointer',
+                opacity: uploading ? 0.6 : 1,
+              }}
+              onMouseEnter={e => { if (!uploading) e.currentTarget.style.borderColor = '#DA291C' }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(0,0,0,0.12)' }}
+            >
+              {uploading ? (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '13px', color: '#86868B' }}>
+                  <div style={{ width: '16px', height: '16px', border: '2px solid #ccc', borderTopColor: '#DA291C', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
+                  Duke ngarkuar...
+                </div>
+              ) : (
+                <>
+                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#1D1D1F', margin: '0 0 4px' }}>+ Shto foto</p>
+                  <p style={{ fontSize: '12px', color: '#86868B', margin: 0 }}>
+                    PNG, JPG, WebP deri në 10MB · {MAX_IMAGES - images.length} foto mbetur
+                  </p>
+                </>
+              )}
+            </div>
+          )}
+
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            multiple
+            style={{ display: 'none' }}
+            onChange={e => handleFiles(e.target.files)}
+          />
+        </div>
+
         <div style={{ display: 'flex', gap: '12px' }}>
           <a
             href="/profil"
@@ -808,10 +989,10 @@ export default function NdyshoForm({ listing }: { listing: Listing }) {
           </a>
           <button
             type="submit"
-            disabled={pending}
-            style={{ flex: 2, background: pending ? '#999' : '#DA291C', color: '#fff', border: 'none', padding: '14px', fontSize: '15px', fontWeight: '500', borderRadius: '8px', cursor: pending ? 'not-allowed' : 'pointer' }}
+            disabled={pending || uploading}
+            style={{ flex: 2, background: (pending || uploading) ? '#999' : '#DA291C', color: '#fff', border: 'none', padding: '14px', fontSize: '15px', fontWeight: '500', borderRadius: '8px', cursor: (pending || uploading) ? 'not-allowed' : 'pointer' }}
           >
-            {pending ? 'Duke ruajtur...' : 'Ruaj ndryshimet'}
+            {pending ? 'Duke ruajtur...' : uploading ? 'Duke ngarkuar foton...' : 'Ruaj ndryshimet'}
           </button>
         </div>
 

@@ -145,6 +145,11 @@ export async function ndryshoNjoftimin(
   const price = formData.get('price') as string
   const city = formData.get('city') as string
 
+  const supabaseHost = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace('https://', '') ?? ''
+  const images = formData.getAll('image_url')
+    .map(v => v.toString())
+    .filter(url => url && supabaseHost && url.startsWith(`https://${supabaseHost}/storage/`))
+
   if (!title || !category || !description || !price || !city) {
     return { error: 'Të gjitha fushat e detyrueshme duhen plotësuar.' }
   }
@@ -233,7 +238,7 @@ export async function ndryshoNjoftimin(
 
   const { error } = await supabase
     .from('njoftimet')
-    .update({ title, category, subcategory, marka: (isElektronik || isMode) ? undefined : marka, description, price: parseFloat(price), city, ...carFields, ...motoFields, ...aptFields, ...elFields, ...modeFields })
+    .update({ title, category, subcategory, marka: (isElektronik || isMode) ? undefined : marka, description, price: parseFloat(price), city, images, ...carFields, ...motoFields, ...aptFields, ...elFields, ...modeFields })
     .eq('id', id)
     .eq('user_id', user.id)
 
