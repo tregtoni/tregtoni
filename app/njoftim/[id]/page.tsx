@@ -34,6 +34,17 @@ const FARBE_LABEL: Record<string, string> = {
 const AUSSTATTUNG_LABEL: Record<string, string> = {
   grep: 'Grep tërheqursi', 'sensor-parkimit': 'Sensor parkimi',
   'felge-alu': 'Felgë alumini', 'xenon-led': 'Xenon / LED dritat',
+  'kamera-360': 'Kamera 360°', 'cati-panoramike': 'Çati panoramike',
+  'ngrohje-sedile': 'Ngrohje sediljesh', 'ngrohje-timoni': 'Ngrohje timoni',
+  'asistues-parkimi-perpara': 'Asistues parkimi përpara',
+  'asistues-parkimi-prapa': 'Asistues parkimi prapa',
+  'kamera-parkimi': 'Kamera parkimi', 'asistues-kendi-verber': 'Asistues këndi i verbër',
+  'asistues-shiriti': 'Asistues mbajtje shiriti', 'head-up-display': 'Head-Up Display',
+  'ndricim-ambiental': 'Ndriçim ambiental', 'ndenjese-elektrike': 'Ndenjëse elektrike',
+  'ndenjese-masazhi': 'Ndenjëse masazhi', 'carplay-android': 'Apple CarPlay / Android Auto',
+  'karikues-wireless': 'Karikues wireless', 'ngrohje-parkimi': 'Ngrohje parkimi',
+  'grep-rimorkio': 'Grep rimorkio', 'rel-catie': 'Rel çatie',
+  'portbagazhik-elektrik': 'Portbagazhik elektrik', 'keyless-entry': 'Keyless Entry',
 }
 const INNEN_LABEL: Record<string, string> = {
   klima: 'Klimë', navigim: 'Sistem navigimi', radio: 'Radio / Tuner',
@@ -42,6 +53,14 @@ const INNEN_LABEL: Record<string, string> = {
 }
 const SICHER_LABEL: Record<string, string> = {
   abs: 'ABS', airbag: 'Airbag', librezesherbimit: 'Librezë shërbimi e plotë',
+  'frenim-emergjence': 'Frenim automatik emergjence',
+  'sinjalizues-perplasje': 'Sinjalizues përplasje',
+  'njohje-lodhje': 'Njohje lodhje',
+  'njohje-sinjalistike': 'Njohje sinjalistikës rrugore',
+  'kufizues-shpejtesie': 'Kufizues adaptiv shpejtësie',
+  'asistues-dritat': 'Asistues dritat e largëta',
+  'kontroll-presioni': 'Kontroll presioni gomave',
+  'asistues-pjerresi': 'Asistues nisje në pjerrësi',
 }
 const MOTO_ART_LABEL: Record<string, string> = {
   motorrad: 'Motorçikleta', roller: 'Motorroller & Skuterë', quad: 'Quad', mofa: 'Mofa & Moped',

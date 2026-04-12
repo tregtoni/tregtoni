@@ -27,7 +27,7 @@ const TYPEN = [
   { v: 'kabriolet', l: 'Kabriolet' },
   { v: 'suv',       l: 'SUV / Terrenor' },
   { v: 'van',       l: 'Van / Bus' },
-  { v: 'coupe',     l: 'Kupé' },
+  { v: 'coupe',     l: 'Coupé' },
   { v: 'tjeter',    l: 'Tjetër' },
 ]
 
@@ -75,10 +75,30 @@ const FARBEN = [
 ]
 
 const AUSSTATTUNG_OPTIONS = [
-  { v: 'grep',           l: 'Grep tërheqursi' },
-  { v: 'sensor-parkimit', l: 'Sensor parkimi' },
-  { v: 'felge-alu',      l: 'Felgë alumini' },
-  { v: 'xenon-led',      l: 'Xenon / LED dritat' },
+  { v: 'grep',                     l: 'Grep tërheqursi' },
+  { v: 'sensor-parkimit',          l: 'Sensor parkimi' },
+  { v: 'felge-alu',                l: 'Felgë alumini' },
+  { v: 'xenon-led',                l: 'Xenon / LED dritat' },
+  { v: 'kamera-360',               l: 'Kamera 360°' },
+  { v: 'cati-panoramike',          l: 'Çati panoramike' },
+  { v: 'ngrohje-sedile',           l: 'Ngrohje sediljesh' },
+  { v: 'ngrohje-timoni',           l: 'Ngrohje timoni' },
+  { v: 'asistues-parkimi-perpara', l: 'Asistues parkimi përpara' },
+  { v: 'asistues-parkimi-prapa',   l: 'Asistues parkimi prapa' },
+  { v: 'kamera-parkimi',           l: 'Kamera parkimi' },
+  { v: 'asistues-kendi-verber',    l: 'Asistues këndi i verbër' },
+  { v: 'asistues-shiriti',         l: 'Asistues mbajtje shiriti' },
+  { v: 'head-up-display',          l: 'Head-Up Display' },
+  { v: 'ndricim-ambiental',        l: 'Ndriçim ambiental' },
+  { v: 'ndenjese-elektrike',       l: 'Ndenjëse elektrike' },
+  { v: 'ndenjese-masazhi',         l: 'Ndenjëse masazhi' },
+  { v: 'carplay-android',          l: 'Apple CarPlay / Android Auto' },
+  { v: 'karikues-wireless',        l: 'Karikues wireless' },
+  { v: 'ngrohje-parkimi',          l: 'Ngrohje parkimi' },
+  { v: 'grep-rimorkio',            l: 'Grep rimorkio' },
+  { v: 'rel-catie',                l: 'Rel çatie' },
+  { v: 'portbagazhik-elektrik',    l: 'Portbagazhik elektrik' },
+  { v: 'keyless-entry',            l: 'Keyless Entry' },
 ]
 
 const INNEN_OPTIONS = [
@@ -94,9 +114,17 @@ const INNEN_OPTIONS = [
 ]
 
 const SICHER_OPTIONS = [
-  { v: 'abs',                  l: 'ABS' },
-  { v: 'airbag',               l: 'Airbag' },
-  { v: 'librezesherbimit',     l: 'Librezë shërbimi e plotë' },
+  { v: 'abs',                   l: 'ABS' },
+  { v: 'airbag',                l: 'Airbag' },
+  { v: 'librezesherbimit',      l: 'Librezë shërbimi e plotë' },
+  { v: 'frenim-emergjence',     l: 'Frenim automatik emergjence' },
+  { v: 'sinjalizues-perplasje', l: 'Sinjalizues përplasje' },
+  { v: 'njohje-lodhje',         l: 'Njohje lodhje' },
+  { v: 'njohje-sinjalistike',   l: 'Njohje sinjalistikës rrugore' },
+  { v: 'kufizues-shpejtesie',   l: 'Kufizues adaptiv shpejtësie' },
+  { v: 'asistues-dritat',       l: 'Asistues dritat e largëta' },
+  { v: 'kontroll-presioni',     l: 'Kontroll presioni gomave' },
+  { v: 'asistues-pjerresi',     l: 'Asistues nisje në pjerrësi' },
 ]
 
 // ─── Shared styles ───────────────────────────────────────────────────────────
