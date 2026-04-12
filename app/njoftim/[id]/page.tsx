@@ -441,12 +441,32 @@ export default async function NjoftimDetail({
     borderLeft: '3px solid #DA291C',
   }
 
+  const productSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: ad.title,
+    description: (ad.description as string ?? '').slice(0, 500),
+    url: `${BASE_URL}/njoftim/${id}`,
+    ...(images.length > 0 && { image: images }),
+    offers: {
+      '@type': 'Offer',
+      price: ad.price,
+      priceCurrency: 'EUR',
+      availability: 'https://schema.org/InStock',
+      url: `${BASE_URL}/njoftim/${id}`,
+    },
+  }
+
   return (
     <main style={{
       minHeight: '100vh',
       background: '#F5F5F7',
       fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif',
     }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
       <NavBar />
 
       <div className="detail-container" style={{ maxWidth: '760px', margin: '0 auto', padding: '28px 24px 48px' }}>
