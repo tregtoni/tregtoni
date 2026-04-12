@@ -577,7 +577,7 @@ export default async function KategoriPage({
       <NavBar />
 
       {/* Header */}
-      <section style={{
+      <section className="section-px" style={{
         background: '#fff',
         borderBottom: '1px solid rgba(0,0,0,0.07)',
         padding: '20px 32px',

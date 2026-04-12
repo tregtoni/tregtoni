@@ -32,6 +32,37 @@ body {
 /* Seller overlay in image — only visible on mobile */
 .kat-seller-overlay { display: none; }
 
+/* ─── Kategori cards ≤768px ─────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .cat-layout {
+    overflow-x: hidden !important;
+    padding: 12px !important;
+  }
+  .section-px { padding-left: 16px !important; padding-right: 16px !important; }
+  .kat-card-outer {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .kat-card-link {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+  .kat-card-img {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 210px !important;
+    flex-shrink: unset !important;
+  }
+  .kat-card-info {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 14px 16px !important;
+  }
+  .kat-card-seller { display: none !important; }
+  .kat-seller-overlay { display: block !important; }
+}
+
 /* ─── Mobile responsive ──────────────────────────────────────────────────────── */
 
 /* Form 2-column grid (default desktop) */
@@ -72,7 +103,7 @@ body {
   .cta-section { padding: 48px 16px !important; }
 
   /* Category listing page layout */
-  .cat-layout { flex-direction: column !important; padding: 16px !important; }
+  .cat-layout { flex-direction: column !important; }
   .cat-sidebar { width: 100% !important; }
 
   /* Ad detail page */
@@ -81,14 +112,6 @@ body {
   /* Shto form */
   .shto-form-outer { padding-left: 16px !important; padding-right: 16px !important; }
   .form-grid-2 { grid-template-columns: 1fr !important; }
-
-  /* Kategori listing cards — stack vertically, full width */
-  .kat-card-outer { width: 100% !important; }
-  .kat-card-link  { flex-direction: column !important; }
-  .kat-card-img   { width: 100% !important; min-height: 200px !important; }
-  .kat-card-info  { padding: 14px 16px !important; }
-  .kat-card-seller { display: none !important; }
-  .kat-seller-overlay { display: block !important; }
 
   /* Favorites page — 1 column on mobile */
   .fav-grid { grid-template-columns: 1fr !important; }
