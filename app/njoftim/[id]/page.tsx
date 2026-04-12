@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import NavBar from '@/app/components/NavBar'
@@ -7,6 +8,56 @@ import ImageGallery from './ImageGallery'
 import { KATEGORI_MAP, CATEGORY_ICON } from '@/lib/kategori-data'
 import MeldeModal from '@/app/components/MeldeModal'
 import FavoriteButton from '@/app/components/FavoriteButton'
+
+const BASE_URL = 'https://www.tregtoni.com'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}): Promise<Metadata> {
+  const { id } = await params
+  const admin = createAdminClient()
+  const { data: ad } = await admin
+    .from('njoftimet')
+    .select('title, description, images, category, city, price')
+    .eq('id', id)
+    .single()
+
+  if (!ad) return {}
+
+  const title       = `${ad.title} – ${ad.city}`
+  const description = (ad.description as string ?? '').slice(0, 160).trim()
+  const ogImage     = (ad.images as string[] | null)?.[0] ?? `${BASE_URL}/og-image.png`
+  const canonical   = `${BASE_URL}/njoftim/${id}`
+  const kategori    = KATEGORI_MAP[ad.category as string]?.name ?? ''
+
+  return {
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      type: 'website',
+      url: canonical,
+      title: `${title} - Tregtoni.com`,
+      description,
+      images: [{ url: ogImage, width: 800, height: 600, alt: ad.title as string }],
+      locale: 'sq_AL',
+      siteName: 'Tregtoni.com',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} - Tregtoni.com`,
+      description,
+      images: [ogImage],
+    },
+    other: {
+      'product:price:amount': String(ad.price),
+      'product:price:currency': 'EUR',
+      'product:category': kategori,
+    },
+  }
+}
 
 const KRAFTSTOFF_LABEL: Record<string, string> = {
   benzine: 'Benzinë', diesel: 'Diesel', cng: 'Gas natyror (CNG)',
