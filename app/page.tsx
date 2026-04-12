@@ -77,7 +77,7 @@ export default async function Home() {
           textTransform: 'uppercase',
           marginBottom: '40px',
         }}>
-          Platforma nr.1 shqiptare për njoftime
+          Platforma shqiptare për njoftime
         </p>
 
         {/* Search bar */}

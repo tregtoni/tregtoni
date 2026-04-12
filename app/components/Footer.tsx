@@ -33,7 +33,7 @@ export default function Footer() {
               maxWidth: '220px',
               lineHeight: '1.6',
             }}>
-              Platforma nr.1 shqiptare për njoftime falas.
+              Platforma shqiptare për njoftime falas.
             </p>
           </div>
 
