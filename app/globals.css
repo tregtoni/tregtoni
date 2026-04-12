@@ -23,6 +23,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
 }
 
 @keyframes spin {
@@ -32,33 +33,65 @@ body {
 /* Seller overlay in image — only visible on mobile */
 .kat-seller-overlay { display: none; }
 
-/* ─── Kategori cards ≤768px ─────────────────────────────────────────────────── */
+/* ─── Kategori layout + cards ≤768px ────────────────────────────────────────── */
 @media (max-width: 768px) {
+  /* Prevent any horizontal overflow on page level */
   .cat-layout {
+    flex-direction: column !important;
     overflow-x: hidden !important;
-    padding: 12px !important;
+    padding: 0 12px 16px !important;
+    gap: 12px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
   .section-px { padding-left: 16px !important; padding-right: 16px !important; }
+
+  /* Sidebar: full width stacked above listings */
+  .cat-sidebar {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Listings container: explicitly full width */
+  .kat-listings {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Card outer wrapper */
   .kat-card-outer {
     width: 100% !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
+    flex-shrink: 0 !important;
   }
+  /* Card inner link: column layout */
   .kat-card-link {
     flex-direction: column !important;
     width: 100% !important;
+    max-width: 100% !important;
   }
+  /* Image: full width, good height */
   .kat-card-img {
     width: 100% !important;
     max-width: 100% !important;
-    min-height: 210px !important;
+    min-height: 220px !important;
+    height: 220px !important;
     flex-shrink: unset !important;
   }
+  /* Info area */
   .kat-card-info {
     width: 100% !important;
+    max-width: 100% !important;
     box-sizing: border-box !important;
     padding: 14px 16px !important;
   }
+  /* Seller column: hide on mobile (overlay used instead) */
   .kat-card-seller { display: none !important; }
   .kat-seller-overlay { display: block !important; }
 }
@@ -103,8 +136,8 @@ body {
   .cta-section { padding: 48px 16px !important; }
 
   /* Category listing page layout */
-  .cat-layout { flex-direction: column !important; }
-  .cat-sidebar { width: 100% !important; }
+  .cat-layout { flex-direction: column !important; padding: 0 12px 16px !important; }
+  .cat-sidebar { width: 100% !important; max-width: 100% !important; }
 
   /* Ad detail page */
   .detail-container { padding: 16px 16px 40px !important; }

@@ -1089,7 +1089,7 @@ export default async function KategoriPage({
         </aside>
 
         {/* ── LISTINGS ── */}
-        <div style={{ flex: 1, minWidth: 0 }}>
+        <div className="kat-listings" style={{ flex: 1, minWidth: 0 }}>
 
           {/* Results bar */}
           <div style={{
