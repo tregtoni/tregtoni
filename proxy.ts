@@ -45,7 +45,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(loginUrl)
   }
 
-  if (isAdmin && user && user.id !== process.env.ADMIN_USER_ID) {
+  if (isAdmin && user && user.id.trim() !== (process.env.ADMIN_USER_ID ?? '').trim()) {
     const homeUrl = request.nextUrl.clone()
     homeUrl.pathname = '/'
     return NextResponse.redirect(homeUrl)
