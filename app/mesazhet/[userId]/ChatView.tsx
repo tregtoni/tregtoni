@@ -58,9 +58,10 @@ export default function ChatView({
   const [fileError, setFileError]     = useState('')
   const [pendingFiles, setPendingFiles] = useState<PendingFile[]>([])
 
-  const bottomRef = useRef<HTMLDivElement>(null)
-  const fileRef   = useRef<HTMLInputElement>(null)
-  const supabase  = useMemo(() => createClient(), [])
+  const bottomRef  = useRef<HTMLDivElement>(null)
+  const imageRef   = useRef<HTMLInputElement>(null)
+  const pdfRef     = useRef<HTMLInputElement>(null)
+  const supabase   = useMemo(() => createClient(), [])
 
   // Cleanup object URLs on unmount
   useEffect(() => {
@@ -103,7 +104,7 @@ export default function ChatView({
   function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? [])
     if (!files.length) return
-    if (fileRef.current) fileRef.current.value = ''
+    e.target.value = ''
     setFileError('')
 
     const newPending: PendingFile[] = []
@@ -485,22 +486,32 @@ export default function ChatView({
           flexShrink: 0,
         }}
       >
-        {/* Hidden file input — multiple */}
+        {/* Hidden input — images only */}
         <input
-          ref={fileRef}
+          ref={imageRef}
           type="file"
-          accept="image/jpeg,image/png,image/webp,image/gif,application/pdf"
+          accept="image/jpeg,image/png,image/webp,image/gif"
           multiple
           style={{ display: 'none' }}
           onChange={handleFileSelect}
         />
 
-        {/* Attach button */}
+        {/* Hidden input — PDF only */}
+        <input
+          ref={pdfRef}
+          type="file"
+          accept="application/pdf"
+          multiple
+          style={{ display: 'none' }}
+          onChange={handleFileSelect}
+        />
+
+        {/* Image button */}
         <button
           type="button"
-          onClick={() => fileRef.current?.click()}
+          onClick={() => imageRef.current?.click()}
           disabled={sending}
-          title="Shto foto ose PDF"
+          title="Shto foto"
           style={{
             background: '#F5F5F7',
             border: '1.5px solid rgba(0,0,0,0.1)',
@@ -509,13 +520,40 @@ export default function ChatView({
             flexShrink: 0,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             cursor: sending ? 'not-allowed' : 'pointer',
-            fontSize: '20px',
             color: '#6E6E73',
             fontFamily: 'inherit',
             transition: 'background 0.15s',
           }}
         >
-          🖼
+          <svg width="20" height="20" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="48" y="112" width="416" height="320" rx="48" ry="48" stroke="currentColor" strokeWidth="32" strokeLinejoin="round" fill="none"/>
+            <circle cx="256" cy="272" r="80" stroke="currentColor" strokeWidth="32" fill="none"/>
+            <path d="M160 112l32-48h128l32 48" stroke="currentColor" strokeWidth="32" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+          </svg>
+        </button>
+
+        {/* PDF button */}
+        <button
+          type="button"
+          onClick={() => pdfRef.current?.click()}
+          disabled={sending}
+          title="Shto PDF"
+          style={{
+            background: '#F5F5F7',
+            border: '1.5px solid rgba(0,0,0,0.1)',
+            borderRadius: '50%',
+            width: '40px', height: '40px',
+            flexShrink: 0,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: sending ? 'not-allowed' : 'pointer',
+            color: '#6E6E73',
+            fontFamily: 'inherit',
+            transition: 'background 0.15s',
+          }}
+        >
+          <svg width="20" height="20" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M208 352c0 44.183 35.817 80 80 80s80-35.817 80-80V166a54 54 0 00-108 0v168a28 28 0 0056 0V190" stroke="currentColor" strokeWidth="32" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+          </svg>
         </button>
 
         {/* Text input */}
